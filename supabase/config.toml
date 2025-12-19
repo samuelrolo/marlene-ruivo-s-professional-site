@@ -1,0 +1,4 @@
+project_id = "gkuihdqlhxmljpezoufo"
+
+[functions.nutrition-chat]
+verify_jwt = false
