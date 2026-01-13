@@ -271,7 +271,7 @@ export const ContactSection = () => {
 
             {/* WhatsApp CTA */}
             <a
-              href="https://wa.me/351915089258?text=Ol%C3%A1%2C%20gostaria%20de%20marcar%20uma%20consulta."
+              href="https://wa.me/351915089256?text=Ol%C3%A1%2C%20gostaria%20de%20marcar%20uma%20consulta."
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-3 w-full p-4 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-2xl font-medium transition-colors"
