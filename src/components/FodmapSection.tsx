@@ -1,4 +1,4 @@
-import { Puzzle, ArrowRight, FlaskConical } from 'lucide-react';
+import { Puzzle, ArrowRight, FlaskConical, UtensilsCrossed, Microscope, CheckCircle2 } from 'lucide-react';
 
 const fodmapLetters = [
   { letter: 'F', word: 'Fermentáveis' },
@@ -14,19 +14,19 @@ const phases = [
     number: '1',
     title: 'Fase de redução',
     description: 'Durante um período limitado, os alimentos ricos em FODMAP são reduzidos da alimentação. Esta fase ajuda a aliviar os sintomas gastrointestinais e a "acalmar" o sistema digestivo.',
-    icon: '🍽️',
+    Icon: UtensilsCrossed,
   },
   {
     number: '2',
     title: 'Fase de reintrodução',
     description: 'Os alimentos são reintroduzidos gradualmente, um de cada vez, para perceber quais causam sintomas e em que quantidade. Esta fase é essencial para personalizar o plano alimentar.',
-    icon: '🔬',
+    Icon: Microscope,
   },
   {
     number: '3',
     title: 'Fase de personalização',
     description: 'Com base na tolerância individual, constrói-se uma alimentação variada, equilibrada e adaptada, evitando apenas os alimentos que realmente provocam desconforto.',
-    icon: '✅',
+    Icon: CheckCircle2,
   },
 ];
 
@@ -115,7 +115,9 @@ export const FodmapSection = () => {
                 <div className="absolute -top-4 -right-4 w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg">
                   <span className="text-2xl font-heading font-bold text-primary-foreground">{phase.number}</span>
                 </div>
-                <div className="text-5xl mb-4">{phase.icon}</div>
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                  <phase.Icon className="w-8 h-8 text-primary" />
+                </div>
                 <h4 className="text-xl font-heading font-semibold text-foreground mb-4">
                   {phase.title}
                 </h4>
