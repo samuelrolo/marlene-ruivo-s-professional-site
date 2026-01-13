@@ -14,7 +14,13 @@ const navItems = [
 ];
 
 // Custom NavLink component to highlight active links
-const NavLink = ({ href, children, onClick }: { href: string; children: React.ReactNode; onClick?: () => void }) => {
+interface NavLinkProps {
+  href: string;
+  children: string;
+  onClick?: () => void;
+}
+
+const NavLink = ({ href, children, onClick }: NavLinkProps) => {
   const resolved = useResolvedPath(href);
   const match = useMatch({ path: resolved.pathname, end: true });
 
