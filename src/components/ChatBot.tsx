@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, Loader2, Leaf } from 'lucide-react';
+import { X, Send, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type Message = { role: "user" | "assistant"; content: string };
 
 // Fallback values to ensure it works even if env vars fail during build
-// Using the project ID provided by the user: hihzmjqkszcxxdrhnqpy
+// Project: hihzmjqkszcxxdrhnqpy
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://hihzmjqkszcxxdrhnqpy.supabase.co';
+// Using the key provided by the user which is confirmed to work with this project
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'sbp_18b93c90ebbfb75db2b0b551be88351298298c27';
 const CHAT_URL = `${SUPABASE_URL}/functions/v1/nutrition-chat`;
 
@@ -43,18 +44,20 @@ export const ChatBot = () => {
     setIsLoading(true);
 
     try {
+      console.log("Sending request to:", CHAT_URL);
       const resp = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${SUPABASE_KEY}`,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
         },
         body: JSON.stringify({ messages: [...messages, userMsg] }),
       });
 
       if (!resp.ok) {
-        const errorData = await resp.json().catch(() => ({}));
-        throw new Error(errorData.error || "Erro ao conectar com o assistente");
+        const errorText = await resp.text();
+        console.error("Server response error:", errorText);
+        throw new Error("Erro na resposta do servidor");
       }
 
       const data = await resp.json();
@@ -65,7 +68,7 @@ export const ChatBot = () => {
       console.error("Chat error:", error);
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: "Desculpe, ocorreu um erro. Por favor, tente novamente ou contacte-nos diretamente através do formulário."
+        content: "Desculpe, ocorreu um erro ao conectar com o assistente. Por favor, tente novamente ou contacte-nos diretamente através do formulário."
       }]);
     } finally {
       setIsLoading(false);
@@ -132,7 +135,7 @@ export const ChatBot = () => {
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="p-1.5 rounded-full hover:bg-primary-foreground/20 transition-colors text-xl"
+            className="p-1.5 rounded-full hover:bg-primary-foreground/20 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -140,7 +143,7 @@ export const ChatBot = () => {
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-background">
-          {/* Welcome message always shown */}
+          {/* Welcome message */}
           <div className="flex gap-2 justify-start">
             <img
               src="/assets/nutrigem-logo.png"
@@ -180,7 +183,7 @@ export const ChatBot = () => {
             </div>
           ))}
 
-          {isLoading && messages[messages.length - 1]?.role === "user" && (
+          {isLoading && (
             <div className="flex gap-2 justify-start">
               <img
                 src="/assets/nutrigem-logo.png"
@@ -234,7 +237,7 @@ export const ChatBot = () => {
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
-                "Enviar"
+                <Send className="w-4 h-4" />
               )}
             </button>
           </div>
