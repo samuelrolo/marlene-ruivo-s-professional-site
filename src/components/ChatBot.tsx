@@ -5,8 +5,9 @@ import { cn } from '@/lib/utils';
 type Message = { role: "user" | "assistant"; content: string };
 
 // Fallback values to ensure it works even if env vars fail during build
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://gkuihdqlhxmljpezoufo.supabase.co';
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrdWloZHFsaHhtbGpwZXpvdWZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwODk0NzAsImV4cCI6MjA4MTY2NTQ3MH0.SIhytc97DI71Am_ISaqNqd53sYLuZLVXpiR8jXon4Yw';
+// Using the project ID provided by the user: hihzmjqkszcxxdrhnqpy
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://hihzmjqkszcxxdrhnqpy.supabase.co';
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'sbp_18b93c90ebbfb75db2b0b551be88351298298c27';
 const CHAT_URL = `${SUPABASE_URL}/functions/v1/nutrition-chat`;
 
 const QUICK_PROMPTS = [
