@@ -10,7 +10,8 @@ export const Footer = () => {
             <img
               src="/logo-marlene-ruivo.jpg"
               alt="Drª Marlene Ruivo - Nutricionista"
-              className="h-10 w-auto"
+              className="h-10 w-auto object-contain"
+              style={{ filter: 'none' }}
             />
             <div>
               <p className="font-heading text-lg font-semibold">Drª Marlene Ruivo</p>

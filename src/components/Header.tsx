@@ -44,11 +44,12 @@ export const Header = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3 group">
             <img
               src="/logo-marlene-ruivo.jpg"
               alt="Drª Marlene Ruivo - Nutricionista"
-              className="h-12 w-auto"
+              className="h-12 w-auto object-contain transition-opacity group-hover:opacity-90"
+              style={{ filter: 'none' }}
             />
           </Link>
 
