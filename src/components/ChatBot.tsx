@@ -132,7 +132,7 @@ export const ChatBot = () => {
           "flex items-center justify-center",
           isOpen && "hidden"
         )}
-        aria-label="Abrir GeniNutri - Assistente Nutricional"
+        aria-label="Abrir NutriGem - Assistente Nutricional"
       >
         <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7">
           <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
@@ -154,12 +154,14 @@ export const ChatBot = () => {
         {/* Header */}
         <div className="bg-primary text-primary-foreground p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-              <Leaf className="w-5 h-5" />
-            </div>
+            <img
+              src="/assets/nutrigem-logo.png"
+              alt="NutriGem Logo"
+              className="w-10 h-10 rounded-full object-cover"
+            />
             <div>
               <h3 className="font-heading font-semibold flex items-center gap-2">
-                GeniNutri
+                NutriGem
               </h3>
               <p className="text-xs opacity-80">Assistente em Saúde Intestinal</p>
             </div>
@@ -176,11 +178,13 @@ export const ChatBot = () => {
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-background">
           {/* Welcome message always shown */}
           <div className="flex gap-2 justify-start">
-            <div className="w-8 h-8 rounded-full bg-sage-light flex-shrink-0 flex items-center justify-center">
-              <Leaf className="w-4 h-4 text-primary" />
-            </div>
+            <img
+              src="/assets/nutrigem-logo.png"
+              alt="NutriGem"
+              className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+            />
             <div className="max-w-[80%] px-4 py-2.5 rounded-2xl rounded-bl-md text-sm bg-muted text-foreground">
-              Olá! 👋 Sou a GeniNutri, especialista em dieta FODMAP e saúde intestinal. Como posso ajudar?
+              Olá! 👋 Sou a NutriGem, especialista em dieta FODMAP e saúde intestinal. Como posso ajudar?
             </div>
           </div>
 
@@ -193,9 +197,11 @@ export const ChatBot = () => {
               )}
             >
               {msg.role === "assistant" && (
-                <div className="w-8 h-8 rounded-full bg-sage-light flex-shrink-0 flex items-center justify-center">
-                  <Leaf className="w-4 h-4 text-primary" />
-                </div>
+                <img
+                  src="/assets/nutrigem-logo.png"
+                  alt="NutriGem"
+                  className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                />
               )}
               <div
                 className={cn(
@@ -212,9 +218,11 @@ export const ChatBot = () => {
 
           {isLoading && messages[messages.length - 1]?.role === "user" && (
             <div className="flex gap-2 justify-start">
-              <div className="w-8 h-8 rounded-full bg-sage-light flex-shrink-0 flex items-center justify-center">
-                <Leaf className="w-4 h-4 text-primary" />
-              </div>
+              <img
+                src="/assets/nutrigem-logo.png"
+                alt="NutriGem"
+                className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+              />
               <div className="bg-muted px-4 py-2.5 rounded-2xl rounded-bl-md">
                 <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
               </div>
