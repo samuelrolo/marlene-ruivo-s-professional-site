@@ -203,28 +203,104 @@ export const LocationsSection = () => {
           </div>
         </div>
 
-        {/* Pricing Banner */}
-        <div className="bg-sage-light/50 rounded-3xl p-8 md:p-12 text-center border border-sage/20">
-          <h3 className="text-2xl md:text-3xl font-heading font-semibold text-foreground mb-4">
-            Preços
+        {/* Pricing Packs */}
+        <div>
+          <h3 className="text-2xl md:text-3xl font-heading font-semibold text-foreground mb-2 text-center">
+            Packs de Consultas Online
           </h3>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 mb-6">
-            <div>
-              <p className="text-4xl font-heading font-bold text-primary">60€</p>
-              <p className="text-muted-foreground">1ª Consulta</p>
+          <p className="text-center text-sm text-muted-foreground mb-12">
+            Consultas Online: 60€ (1ª consulta) | 50€ (acompanhamento)<br />
+            <span className="text-xs">Nas clínicas presenciais aplicam-se os preços da tabela de cada clínica.</span>
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Pack 3 meses */}
+            <div className="border-2 border-border rounded-2xl p-6 bg-background hover:border-primary/30 transition-all">
+              <div className="flex items-baseline gap-2 mb-4">
+                <h4 className="text-xl font-heading font-bold text-foreground">Pack 3 meses</h4>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-3xl font-heading font-bold text-primary mb-1">145€</p>
+                <p className="text-xs text-muted-foreground line-through">Sem pack: 160€</p>
+              </div>
+
+              <div className="space-y-2 mb-6 text-sm text-muted-foreground">
+                <p className="font-medium text-foreground mb-3">Inclui:</p>
+                <p>• 1ª consulta (avaliação completa)</p>
+                <p>• 2 consultas de seguimento</p>
+                <p>• Acompanhamento entre consultas</p>
+              </div>
+
+              <p className="text-xs text-muted-foreground italic border-t border-border pt-4">
+                👉 Ideal para quem quer experimentar e criar hábito
+              </p>
             </div>
-            <div className="hidden md:block w-px h-16 bg-border" />
-            <div>
-              <p className="text-4xl font-heading font-bold text-primary">50€</p>
-              <p className="text-muted-foreground">Acompanhamento</p>
+
+            {/* Pack 6 meses - DESTAQUE */}
+            <div className="border-2 border-primary rounded-2xl p-6 bg-gradient-to-br from-primary/5 to-background relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold">
+                Mais Popular
+              </div>
+
+              <div className="flex items-baseline gap-2 mb-4 mt-2">
+                <h4 className="text-xl font-heading font-bold text-foreground">Pack 6 meses</h4>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-3xl font-heading font-bold text-primary mb-1">270€</p>
+                <p className="text-xs text-muted-foreground line-through">Sem pack: 310€</p>
+              </div>
+
+              <div className="space-y-2 mb-6 text-sm text-muted-foreground">
+                <p className="font-medium text-foreground mb-3">Inclui:</p>
+                <p>• 1ª consulta</p>
+                <p>• 5 consultas de seguimento</p>
+                <p>• Ajustes regulares do plano</p>
+                <p>• Prioridade no acompanhamento</p>
+              </div>
+
+              <p className="text-xs text-muted-foreground italic border-t border-border pt-4">
+                👉 Muito bom para resultados sólidos (emagrecimento, reeducação alimentar)
+              </p>
+            </div>
+
+            {/* Pack 12 meses */}
+            <div className="border-2 border-border rounded-2xl p-6 bg-background hover:border-primary/30 transition-all">
+              <div className="flex items-baseline gap-2 mb-4">
+                <h4 className="text-xl font-heading font-bold text-foreground">Pack 12 meses</h4>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-3xl font-heading font-bold text-primary mb-1">499€</p>
+                <p className="text-xs text-muted-foreground line-through">Sem pack: 610€</p>
+              </div>
+
+              <div className="space-y-2 mb-6 text-sm text-muted-foreground">
+                <p className="font-medium text-foreground mb-3">Inclui:</p>
+                <p>• 1ª consulta</p>
+                <p>• 11 consultas de seguimento</p>
+                <p>• Acompanhamento contínuo</p>
+                <p>• Estratégia de manutenção</p>
+              </div>
+
+              <p className="text-xs text-muted-foreground italic border-t border-border pt-4">
+                👉 Excelente para fidelização e estabilidade de longo prazo
+              </p>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground mb-6">
-            Preços aplicáveis tanto para consultas presenciais como online.
-          </p>
-          <Button variant="hero" asChild>
-            <a href="#contactos">Agendar Consulta →</a>
-          </Button>
+
+          {/* Dicas Importantes */}
+          <div className="mt-12 max-w-2xl mx-auto bg-sage-light/30 rounded-2xl p-6 border border-sage/20">
+            <p className="font-semibold text-foreground mb-3 flex items-center gap-2">
+              <span>💡</span> Dicas Importantes
+            </p>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>• Packs têm validade de 3, 6 ou 12 meses respetivamente</li>
+              <li>• Não são reembolsáveis</li>
+              <li>• Aplicável apenas para consultas online</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
