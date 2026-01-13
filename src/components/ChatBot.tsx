@@ -62,7 +62,7 @@ export const ChatBot = () => {
 
       const data = await resp.json();
       const assistantContent = data.choices?.[0]?.message?.content || data.reply || "Desculpe, não consegui processar a sua mensagem.";
-      
+
       setMessages(prev => [...prev, { role: "assistant", content: assistantContent }]);
     } catch (error) {
       console.error("Chat error:", error);
@@ -101,7 +101,7 @@ export const ChatBot = () => {
         aria-label="Abrir NutriGem - Assistente Nutricional"
       >
         <img
-          src="/assets/nutrigem-logo.png"
+          src="/assets/nutrigem-logo-transparent.png"
           alt="NutriGem"
           className="w-full h-full object-contain"
         />
