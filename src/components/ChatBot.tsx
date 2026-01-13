@@ -100,9 +100,9 @@ export const ChatBot = () => {
       await streamChat([...messages, userMsg]);
     } catch (error) {
       console.error("Chat error:", error);
-      setMessages(prev => [...prev, { 
-        role: "assistant", 
-        content: "Desculpe, ocorreu um erro. Por favor, tente novamente ou contacte-nos diretamente através do formulário." 
+      setMessages(prev => [...prev, {
+        role: "assistant",
+        content: "Desculpe, ocorreu um erro. Por favor, tente novamente ou contacte-nos diretamente através do formulário."
       }]);
     } finally {
       setIsLoading(false);
@@ -158,8 +158,8 @@ export const ChatBot = () => {
               <Leaf className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-heading font-semibold flex items-center gap-1">
-                GeniNutri <span>🌿</span>
+              <h3 className="font-heading font-semibold flex items-center gap-2">
+                GeniNutri
               </h3>
               <p className="text-xs opacity-80">Assistente em Saúde Intestinal</p>
             </div>
@@ -183,7 +183,7 @@ export const ChatBot = () => {
               Olá! 👋 Sou a GeniNutri, especialista em dieta FODMAP e saúde intestinal. Como posso ajudar?
             </div>
           </div>
-          
+
           {messages.map((msg, idx) => (
             <div
               key={idx}
@@ -209,7 +209,7 @@ export const ChatBot = () => {
               </div>
             </div>
           ))}
-          
+
           {isLoading && messages[messages.length - 1]?.role === "user" && (
             <div className="flex gap-2 justify-start">
               <div className="w-8 h-8 rounded-full bg-sage-light flex-shrink-0 flex items-center justify-center">
