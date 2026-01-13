@@ -48,7 +48,7 @@ export const Header = () => {
             <img
               src="/logo-marlene-ruivo.jpg"
               alt="Drª Marlene Ruivo - Nutricionista"
-              className="h-12 w-auto rounded-lg"
+              className="h-12 w-auto"
             />
           </Link>
 

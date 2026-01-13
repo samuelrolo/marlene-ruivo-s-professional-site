@@ -9,9 +9,11 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-sage-light/20 flex items-center justify-center">
-              <span className="text-lg">🌿</span>
-            </div>
+            <img
+              src="/logo-marlene-ruivo.jpg"
+              alt="Drª Marlene Ruivo - Nutricionista"
+              className="h-10 w-auto"
+            />
             <div>
               <p className="font-heading text-lg font-semibold">Drª Marlene Ruivo</p>
               <p className="text-xs text-cream/60 tracking-wide uppercase">Nutricionista</p>
