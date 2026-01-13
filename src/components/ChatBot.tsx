@@ -126,18 +126,19 @@ export const ChatBot = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full",
-          "bg-primary text-primary-foreground shadow-lg hover:shadow-xl",
+          "fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full",
+          "bg-white shadow-lg hover:shadow-xl",
           "transition-all duration-300 hover:scale-105",
-          "flex items-center justify-center",
+          "flex items-center justify-center p-2",
           isOpen && "hidden"
         )}
         aria-label="Abrir NutriGem - Assistente Nutricional"
       >
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7">
-          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
-          <path d="M12 7c-2.5 0-4.5 2-4.5 4.5 0 1.5.7 2.8 1.8 3.7l-.3 1.8 1.8-.6c.4.1.8.1 1.2.1 2.5 0 4.5-2 4.5-4.5S14.5 7 12 7z" fill="hsl(var(--background))" />
-        </svg>
+        <img
+          src="/assets/nutrigem-logo.png"
+          alt="NutriGem"
+          className="w-full h-full object-contain"
+        />
       </button>
 
       {/* Chat Window */}
