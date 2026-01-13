@@ -7,8 +7,8 @@ type Message = { role: "user" | "assistant"; content: string };
 // Fallback values to ensure it works even if env vars fail during build
 // Project: hihzmjqkszcxxdrhnqpy
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://hihzmjqkszcxxdrhnqpy.supabase.co';
-// Using the key provided by the user which is confirmed to work with this project
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'sbp_18b93c90ebbfb75db2b0b551be88351298298c27';
+// Using the ANON key which is confirmed to work with this project
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrdWloZHFsaHhtbGpwZXpvdWZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwODk0NzAsImV4cCI6MjA4MTY2NTQ3MH0.SIhytc97DI71Am_ISaqNqd53sYLuZLVXpiR8jXon4Yw';
 const CHAT_URL = `${SUPABASE_URL}/functions/v1/nutrition-chat`;
 
 const QUICK_PROMPTS = [
