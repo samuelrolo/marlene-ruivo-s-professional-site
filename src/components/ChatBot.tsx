@@ -4,7 +4,10 @@ import { cn } from '@/lib/utils';
 
 type Message = { role: "user" | "assistant"; content: string };
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nutrition-chat`;
+// Fallback values to ensure it works even if env vars fail during build
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://gkuihdqlhxmljpezoufo.supabase.co';
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrdWloZHFsaHhtbGpwZXpvdWZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwODk0NzAsImV4cCI6MjA4MTY2NTQ3MH0.SIhytc97DI71Am_ISaqNqd53sYLuZLVXpiR8jXon4Yw';
+const CHAT_URL = `${SUPABASE_URL}/functions/v1/nutrition-chat`;
 
 const QUICK_PROMPTS = [
   { label: "O que é FODMAP?", message: "O que é FODMAP?" },
@@ -43,7 +46,7 @@ export const ChatBot = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
         },
         body: JSON.stringify({ messages: [...messages, userMsg] }),
       });
