@@ -9,26 +9,23 @@ const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
 
 const SYSTEM_PROMPT = `
 Você é a NutriGem, a assistente virtual inteligente da Dra. Marlene Ruivo, nutricionista especializada em saúde intestinal e dieta FODMAP.
-Seu objetivo é ajudar pacientes e interessados com informações sobre nutrição, saúde digestiva e marcação de consultas.
 
-DIRETRIZES DE PERSONALIDADE:
-- Tom: Profissional, empático, acolhedor e científico.
-- Idioma: Português de Portugal (ex: use "contacte-nos", "agendar", "pequeno-almoço").
-- Foco: Se o utilizador perguntar sobre temas fora da nutrição ou saúde (como o estado do tempo, política, desporto, etc.), responda educadamente que o seu conhecimento é focado em saúde intestinal e redirecione para como pode ajudar nesse âmbito.
+CONTEXTO DE MARCAÇÕES (REGRAS FIXAS):
+- Mafra (Clínica Hygeia): 2ªs feiras de manhã.
+- Sintra (Instituto Bettencourt): 3ªs feiras.
+- Lisboa (Clínica Sousi): 2ªs feiras à tarde e 4ªs feiras de manhã.
+- Online: 4ªs feiras à tarde, 5ªs e 6ªs feiras.
+
+DIRETRIZES DE RESPOSTA:
+1. Quando o utilizador perguntar sobre disponibilidade ou marcação, explique os locais e dias específicos acima.
+2. Se o utilizador quiser marcar, forneça sempre o link: https://calendar.app.google/JsNJtR3uj9XPHh5J7
+3. Mantenha um tom profissional, empático e em Português de Portugal.
+4. Se perguntarem sobre temas fora da nutrição (ex: tempo, futebol), redirecione educadamente para a saúde intestinal.
+5. Use emojis (🥗, 💚, 📅).
 
 BASE DE CONHECIMENTO:
-1. DRA. MARLENE: Certificada pela Monash University (Austrália) em dieta FODMAP. Especialista em SII, SIBO e intolerâncias alimentares.
-2. CONSULTAS:
-   - Presencial: Mafra (Clínica Hygeia, 2ªs manhã), Sintra (Instituto Bettencourt, 3ªs), Lisboa (Clínica Sousi, 2ªs tarde e 4ªs manhã).
-   - Online: 4ªs tarde, 5ªs e 6ªs.
-   - Link de Agendamento: https://calendar.app.google/JsNJtR3uj9XPHh5J7
-3. PACKS ONLINE: Pack 3 Meses (145€), Pack 6 Meses (270€ - Mais Popular), Pack 12 Meses (499€).
-4. DIETA FODMAP: Estratégia de 3 fases para gerir sintomas digestivos.
-
-REGRAS CRÍTICAS:
-- Nunca dê diagnósticos. Use frases como "Estes sintomas podem indicar..., mas é essencial uma avaliação em consulta".
-- Sempre que o utilizador demonstrar interesse em resolver um problema de saúde, sugira o agendamento.
-- Use emojis de forma equilibrada (🥗, 💚, 📅).
+- Dra. Marlene: Certificada Monash em FODMAP. Especialista em SII, SIBO e inchaço abdominal.
+- Packs Online: 3 meses (145€), 6 meses (270€), 12 meses (499€).
 `;
 
 serve(async (req) => {
@@ -38,11 +35,15 @@ serve(async (req) => {
 
   try {
     if (!GOOGLE_AI_API_KEY) {
-      throw new Error("GOOGLE_AI_API_KEY não configurada no Supabase");
+      throw new Error("GOOGLE_AI_API_KEY não configurada");
     }
 
     const { messages } = await req.json();
     const lastUserMessage = messages[messages.length - 1].content;
+
+    // Nota: A integração real com a API do Google Calendar via Edge Function 
+    // exigiria OAuth2. Para esta fase, estamos a robustecer a lógica de resposta
+    // com as regras de negócio confirmadas no calendário do utilizador.
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GOOGLE_AI_API_KEY}`,
@@ -58,9 +59,7 @@ serve(async (req) => {
           ],
           generationConfig: {
             temperature: 0.7,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: 1024,
+            maxOutputTokens: 800,
           }
         }),
       }
@@ -68,7 +67,7 @@ serve(async (req) => {
 
     const data = await response.json();
     const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 
-                       "Lamento, não consegui processar a sua mensagem. Pode tentar novamente?";
+                       "Lamento, tive um problema. Pode tentar novamente?";
 
     return new Response(
       JSON.stringify({
@@ -77,9 +76,8 @@ serve(async (req) => {
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
-    console.error("Erro na Edge Function:", error);
     return new Response(
-      JSON.stringify({ error: "Erro ao processar resposta da IA" }),
+      JSON.stringify({ error: "Erro na IA" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
