@@ -13,27 +13,27 @@ SOBRE A DRA. MARLENE RUIVO:
 - Atende em 3 clínicas físicas e online
 
 LOCAIS DE CONSULTA:
-1. Clínica Hygeia (Mafra) - Segunda-feira, 9:00-13:00
-2. Instituto Bettencourt (Lisboa) - Terça-feira, 9:00-16:00
-3. Clínica Sousi (Sintra) - Quarta-feira, 9:00-17:00
-4. Consulta Online - Horário flexível via videochamada
+1. Clínica Hygeia (Mafra) - Segunda-feira (manhã: 9:00-13:00)
+2. Clínica Sousi (Sintra) - Segunda-feira (tarde), Quarta-feira (manhã: 9:00-13:00)
+3. Instituto Bettencourt (Lisboa) - Terça-feira (9:00-16:00)
+4. Consulta Online - Quarta (tarde), Quinta e Sexta - Horário flexível via videochamada
 
-PREÇOS:
-- 1ª Consulta: 60€
+PACKS DE CONSULTAS ONLINE:
+- Pack 3 meses: 145€ (poupa 15€) - 1ª consulta + 2 seguimento
+- Pack 6 meses: 270€ (poupa 40€) - 1ª consulta + 5 seguimento (MAIS POPULAR)
+- Pack 12 meses: 499€ (poupa 111€) - 1ª consulta + 11 seguimento
+
+PREÇOS AVULSO:
+- 1ª Consulta Online: 60€
 - Consulta de Acompanhamento: 50€
-
-SERVIÇOS PRINCIPAIS:
-- Tratamento de SII (Síndrome do Intestino Irritável)
-- Tratamento de SIBO (Supercrescimento Bacteriano)
-- Dieta Low-FODMAP personalizada
-- Abordagem do eixo intestino-cérebro
-- Acompanhamento nutricional para saúde digestiva
+- Nas clínicas presenciais: aplicam-se os preços da tabela de cada clínica
 
 DIRETRIZES DE RESPOSTA:
 - Sê simpática, profissional e empática
 - Responde sempre em português de Portugal
 - Fornece informações úteis sobre nutrição e saúde intestinal
-- Para marcar consulta, indica o email: marleneruivo.nutricao@gmail.com ou sugere usar o formulário de contacto
+- Para marcar consulta online, indica o link: https://calendar.app.google/JsNJtR3uj9XPHh5J7
+- Para marcar nas clínicas, recomenda visitar os sites das clínicas no site marleneruivo.pt
 - Nunca dês diagnósticos médicos - recomenda sempre consultar um profissional
 - Mantém as respostas concisas mas informativas (máximo 150 palavras)
 - Usa emojis com moderação para tornar a conversa mais amigável`;
@@ -45,50 +45,106 @@ serve(async (req) => {
 
   try {
     const { messages } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
+
+    if (!GOOGLE_AI_API_KEY) {
+      throw new Error("GOOGLE_AI_API_KEY is not configured");
     }
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          ...messages,
-        ],
-        stream: true,
-      }),
+    // Convert messages to Gemini format
+    const contents = messages.map((msg: any) => ({
+      role: msg.role === "assistant" ? "model" : "user",
+      parts: [{ text: msg.content }],
+    }));
+
+    // Add system instruction as first user message
+    contents.unshift({
+      role: "user",
+      parts: [{ text: SYSTEM_PROMPT }],
+    });
+    contents.push({
+      role: "model",
+      parts: [{ text: "Olá! Entendi as minhas diretrizes. Como posso ajudar?" }],
     });
 
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:streamGenerateContent?key=${GOOGLE_AI_API_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contents,
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 500,
+          },
+        }),
+      }
+    );
+
     if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Muitos pedidos. Por favor, aguarde um momento." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "Serviço temporariamente indisponível." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
       const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
+      console.error("Gemini API error:", response.status, errorText);
       return new Response(JSON.stringify({ error: "Erro no serviço de IA" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    return new Response(response.body, {
+    // Transform Gemini streaming response to OpenAI format
+    const reader = response.body?.getReader();
+    if (!reader) {
+      throw new Error("No response body");
+    }
+
+    const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+              if (line.trim() === '' || !line.includes('{')) continue;
+
+              try {
+                const data = JSON.parse(line);
+                const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (text) {
+                  // Convert to OpenAI-like SSE format
+                  const sseData = {
+                    choices: [{
+                      delta: { content: text },
+                      index: 0,
+                      finish_reason: null,
+                    }],
+                  };
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify(sseData)}\n\n`));
+                }
+              } catch (e) {
+                // Skip invalid JSON lines
+              }
+            }
+          }
+
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+          controller.close();
+        } catch (error) {
+          controller.error(error);
+        }
+      },
+    });
+
+    return new Response(stream, {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (error) {
