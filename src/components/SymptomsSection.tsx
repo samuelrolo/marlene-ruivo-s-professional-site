@@ -1,57 +1,53 @@
-import { Activity, Stethoscope, Brain, Pill, HeartPulse, Wind } from 'lucide-react';
+import { AlertCircle, Activity, Wind, Droplets, Maximize2 } from 'lucide-react';
 
 const symptoms = [
   {
-    icon: Activity,
-    title: 'Dor abdominal',
-    description: 'Protocolos de alívio imediato e estratégias de longo prazo para regular a motilidade.',
+    icon: AlertCircle,
+    title: 'Dor ou desconforto abdominal',
+    description: 'Dor recorrente que pode variar em intensidade e localização',
+  },
+  {
+    icon: Maximize2,
+    title: 'Inchaço abdominal (distensão)',
+    description: 'Sensação de barriga inchada e desconforto visível',
   },
   {
     icon: Wind,
-    title: 'Inchaço',
-    description: 'Redução de fermentação com escolhas low-FODMAP e gestão de fibras.',
+    title: 'Sensação de gases excessivos',
+    description: 'Acumulação de gases que causa desconforto e pressão',
   },
   {
-    icon: Stethoscope,
-    title: 'Cólica',
-    description: 'Planos que minimizam gatilhos e ajustam combinações alimentares para conforto digestivo.',
+    icon: Activity,
+    title: 'Diarreia, obstipação ou alternância',
+    description: 'Alterações no trânsito intestinal, com padrões irregulares',
   },
   {
-    icon: HeartPulse,
-    title: 'Diarreia',
-    description: 'Protocolos de estabilização com foco na hidratação, eletrólitos e alimentos bem tolerados.',
-  },
-  {
-    icon: Pill,
-    title: 'Obstipação',
-    description: 'Gestão de fibras, hidratação, psicobióticos e rotina alimentar para regularidade.',
-  },
-  {
-    icon: Brain,
-    title: 'Eixo Intestino-Cérebro',
-    description: 'Ligação intestino-cérebro, probióticos específicos e estratégias de gestão do stress.',
+    icon: Droplets,
+    title: 'Sensação de evacuação incompleta',
+    description: 'Sensação persistente de necessidade de evacuar',
   },
 ];
 
 export const SymptomsSection = () => {
   return (
-    <section id="sintomas" className="py-20 lg:py-32 bg-sage-light/30">
+    <section id="sintomas" className="py-20 lg:py-32 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">
-            Serviços Especializados
+            Sintomas Gastrointestinais
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-semibold text-foreground mb-6">
-            Como posso ajudar?
+            Sintomas gastrointestinais mais comuns
           </h2>
-          <p className="text-lg text-muted-foreground">
-            Acompanhamento especializado para SII, SIBO, dieta FODMAP e o eixo intestino-cérebro.
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            Os sintomas gastrointestinais são queixas frequentes e podem afetar significativamente
+            a qualidade de vida. Entre os mais comuns destacam-se:
           </p>
         </div>
 
         {/* Symptoms Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {symptoms.map((symptom, index) => (
             <div
               key={index}
@@ -68,6 +64,17 @@ export const SymptomsSection = () => {
               </p>
             </div>
           ))}
+        </div>
+
+        {/* SII Information */}
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-sage-light/30 rounded-3xl p-8 border border-sage/20">
+            <p className="text-lg text-foreground leading-relaxed text-center">
+              Quando estes sintomas são recorrentes e não existe uma causa orgânica identificada,
+              pode estar associada uma <strong className="text-primary">doença gastrointestinal funcional</strong>,
+              como a <strong className="text-primary">Síndrome do Intestino Irritável (SII)</strong>.
+            </p>
+          </div>
         </div>
       </div>
     </section>

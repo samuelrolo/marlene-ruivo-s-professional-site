@@ -1,16 +1,34 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const navItems = [
-  { label: 'Início', href: '#inicio' },
-  { label: 'Sobre', href: '#sobre' },
-  { label: 'FODMAP', href: '#fodmap' },
-  { label: 'Sintomas', href: '#sintomas' },
-  { label: 'Locais', href: '#locais' },
-  { label: 'Testemunhos', href: '#testemunhos' },
-  { label: 'Contactos', href: '#contactos' },
+  { label: 'Início', href: '/' },
+  { label: 'Sobre', href: '/sobre' },
+  { label: 'FODMAP', href: '/fodmap' },
+  { label: 'Sintomas', href: '/sintomas' },
+  { label: 'Locais', href: '/localizacoes' },
+  { label: 'Testemunhos', href: '/testemunhos' },
+  { label: 'Contactos', href: '/contactos' },
 ];
+
+// Custom NavLink component to highlight active links
+const NavLink = ({ href, children, onClick }: { href: string; children: React.ReactNode; onClick?: () => void }) => {
+  const resolved = useResolvedPath(href);
+  const match = useMatch({ path: resolved.pathname, end: true });
+
+  return (
+    <Link
+      to={href}
+      onClick={onClick}
+      className={`px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-accent ${match ? 'text-primary bg-accent' : 'text-foreground/80 hover:text-primary'
+        }`}
+    >
+      {children}
+    </Link>
+  );
+};
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,33 +38,27 @@ export const Header = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="#inicio" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-sage-light flex items-center justify-center">
-              <span className="text-sage-dark text-lg">🌿</span>
-            </div>
-            <div className="hidden sm:block">
-              <p className="font-heading text-lg font-semibold text-foreground">Drª Marlene Ruivo</p>
-              <p className="text-xs text-muted-foreground tracking-wide uppercase">Nutricionista</p>
-            </div>
-          </a>
+          <Link to="/" className="flex items-center gap-3">
+            <img
+              src="/logo-marlene-ruivo.jpg"
+              alt="Drª Marlene Ruivo - Nutricionista"
+              className="h-12 w-auto rounded-lg"
+            />
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent"
-              >
+              <NavLink key={item.href} href={item.href}>
                 {item.label}
-              </a>
+              </NavLink>
             ))}
           </nav>
 
           {/* CTA Button */}
           <div className="hidden lg:block">
             <Button asChild>
-              <a href="#contactos">Marcar Consulta</a>
+              <Link to="/contactos">Marcar Consulta</Link>
             </Button>
           </div>
 
@@ -64,19 +76,18 @@ export const Header = () => {
           <nav className="lg:hidden py-4 border-t border-border/50 animate-fade-in">
             <div className="flex flex-col gap-2">
               {navItems.map((item) => (
-                <a
+                <NavLink
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="px-4 py-3 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-accent rounded-lg transition-colors"
                 >
                   {item.label}
-                </a>
+                </NavLink>
               ))}
               <Button asChild className="mt-4">
-                <a href="#contactos" onClick={() => setIsMenuOpen(false)}>
+                <Link to="/contactos" onClick={() => setIsMenuOpen(false)}>
                   Marcar Consulta
-                </a>
+                </Link>
               </Button>
             </div>
           </nav>
