@@ -46,10 +46,9 @@ export const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <img
-              src="/logo-marlene-ruivo.jpg"
+              src="/assets/logo-marlene-ruivo.png"
               alt="Drª Marlene Ruivo - Nutricionista"
               className="h-12 w-auto object-contain transition-opacity group-hover:opacity-90"
-              style={{ filter: 'none' }}
             />
           </Link>
 

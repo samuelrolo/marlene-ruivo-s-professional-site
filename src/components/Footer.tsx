@@ -8,10 +8,9 @@ export const Footer = () => {
           {/* Logo */}
           <div className="flex items-center gap-3">
             <img
-              src="/logo-marlene-ruivo.jpg"
+              src="/assets/logo-marlene-ruivo.png"
               alt="Drª Marlene Ruivo - Nutricionista"
               className="h-10 w-auto object-contain"
-              style={{ filter: 'none' }}
             />
             <div>
               <p className="font-heading text-lg font-semibold">Drª Marlene Ruivo</p>

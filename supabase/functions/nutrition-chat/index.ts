@@ -44,7 +44,16 @@ serve(async (req) => {
   }
 
   try {
-    const { messages } = await req.json();
+    const body = await req.json();
+    const messages = body?.messages;
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return new Response(JSON.stringify({ error: "Messages array is required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
 
     if (!GOOGLE_AI_API_KEY) {
@@ -68,7 +77,7 @@ serve(async (req) => {
     });
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:streamGenerateContent?key=${GOOGLE_AI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?key=${GOOGLE_AI_API_KEY}`,
       {
         method: "POST",
         headers: {
