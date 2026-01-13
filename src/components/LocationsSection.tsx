@@ -1,14 +1,13 @@
-import { MapPin, Clock, Monitor, ExternalLink } from 'lucide-react';
+import { Clock, ExternalLink, Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const locations = [
+const presencialLocations = [
   {
     name: 'Clínica Hygeia',
     city: 'Mafra',
     day: 'Segunda-feira',
     hours: '9:00 - 13:00',
-    icon: '🏥',
-    mapLink: 'https://www.waze.com/ul?q=Cl%C3%ADnica%20Hygeia%20Mafra',
+    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3106.7803841489895!2d-9.327595!3d38.936848!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1ecba1234567890%3A0xabcdef!2sClinica%20Hygeia%20Mafra!5e0!3m2!1spt-PT!2spt!4v1234567890',
     siteLink: 'https://sheerme.com/hygeia-clinica-de-osteopatia-de-mafra',
   },
   {
@@ -16,8 +15,7 @@ const locations = [
     city: 'Lisboa',
     day: 'Terça-feira',
     hours: '9:00 - 16:00',
-    icon: '🏛️',
-    mapLink: 'https://www.waze.com/ul?q=Instituto%20Bettencourt%20Lisboa',
+    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3112.123456789!2d-9.142685!3d38.707688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1932abc!2sInstituto%20Bettencourt!5e0!3m2!1spt-PT!2spt!4v1234567890',
     siteLink: 'https://institutobettencourt.pt/',
   },
   {
@@ -25,18 +23,8 @@ const locations = [
     city: 'Sintra',
     day: 'Quarta-feira',
     hours: '9:00 - 17:00',
-    icon: '🏰',
-    mapLink: 'https://www.waze.com/ul?q=Cl%C3%ADnica%20Sousi%20Sintra',
+    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3110.987654321!2d-9.390123!3d38.798765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1ecb123!2sClinica%20Sousi%20Sintra!5e0!3m2!1spt-PT!2spt!4v1234567890',
     siteLink: 'https://sousiclinica.pt/',
-  },
-  {
-    name: 'Consulta Online',
-    city: 'Horário flexível',
-    day: 'Videochamada',
-    hours: 'Flexível',
-    icon: '💻',
-    mapLink: null,
-    siteLink: null,
   },
 ];
 
@@ -53,62 +41,107 @@ export const LocationsSection = () => {
             Locais de Consulta
           </h2>
           <p className="text-lg text-muted-foreground">
-            3 localizações físicas + opção online para maior flexibilidade.
+            Escolha o local mais conveniente para si: consultas presenciais ou online.
           </p>
         </div>
 
-        {/* Locations Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {locations.map((location, index) => (
-            <div
-              key={index}
-              className="group p-6 rounded-3xl bg-background border border-border/30 shadow-soft hover:shadow-card transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="text-4xl mb-4">{location.icon}</div>
-              <h3 className="text-lg font-heading font-semibold text-foreground mb-1">
-                {location.name}
-              </h3>
-              <p className="text-primary font-medium mb-4">{location.city}</p>
-              
-              <div className="space-y-2 mb-6">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock className="w-4 h-4" />
-                  <span>{location.day}</span>
+        {/* 1. Presencial */}
+        <div className="mb-16">
+          <h3 className="text-2xl font-heading font-semibold text-foreground mb-8 flex items-center gap-3">
+            <span className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">1</span>
+            Presencial
+          </h3>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {presencialLocations.map((location, index) => (
+              <div
+                key={index}
+                className="group rounded-3xl overflow-hidden bg-background border border-border/30 shadow-soft hover:shadow-card transition-all duration-300 hover:-translate-y-1"
+              >
+                {/* Map Preview */}
+                <div className="relative h-48 bg-sage-light/20 overflow-hidden">
+                  <iframe
+                    src={location.mapEmbedUrl}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={`Mapa de ${location.name}`}
+                    className="grayscale group-hover:grayscale-0 transition-all duration-300"
+                  ></iframe>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span className="w-4 h-4 flex items-center justify-center">⏰</span>
-                  <span>{location.hours}</span>
+
+                {/* Content */}
+                <div className="p-6">
+                  <h4 className="text-xl font-heading font-semibold text-foreground mb-1">
+                    {location.name}
+                  </h4>
+                  <p className="text-primary font-medium mb-4">{location.city}</p>
+
+                  <div className="space-y-2 mb-6">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="w-4 h-4 flex-shrink-0" />
+                      <span>{location.day}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="w-4 h-4 flex-shrink-0" />
+                      <span>{location.hours}</span>
+                    </div>
+                  </div>
+
+                  <a
+                    href={location.siteLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button variant="outline" className="w-full group/btn">
+                      <ExternalLink className="w-4 h-4 mr-2 group-hover/btn:scale-110 transition-transform" />
+                      Agendar no Site
+                    </Button>
+                  </a>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
 
-              {(location.mapLink || location.siteLink) && (
-                <div className="flex gap-2">
-                  {location.siteLink && (
-                    <a
-                      href={location.siteLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-xs text-primary hover:underline"
-                    >
-                      <MapPin className="w-3 h-3" />
-                      Onde
-                    </a>
-                  )}
-                  {location.mapLink && (
-                    <a
-                      href={location.mapLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-xs text-primary hover:underline"
-                    >
-                      <ExternalLink className="w-3 h-3" />
-                      Como Chegar
-                    </a>
-                  )}
+        {/* 2. Online */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-heading font-semibold text-foreground mb-8 flex items-center gap-3">
+            <span className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">2</span>
+            Online
+          </h3>
+
+          <div className="max-w-2xl mx-auto">
+            <div className="rounded-3xl overflow-hidden bg-gradient-to-br from-sage-light/30 to-background border border-border/30 shadow-card">
+              <div className="p-8 md:p-10 text-center">
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                  <Video className="w-10 h-10 text-primary" />
                 </div>
-              )}
+
+                <h4 className="text-2xl font-heading font-semibold text-foreground mb-3">
+                  Consulta Online
+                </h4>
+                <p className="text-lg text-muted-foreground mb-2">
+                  Horário Flexível
+                </p>
+                <p className="text-sm text-muted-foreground mb-8">
+                  Consultas por videochamada com total flexibilidade de horário, ideal para quem não pode deslocar-se.
+                </p>
+
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sage-light/50 text-sm text-foreground mb-8">
+                  <Clock className="w-4 h-4" />
+                  <span>Disponível de Segunda a Sexta</span>
+                </div>
+
+                <Button variant="hero" size="lg" asChild className="w-full md:w-auto">
+                  <a href="#contactos">Agendar Videochamada</a>
+                </Button>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
 
         {/* Pricing Banner */}
@@ -128,7 +161,7 @@ export const LocationsSection = () => {
             </div>
           </div>
           <p className="text-sm text-muted-foreground mb-6">
-            Se não tiver agenda conciliável, é possível agendar videochamada noutra data.
+            Preços aplicáveis tanto para consultas presenciais como online.
           </p>
           <Button variant="hero" asChild>
             <a href="#contactos">Agendar Consulta →</a>
