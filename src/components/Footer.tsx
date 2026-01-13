@@ -1,8 +1,6 @@
 import { Heart } from 'lucide-react';
 
 export const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className="bg-forest text-cream py-12">
       <div className="container mx-auto px-4 lg:px-8">
@@ -22,9 +20,9 @@ export const Footer = () => {
 
           {/* Copyright */}
           <div className="flex items-center gap-2 text-sm text-cream/60">
-            <span>© {currentYear} Marlene Ruivo.</span>
+            <span>© 2026 Marlene Ruivo.</span>
             <span className="hidden sm:inline">Feito com</span>
-            <Heart className="hidden sm:inline w-4 h-4 text-sage" />
+            <Heart className="hidden sm:inline w-4 h-4 text-sage" fill="currentColor" />
             <span className="hidden sm:inline">em Portugal</span>
           </div>
 
