@@ -221,8 +221,10 @@ export const LocationsSection = () => {
               </div>
 
               <div className="mb-6">
-                <p className="text-3xl font-heading font-bold text-primary mb-1">145€</p>
-                <p className="text-xs text-muted-foreground line-through">Sem pack: 160€</p>
+                <div className="flex items-baseline gap-3">
+                  <p className="text-3xl font-heading font-bold text-primary">145€</p>
+                  <span className="text-sm font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">-15€</span>
+                </div>
               </div>
 
               <div className="space-y-2 mb-6 text-sm text-muted-foreground">
@@ -248,8 +250,10 @@ export const LocationsSection = () => {
               </div>
 
               <div className="mb-6">
-                <p className="text-3xl font-heading font-bold text-primary mb-1">270€</p>
-                <p className="text-xs text-muted-foreground line-through">Sem pack: 310€</p>
+                <div className="flex items-baseline gap-3">
+                  <p className="text-3xl font-heading font-bold text-primary">270€</p>
+                  <span className="text-sm font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">-40€</span>
+                </div>
               </div>
 
               <div className="space-y-2 mb-6 text-sm text-muted-foreground">
@@ -272,8 +276,10 @@ export const LocationsSection = () => {
               </div>
 
               <div className="mb-6">
-                <p className="text-3xl font-heading font-bold text-primary mb-1">499€</p>
-                <p className="text-xs text-muted-foreground line-through">Sem pack: 610€</p>
+                <div className="flex items-baseline gap-3">
+                  <p className="text-3xl font-heading font-bold text-primary">499€</p>
+                  <span className="text-sm font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">-111€</span>
+                </div>
               </div>
 
               <div className="space-y-2 mb-6 text-sm text-muted-foreground">
