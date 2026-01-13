@@ -38,9 +38,25 @@ export const ChatBot = () => {
       body: JSON.stringify({ messages: userMessages }),
     });
 
-    if (!resp.ok || !resp.body) {
+    if (!resp.ok) {
       const errorData = await resp.json().catch(() => ({}));
       throw new Error(errorData.error || "Erro ao conectar com o assistente");
+    }
+
+    // Check if response is streaming or regular JSON
+    const contentType = resp.headers.get("content-type");
+
+    if (contentType?.includes("application/json")) {
+      // Non-streaming response
+      const data = await resp.json();
+      const content = data.choices?.[0]?.message?.content || "Desculpe, não consegui gerar uma resposta.";
+      setMessages(prev => [...prev, { role: "assistant", content }]);
+      return;
+    }
+
+    // Streaming response
+    if (!resp.body) {
+      throw new Error("Erro ao conectar com o assistente");
     }
 
     const reader = resp.body.getReader();
