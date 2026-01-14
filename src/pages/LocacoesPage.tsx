@@ -64,9 +64,7 @@ const LocacoesPage = () => {
                   <p>{item.day}</p>
                   <p>{item.time}</p>
                 </div>
-                <button className="w-full py-3 rounded-xl border border-gray-100 text-gray-400 group-hover:border-[#6FA89E] group-hover:text-[#6FA89E] transition-all text-xs font-medium tracking-wider uppercase">
-                  Agendar
-                </button>
+
               </div>
             ))}
           </div>
@@ -90,9 +88,7 @@ const LocacoesPage = () => {
               <p className="text-[#6FA89E] text-xs font-medium mb-4 tracking-wide">Quarta (tarde), Quinta e Sexta</p>
               <p className="text-gray-400 text-sm font-light leading-relaxed max-w-md">Consultas por videochamada com total flexibilidade de horário, ideal para quem não pode deslocar-se.</p>
             </div>
-            <button className="px-10 py-4 bg-[#6FA89E] text-white rounded-xl hover:bg-[#5d8d84] transition-all text-sm font-medium shadow-sm">
-              Agendar Videochamada
-            </button>
+
           </div>
         </div>
 
@@ -114,9 +110,7 @@ const LocacoesPage = () => {
                   <p className="text-[#6FA89E] text-[10px] font-medium mt-2 uppercase tracking-widest">{pack.save}</p>
                 </div>
                 <p className="text-gray-400 text-xs font-light mb-10 flex-1 leading-relaxed">{pack.desc}</p>
-                <button className={`w-full py-3 rounded-xl text-xs font-medium tracking-wider uppercase transition-all ${pack.popular ? 'bg-[#6FA89E] text-white hover:bg-[#5d8d84]' : 'border border-gray-100 text-gray-400 hover:border-[#6FA89E] hover:text-[#6FA89E]'}`}>
-                  Escolher
-                </button>
+
               </div>
             ))}
           </div>

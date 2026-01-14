@@ -11,7 +11,6 @@ const CHAT_URL = `${SUPABASE_URL}/functions/v1/nutrition-chat`;
 const QUICK_PROMPTS = [
   { label: "O que é FODMAP?", message: "O que é FODMAP?" },
   { label: "Tenho sintomas", message: "Tenho sintomas intestinais, como inchaço e desconforto. O que posso fazer?" },
-  { label: "Marcar consulta", message: "Gostaria de marcar uma consulta com a Dra. Marlene Ruivo." },
 ];
 
 // Componente de Avatar Unificado

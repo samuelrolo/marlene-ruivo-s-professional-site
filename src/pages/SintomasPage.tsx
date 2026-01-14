@@ -48,12 +48,6 @@ const SintomasPage = () => {
               <p className="text-gray-600 mb-6">
                 Se identifica algum destes sintomas, uma consulta de nutrição pode ajudá-lo a encontrar alívio.
               </p>
-              <a 
-                href="/contactos"
-                className="inline-block bg-teal-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors"
-              >
-                Marcar Consulta
-              </a>
             </div>
           </div>
         </section>

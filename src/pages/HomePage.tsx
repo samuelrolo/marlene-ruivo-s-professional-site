@@ -21,9 +21,6 @@ const HomePage = () => {
               Apoio clínico baseado em ciência para reduzir sintomas e recuperar o bem-estar digestivo. A Marlene estreia-se como nutricionista freelance em dezembro de 2025, mantendo o acompanhamento próximo e humano que marca a sua carreira.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-4 bg-[#6FA89E] text-white rounded-xl hover:bg-[#5d8d84] transition-all font-medium shadow-lg shadow-[#6FA89E]/20">
-                Agendar consulta →
-              </button>
               <button className="px-8 py-4 border border-gray-200 text-gray-600 rounded-xl hover:border-[#6FA89E] hover:text-[#6FA89E] transition-all font-medium">
                 Saber mais
               </button>
@@ -48,9 +45,8 @@ const HomePage = () => {
         </section>
 
         {/* Quick Actions */}
-        <section className="py-20 px-4 max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+        <section className="py-20 px-4 max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
           {[
-            { title: 'Marcar Consulta', desc: 'Agende a sua primeira consulta de nutrição', btn: 'Agendar →', link: '/pagamento' },
             { title: 'Dieta FODMAP', desc: 'Saiba como a dieta FODMAP pode ajudar', btn: 'Saber mais →', link: '/fodmap' },
             { title: 'Testemunhos', desc: 'Veja o que os pacientes dizem', btn: 'Ver testemunhos →', link: '/testemunhos' }
           ].map((item, i) => (
