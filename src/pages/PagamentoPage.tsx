@@ -3,34 +3,119 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ChatBot from '../components/ChatBot';
 
+type PricingOption = {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  type: 'avulso' | 'pack';
+};
+
 const PagamentoPage = () => {
+  const [selectedOption, setSelectedOption] = useState<string>('avulso-60');
   const [phone, setPhone] = useState('');
-  const [amount, setAmount] = useState('60.00');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const pricingOptions: PricingOption[] = [
+    { id: 'avulso-60', name: 'Consulta Avulso', price: 60, description: '1ª consulta', type: 'avulso' },
+    { id: 'avulso-50', name: 'Consulta Avulso', price: 50, description: 'Acompanhamento', type: 'avulso' },
+    { id: 'pack-3', name: 'Pack 3 Meses', price: 145, description: 'Poupe 15€', type: 'pack' },
+    { id: 'pack-6', name: 'Pack 6 Meses', price: 270, description: 'Poupe 40€', type: 'pack' },
+    { id: 'pack-12', name: 'Pack 12 Meses', price: 499, description: 'Poupe 111€', type: 'pack' }
+  ];
+
+  const selectedPricing = pricingOptions.find(opt => opt.id === selectedOption);
+
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!phone || !email) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
     setLoading(true);
     
     setTimeout(() => {
       setLoading(false);
-      alert('Pedido de pagamento MB WAY enviado para o número ' + phone + '. Por favor, confirme na sua aplicação MB WAY.');
+      alert(`Pedido de pagamento enviado com sucesso!\n\nValor: €${selectedPricing?.price}\nTelemóvel: ${phone}\nEmail: ${email}\n\nPor favor, confirme na sua aplicação MB WAY.`);
+      setPhone('');
+      setEmail('');
     }, 1500);
   };
 
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
       <Header />
-      <main className="pt-32 pb-20 px-4 max-w-3xl mx-auto">
+      <main className="pt-32 pb-20 px-4 max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Pagamento Seguro</span>
           <h1 className="text-4xl font-serif text-[#2C4A3E] mt-4 mb-4">Finalizar Agendamento</h1>
-          <p className="text-gray-500 text-sm font-light">Realize o pagamento da sua consulta de forma rápida através de MB WAY.</p>
+          <p className="text-gray-500 text-sm font-light">Escolha o tipo de consulta e realize o pagamento através de MB WAY.</p>
         </div>
 
-        <div className="bg-white rounded-3xl p-10 md:p-16 border border-gray-100 shadow-sm">
-          <div className="flex flex-col items-center text-center mb-12">
+        <div className="grid md:grid-cols-2 gap-12">
+          {/* Seleção de Preços */}
+          <div className="space-y-6">
+            <h2 className="text-lg font-serif text-[#2C4A3E] mb-6">Escolha a Consulta</h2>
+            
+            {/* Consultas Avulsas */}
+            <div className="space-y-4">
+              <p className="text-xs uppercase tracking-widest font-bold text-gray-400">Consultas Avulsas</p>
+              {pricingOptions.filter(opt => opt.type === 'avulso').map(option => (
+                <button
+                  key={option.id}
+                  onClick={() => setSelectedOption(option.id)}
+                  className={`w-full p-6 rounded-2xl border-2 transition-all text-left ${
+                    selectedOption === option.id
+                      ? 'border-[#6FA89E] bg-[#6FA89E]/5'
+                      : 'border-gray-100 bg-white hover:border-gray-200'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-serif text-[#2C4A3E] text-lg">{option.name}</h3>
+                      <p className="text-xs text-gray-400 mt-1">{option.description}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-2xl font-serif text-[#2C4A3E]">{option.price}€</span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            {/* Packs */}
+            <div className="space-y-4 pt-6 border-t border-gray-100">
+              <p className="text-xs uppercase tracking-widest font-bold text-gray-400">Packs de Consultas</p>
+              {pricingOptions.filter(opt => opt.type === 'pack').map(option => (
+                <button
+                  key={option.id}
+                  onClick={() => setSelectedOption(option.id)}
+                  className={`w-full p-6 rounded-2xl border-2 transition-all text-left ${
+                    selectedOption === option.id
+                      ? 'border-[#6FA89E] bg-[#6FA89E]/5'
+                      : 'border-gray-100 bg-white hover:border-gray-200'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-serif text-[#2C4A3E] text-lg">{option.name}</h3>
+                      <p className="text-xs text-[#6FA89E] font-medium mt-1">{option.description}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-2xl font-serif text-[#2C4A3E]">{option.price}€</span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Formulário de Pagamento */}
+          <div className="bg-white rounded-3xl p-10 border border-gray-100 shadow-sm h-fit sticky top-32">
+          <div className="flex flex-col items-center text-center mb-10">
             <div className="w-20 h-20 rounded-3xl bg-red-50 flex items-center justify-center mb-6 overflow-hidden border border-red-100">
               <img 
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/MB_Way_logo.svg/1200px-MB_Way_logo.svg.png" 
@@ -42,8 +127,16 @@ const PagamentoPage = () => {
             <p className="text-xs text-gray-400 mt-1 font-light">Pagamento instantâneo e seguro</p>
           </div>
 
-          <form onSubmit={handlePayment} className="space-y-8">
-            <div className="grid md:grid-cols-2 gap-8">
+            {/* Resumo */}
+            <div className="bg-gray-50 rounded-2xl p-6 mb-8">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm text-gray-500">Valor a Pagar:</span>
+                <span className="text-3xl font-serif text-[#2C4A3E]">{selectedPricing?.price}€</span>
+              </div>
+              <p className="text-xs text-gray-400 mt-4">{selectedPricing?.name} - {selectedPricing?.description}</p>
+            </div>
+
+          <form onSubmit={handlePayment} className="space-y-6">
               <div className="space-y-3">
                 <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Telemóvel MB WAY</label>
                 <input 
@@ -55,34 +148,18 @@ const PagamentoPage = () => {
                   required
                 />
               </div>
+
               <div className="space-y-3">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Valor a Pagar</label>
-                <div className="relative">
-                  <input 
-                    type="number" 
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm font-medium text-[#2C4A3E]"
-                    required
-                  />
-                  <span className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 text-sm">€</span>
-                </div>
+                <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Email</label>
+                <input 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="seu@email.com" 
+                  className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm"
+                  required
+                />
               </div>
-            </div>
-
-            <div className="space-y-3">
-              <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Email para Recibo</label>
-              <input 
-                type="email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="exemplo@email.com" 
-                className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm"
-                required
-              />
-            </div>
-
-            <div className="pt-6">
               <button 
                 type="submit" 
                 disabled={loading}
@@ -95,15 +172,17 @@ const PagamentoPage = () => {
                   </svg>
                 ) : 'Confirmar Pagamento'}
               </button>
-              <div className="flex items-center justify-center gap-2 mt-6 text-gray-300">
+              
+              <div className="flex items-center justify-center gap-2 pt-4 text-gray-300 border-t border-gray-100">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
                 <span className="text-[10px] uppercase tracking-widest">Pagamento 100% Seguro</span>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
+
       </main>
       <Footer />
       <ChatBot />
