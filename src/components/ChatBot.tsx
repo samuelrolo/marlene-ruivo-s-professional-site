@@ -70,7 +70,7 @@ const formatMessageWithLinks = (text: string) => {
   });
 };
 
-export const ChatBot = () => {
+const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -286,3 +286,5 @@ export const ChatBot = () => {
     </>
   );
 };
+
+export default ChatBot;

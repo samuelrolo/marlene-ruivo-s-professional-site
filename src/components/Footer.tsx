@@ -1,6 +1,6 @@
 import { Leaf } from 'lucide-react';
 
-export const Footer = () => {
+const Footer = () => {
   return (
     <footer className="bg-forest text-cream py-12">
       <div className="container mx-auto px-4 lg:px-8">
@@ -36,3 +36,5 @@ export const Footer = () => {
     </footer>
   );
 };
+
+export default Footer;

@@ -36,7 +36,7 @@ const NavLink = ({ href, children, onClick }: NavLinkProps) => {
   );
 };
 
-export const Header = () => {
+const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -102,3 +102,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export default Header;
