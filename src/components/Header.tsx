@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 
 const navItems = [
   { label: 'Início', href: '/' },
@@ -61,12 +60,6 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden lg:block">
-            <Button asChild>
-              <Link to="/contactos">Marcar Consulta</Link>
-            </Button>
-          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -90,11 +83,7 @@ const Header = () => {
                   {item.label}
                 </NavLink>
               ))}
-              <Button asChild className="mt-4">
-                <Link to="/contactos" onClick={() => setIsMenuOpen(false)}>
-                  Marcar Consulta
-                </Link>
-              </Button>
+
             </div>
           </nav>
         )}
