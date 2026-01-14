@@ -116,11 +116,11 @@ const PagamentoPage = () => {
           {/* Formulário de Pagamento */}
           <div className="bg-white rounded-3xl p-10 border border-gray-100 shadow-sm h-fit sticky top-32">
           <div className="flex flex-col items-center text-center mb-10">
-            <div className="w-20 h-20 rounded-3xl bg-red-50 flex items-center justify-center mb-6 overflow-hidden border border-red-100">
+            <div className="w-16 h-16 rounded-2xl bg-[#EE1C25] flex items-center justify-center mb-6 overflow-hidden shadow-sm">
               <img 
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/MB_Way_logo.svg/1200px-MB_Way_logo.svg.png" 
                 alt="MB WAY" 
-                className="w-12 h-auto object-contain"
+                className="w-10 h-auto object-contain brightness-0 invert"
               />
             </div>
             <h2 className="text-xl font-serif text-[#2C4A3E]">MB WAY</h2>
