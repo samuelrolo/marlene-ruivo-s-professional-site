@@ -53,18 +53,29 @@ const LocacoesPage = () => {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { name: 'Clínica Hygeia', loc: 'Mafra', day: 'Segunda-feira', time: '9:00 - 13:00' },
-              { name: 'Instituto Bettencourt', loc: 'Lisboa', day: 'Terça-feira', time: '9:00 - 16:00' },
-              { name: 'Clínica Sousi', loc: 'Sintra', day: 'Quarta-feira', time: '9:00 - 13:00' }
+              { name: 'Clínica Hygeia', loc: 'Mafra', day: 'Segunda-feira', time: '9:00 - 13:00', mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3108.9765!2d-9.3258!3d38.9369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzjCsDU2JzEyLjgiTiA5wrAxOSczMi45Ilc!5e0!3m2!1spt-PT!2spt!4v1234567890' },
+              { name: 'Instituto Bettencourt', loc: 'Lisboa', day: 'Terça-feira', time: '9:00 - 16:00', mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3111.6!2d-9.1667!3d38.7223!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzjCsDQzJzIwLjMiTiA5wrAxMCcwMC4xIlc!5e0!3m2!1spt-PT!2spt!4v1234567890' },
+              { name: 'Clínica Sousi', loc: 'Sintra', day: 'Quarta-feira', time: '9:00 - 13:00', mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3109.9!2d-9.3897!3d38.7975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzjCsDQ3JzUxLjAiTiA5wrAyMyczMy4wIlc!5e0!3m2!1spt-PT!2spt!4v1234567890' }
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl p-8 border border-gray-100 hover:border-[#6FA89E]/20 transition-all duration-500 group text-center">
-                <h3 className="text-lg font-serif text-[#2C4A3E] mb-1">{item.name}</h3>
-                <p className="text-[#6FA89E] text-xs font-medium mb-6 tracking-wide">{item.loc}</p>
-                <div className="space-y-1 text-gray-400 text-xs mb-8 font-light">
-                  <p>{item.day}</p>
-                  <p>{item.time}</p>
+              <div key={i} className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-[#6FA89E]/20 transition-all duration-500 group">
+                <div className="h-48 w-full overflow-hidden">
+                  <iframe
+                    src={item.mapUrl}
+                    className="w-full h-full border-0"
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={`Mapa de ${item.name}`}
+                  ></iframe>
                 </div>
-
+                <div className="p-6 text-center">
+                  <h3 className="text-lg font-serif text-[#2C4A3E] mb-1">{item.name}</h3>
+                  <p className="text-[#6FA89E] text-xs font-medium mb-4 tracking-wide">{item.loc}</p>
+                  <div className="space-y-1 text-gray-400 text-xs font-light">
+                    <p>{item.day}</p>
+                    <p>{item.time}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
