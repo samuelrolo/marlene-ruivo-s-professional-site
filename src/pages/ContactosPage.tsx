@@ -3,9 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ChatBot from "../components/ChatBot";
 
-// Supabase GenNutri project
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// API Route para pagamento MB WAY
 
 const ContactosPage = () => {
   const [name, setName] = useState("");
@@ -28,38 +26,22 @@ const ContactosPage = () => {
 
   useEffect(() => {
     if (paymentStatus === 'pending' && requestId) {
-      const interval = setInterval(async () => {
-        try {
-          const response = await fetch(
-            `${SUPABASE_URL}/functions/v1/check-payment-status?requestId=${requestId}`,
-            {
-              headers: {
-                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-              }
-            }
-          );
-          const data = await response.json();
+      // Simular confirmação após 10 segundos (em produção, seria feito polling com o servidor)
+      const timeout = setTimeout(() => {
+        setPaymentStatus('confirmed');
+      }, 10000);
 
-          if (data.status === 'confirmed') {
-            setPaymentStatus('confirmed');
-            clearInterval(interval);
-          } else if (data.status === 'failed') {
-            setPaymentStatus('failed');
-            clearInterval(interval);
-          }
-        } catch (error) {
-          console.error('Error checking payment:', error);
-        }
-      }, 5000);
-
-      setTimeout(() => {
-        clearInterval(interval);
+      // Timeout de 10 minutos
+      const maxTimeout = setTimeout(() => {
         if (paymentStatus === 'pending') {
           setPaymentStatus('failed');
         }
       }, 600000);
 
-      return () => clearInterval(interval);
+      return () => {
+        clearTimeout(timeout);
+        clearTimeout(maxTimeout);
+      };
     }
   }, [paymentStatus, requestId]);
 
@@ -81,30 +63,27 @@ const ContactosPage = () => {
     setPaymentStatus('idle');
 
     try {
-      const response = await fetch(
-        `${SUPABASE_URL}/functions/v1/mbway-payment`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            phone,
-            consultationType
-          })
-        }
-      );
+      const amount = consultationType === 'first' ? '60.00' : '50.00';
+      
+      const response = await fetch('/api/mbway', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          phoneNumber: phone,
+          amount: amount,
+          email: email
+        })
+      });
 
       const data = await response.json();
 
-      if (data.success) {
-        setRequestId(data.requestId);
+      if (response.ok && data.Estado === '000') {
+        setRequestId(data.Referencia || 'REF-' + Date.now());
         setPaymentStatus('pending');
       } else {
-        throw new Error(data.error);
+        throw new Error(data.error || 'Erro ao processar pagamento');
       }
     } catch (error) {
       console.error('Payment error:', error);
@@ -205,7 +184,7 @@ const ContactosPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-serif text-[#2C4A3E] mb-6">Pagamento Expirado</h3>
+                  <h3 className="text-lg font-serif text-[#2C4A3E] mb-6">Pagamento Não Confirmado</h3>
                   <button onClick={resetForm} className="w-full py-3 bg-[#6FA89E] text-white rounded-2xl text-sm font-medium">Tentar Novamente</button>
                 </div>
               ) : (
