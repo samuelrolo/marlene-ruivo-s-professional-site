@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ChatBot from "../components/ChatBot";
+import { supabase } from "../lib/supabaseClient";
 
 // API Route para pagamento MB WAY
 
 const ContactosPage = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -13,6 +16,32 @@ const ContactosPage = () => {
   const [loading, setLoading] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState<'idle' | 'pending' | 'confirmed' | 'failed'>('idle');
   const [requestId, setRequestId] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      setIsLoggedIn(true);
+      setUserId(user.id);
+      // Pré-preencher dados do perfil
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      
+      if (profile) {
+        setName(profile.full_name);
+        setEmail(user.email || "");
+        setPhone(profile.phone);
+      }
+    }
+  };
 
   const amounts = {
     'first': '60.00€',
@@ -80,7 +109,26 @@ const ContactosPage = () => {
       const data = await response.json();
 
       if (response.ok && data.Estado === '000') {
-        setRequestId(data.Referencia || 'REF-' + Date.now());
+        const reference = data.Referencia || 'REF-' + Date.now();
+        setRequestId(reference);
+        
+        // Se o utilizador está autenticado, guardar a consulta
+        if (isLoggedIn && userId) {
+          const { error: appointmentError } = await supabase
+            .from('appointments')
+            .insert([{
+              user_id: userId,
+              consultation_type: consultationType,
+              amount: parseFloat(amount),
+              payment_status: 'pending',
+              payment_reference: reference
+            }]);
+          
+          if (appointmentError) {
+            console.error('Erro ao guardar consulta:', appointmentError);
+          }
+        }
+        
         setPaymentStatus('pending');
       } else {
         throw new Error(data.error || 'Erro ao processar pagamento');
@@ -106,9 +154,9 @@ const ContactosPage = () => {
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
       <Header />
-      <main className="pt-32 pb-20 px-4 max-w-5xl mx-auto">
+      <main className="pt-32 pb-20 px-4 max-w-3xl mx-auto">
         {/* Header Section - Minimalist */}
-        <div className="text-center mb-12">
+          <div className="text-center mb-12">
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[9px]">
             AGENDAR CONSULTA
           </span>
@@ -120,10 +168,16 @@ const ContactosPage = () => {
               ? 'Vais receber um email de confirmação com os detalhes da tua consulta.'
               : 'Seleciona o horário e efetua o pagamento para confirmares o agendamento.'}
           </p>
+          {!isLoggedIn && paymentStatus === 'idle' && (
+            <p className="text-xs text-gray-400 mt-4">
+              <a href="/login" className="text-[#6FA89E] hover:underline">Entra</a> ou{" "}
+              <a href="/register" className="text-[#6FA89E] hover:underline">cria conta</a> para guardar o histórico das tuas consultas
+            </p>
+          )}
         </div>
 
         {paymentStatus === 'confirmed' ? (
-          <div className="max-w-md mx-auto">
+          <div className="max-w-sm mx-auto">
             <div className="bg-white rounded-3xl p-10 border border-gray-50 shadow-sm text-center">
               <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,22 +190,39 @@ const ContactosPage = () => {
                 <p><strong>Tipo:</strong> {consultationLabels[consultationType]}</p>
                 <p><strong>Valor:</strong> {amounts[consultationType]}</p>
               </div>
-              <button
-                onClick={resetForm}
-                className="w-full py-3 bg-[#6FA89E] text-white rounded-2xl text-sm font-medium hover:bg-[#5d8d84] transition-all"
-              >
-                Nova Marcação
-              </button>
+              {isLoggedIn ? (
+                <div className="space-y-3">
+                  <button
+                    onClick={() => navigate('/dashboard')}
+                    className="w-full py-3 bg-[#6FA89E] text-white rounded-2xl text-sm font-medium hover:bg-[#5d8d84] transition-all"
+                  >
+                    Ver Minhas Consultas
+                  </button>
+                  <button
+                    onClick={resetForm}
+                    className="w-full py-3 bg-gray-100 text-gray-600 rounded-2xl text-sm font-medium hover:bg-gray-200 transition-all"
+                  >
+                    Nova Marcação
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={resetForm}
+                  className="w-full py-3 bg-[#6FA89E] text-white rounded-2xl text-sm font-medium hover:bg-[#5d8d84] transition-all"
+                >
+                  Nova Marcação
+                </button>
+              )}
             </div>
           </div>
         ) : (
-          <div className="grid lg:grid-cols-2 gap-10 items-start">
+          <div className="grid lg:grid-cols-2 gap-6 items-start">
             {/* Left Column - Calendar Widget */}
-            <div className="bg-white rounded-3xl p-6 border border-gray-50 shadow-sm">
-              <h2 className="text-sm font-serif text-[#2C4A3E] mb-4 uppercase tracking-wider">
+            <div className="bg-white rounded-2xl p-4 border border-gray-50 shadow-sm">
+              <h2 className="text-xs font-serif text-[#2C4A3E] mb-3 uppercase tracking-wider">
                 1. Escolha o Horário
               </h2>
-              <div className="rounded-2xl overflow-hidden border border-gray-100" style={{ height: '450px' }}>
+              <div className="rounded-xl overflow-hidden border border-gray-100" style={{ height: '380px' }}>
                 <iframe
                   src="https://calendar.app.google/qhbF3KM1hqJCrcbV6"
                   width="100%"
@@ -163,7 +234,7 @@ const ContactosPage = () => {
             </div>
 
             {/* Right Column - Payment Form */}
-            <div className="bg-white rounded-3xl p-8 border border-gray-50 shadow-sm">
+            <div className="bg-white rounded-2xl p-6 border border-gray-50 shadow-sm">
               {paymentStatus === 'pending' ? (
                 <div className="text-center py-10">
                   <div className="animate-pulse mb-6">
@@ -189,11 +260,11 @@ const ContactosPage = () => {
                 </div>
               ) : (
                 <>
-                  <h2 className="text-sm font-serif text-[#2C4A3E] mb-6 uppercase tracking-wider">
+                  <h2 className="text-xs font-serif text-[#2C4A3E] mb-4 uppercase tracking-wider">
                     2. Dados de Pagamento
                   </h2>
-                  <form onSubmit={handlePayment} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-3">
+                  <form onSubmit={handlePayment} className="space-y-3">
+                    <div className="grid grid-cols-2 gap-2">
                       {Object.entries(consultationLabels).map(([key, label]) => (
                         <label
                           key={key}
@@ -215,12 +286,12 @@ const ContactosPage = () => {
                       ))}
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       <input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full px-4 py-3 rounded-2xl border border-gray-100 text-sm focus:border-[#6FA89E] outline-none transition-all"
+                        className="w-full px-3 py-2.5 rounded-xl border border-gray-100 text-sm focus:border-[#6FA89E] outline-none transition-all"
                         placeholder="Nome Completo"
                         required
                       />
@@ -228,7 +299,7 @@ const ContactosPage = () => {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-3 rounded-2xl border border-gray-100 text-sm focus:border-[#6FA89E] outline-none transition-all"
+                        className="w-full px-3 py-2.5 rounded-xl border border-gray-100 text-sm focus:border-[#6FA89E] outline-none transition-all"
                         placeholder="Email"
                         required
                       />
@@ -237,16 +308,16 @@ const ContactosPage = () => {
                           type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
-                          className="w-full px-4 py-3 rounded-2xl border border-gray-100 text-sm focus:border-[#6FA89E] outline-none transition-all"
+                          className="w-full px-3 py-2.5 rounded-xl border border-gray-100 text-sm focus:border-[#6FA89E] outline-none transition-all"
                           placeholder="Telemóvel (MB WAY)"
                           maxLength={9}
                           required
                         />
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-gray-300">9 dígitos</span>
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] text-gray-300">9 dígitos</span>
                       </div>
                     </div>
 
-                    <div className="p-4 bg-gray-50/50 rounded-2xl flex items-center justify-between">
+                    <div className="p-3 bg-gray-50/50 rounded-xl flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/MB_Way_logo.svg/1200px-MB_Way_logo.svg.png" alt="MB WAY" className="h-4 opacity-70" />
                         <span className="text-[10px] text-gray-400 uppercase tracking-tight">Pagamento Seguro</span>
@@ -257,7 +328,7 @@ const ContactosPage = () => {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full py-4 bg-[#6FA89E] text-white rounded-2xl text-sm font-medium hover:bg-[#5d8d84] transition-all shadow-sm disabled:opacity-50"
+                      className="w-full py-3 bg-[#6FA89E] text-white rounded-xl text-sm font-medium hover:bg-[#5d8d84] transition-all shadow-sm disabled:opacity-50"
                     >
                       {loading ? 'Processando...' : `Pagar via MB WAY`}
                     </button>
