@@ -5,8 +5,26 @@ const SobrePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow">
-        <section className="py-20 px-4 bg-gradient-to-b from-teal-50 to-white">
+      <main className="flex-grow pt-24">
+        {/* Photo Placard */}
+        <section className="px-4 max-w-6xl mx-auto mt-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <img src="/assets/Foto Marlene 1.png" alt="Marlene Ruivo 1" className="w-full h-full object-cover" />
+            </div>
+            <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <img src="/assets/Foto Marlene 2.png" alt="Marlene Ruivo 2" className="w-full h-full object-cover" />
+            </div>
+            <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <img src="/assets/Foto Marlene 3.png" alt="Marlene Ruivo 3" className="w-full h-full object-cover" />
+            </div>
+            <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <img src="/assets/fotoprofissional.jpg" alt="Marlene Ruivo Profissional" className="w-full h-full object-cover" />
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16 px-4 bg-gradient-to-b from-teal-50 to-white">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-teal-800 mb-6">
               Sobre Mim
