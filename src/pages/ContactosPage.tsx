@@ -270,7 +270,7 @@ const ContactosPage = () => {
                                 name="consultationType"
                                 value={key}
                                 checked={consultationType === key}
-                                onChange={(e) => setConsultationType(e.target.value)}
+                                onChange={(e) => setConsultationType(e.target.value as 'first' | 'followup')}
                                 className="w-4 h-4 text-[#6FA89E] focus:ring-[#6FA89E]"
                               />
                               <span className="font-medium text-[#2C4A3E]">{label}</span>
