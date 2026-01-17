@@ -6,7 +6,7 @@ const LocacoesPage = () => {
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
       <Header />
-      <main className="pt-40 lg:pt-48 pb-20 px-4 max-w-6xl mx-auto">
+      <main className="pt-48 lg:pt-56 pb-20 px-4 max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Onde Atendo</span>
           <h1 className="text-4xl md:text-5xl font-serif text-[#2C4A3E] mt-4 mb-6">Onde Estou</h1>

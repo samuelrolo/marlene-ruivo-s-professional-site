@@ -67,7 +67,7 @@ const TestemunhosPage = () => {
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
       <Header />
-      <main className="pt-40 lg:pt-48 pb-20 px-4 max-w-6xl mx-auto">
+      <main className="pt-48 lg:pt-56 pb-20 px-4 max-w-6xl mx-auto">
         {/* Header Section with Average */}
         <div className="text-center mb-20">
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Feedback dos Pacientes</span>

@@ -60,9 +60,9 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Ultra Minimalist */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 
 ::-webkit-scrollbar-track {
@@ -71,9 +71,9 @@ html {
 
 ::-webkit-scrollbar-thumb {
   background: #6FA89E;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #5d8d84;
+  background: #2C4A3E;
 }

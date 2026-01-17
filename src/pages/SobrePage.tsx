@@ -5,7 +5,7 @@ const SobrePage = () => {
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
       <Header />
-      <main className="pt-40 lg:pt-48 pb-20 px-4 max-w-6xl mx-auto">
+      <main className="pt-48 lg:pt-56 pb-20 px-4 max-w-6xl mx-auto">
         {/* Photo Placard */}
         <section className="mb-20">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
