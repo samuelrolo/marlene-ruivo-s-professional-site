@@ -25,7 +25,7 @@ const SobrePage = () => {
         </section>
 
         <div className="text-center mb-16">
-          <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Conheça a Profissional</span>
+          <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Conhece a Profissional</span>
           <h1 className="text-4xl md:text-5xl font-serif text-[#2C4A3E] mt-4 mb-6">Sobre Mim</h1>
           <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed font-light">
             Sou a Marlene Ruivo, nutricionista especializada em saúde digestiva e dieta FODMAP.
@@ -38,7 +38,7 @@ const SobrePage = () => {
             <p className="text-gray-500 text-sm font-light leading-relaxed">
               Devolver o prazer de comer e a liberdade de viver a quem sofre de problemas digestivos.
               Através de uma abordagem personalizada e baseada em evidência científica, ajudo os meus
-              pacientes a recuperar a sua qualidade de vida.
+    pacientes a recuperar a tua qualidade de vida.
             </p>
           </div>
           

@@ -10,7 +10,7 @@ const LocacoesPage = () => {
         <div className="text-center mb-16">
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Onde Atendo</span>
           <h1 className="text-4xl md:text-5xl font-serif text-[#2C4A3E] mt-4 mb-6">Onde Estou</h1>
-          <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed font-light">Escolha o local mais conveniente para si: consultas presenciais ou online.</p>
+          <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed font-light">Escolhe o local mais conveniente para ti: consultas presenciais ou online.</p>
         </div>
 
         {/* Horário Semanal - Invertido (Períodos nas Linhas, Dias nas Colunas) */}
@@ -103,7 +103,7 @@ const LocacoesPage = () => {
             <div className="flex-1">
               <h3 className="text-xl font-serif text-[#2C4A3E] mb-2">Consulta Online</h3>
               <p className="text-[#6FA89E] text-xs font-medium mb-4 tracking-wide">Quarta (tarde), Quinta e Sexta</p>
-              <p className="text-gray-400 text-sm font-light leading-relaxed max-w-md">Consultas por videochamada com total flexibilidade de horário, ideal para quem não pode deslocar-se.</p>
+              <p className="text-gray-400 text-sm font-light leading-relaxed max-w-md">Consultas por videochamada com total flexibilidade de horário, ideal para quem não se pode deslocar.</p>
             </div>
 
           </div>
@@ -115,9 +115,9 @@ const LocacoesPage = () => {
           <p className="text-gray-400 text-center text-xs font-light mb-16">Consultas Online: 60€ (1ª consulta) | 50€ (acompanhamento)</p>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: 'Pack 3 meses', price: '145€', save: 'Poupe 15€', desc: 'Ideal para quem quer experimentar e criar hábito' },
-              { name: 'Pack 6 meses', price: '270€', save: 'Poupe 40€', desc: 'Muito bom para resultados sólidos', popular: true },
-              { name: 'Pack 12 meses', price: '499€', save: 'Poupe 111€', desc: 'Excelente para fidelização e estabilidade' }
+              { name: 'Pack 3 meses', price: '145€', save: 'Poupa 15€', desc: 'Ideal para quem quer experimentar e criar hábito' },
+              { name: 'Pack 6 meses', price: '270€', save: 'Poupa 40€', desc: 'Muito bom para resultados sólidos', popular: true },
+              { name: 'Pack 12 meses', price: '499€', save: 'Poupa 111€', desc: 'Excelente para fidelização e estabilidade' }
             ].map((pack, i) => (
               <div key={i} className={`bg-white rounded-2xl p-10 border ${pack.popular ? 'border-[#6FA89E]/30 shadow-sm' : 'border-gray-100'} relative flex flex-col text-center`}>
                 {pack.popular && <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#6FA89E] text-white text-[8px] font-bold px-3 py-1 rounded-full uppercase tracking-[0.2em]">Recomendado</span>}

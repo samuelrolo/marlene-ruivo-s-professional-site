@@ -45,7 +45,7 @@ const SintomasPage = () => {
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Sinais a Identificar</span>
           <h1 className="text-4xl md:text-5xl font-serif text-[#2C4A3E] mt-4 mb-6">Sintomas Comuns</h1>
           <p className="text-gray-500 max-w-2xl mx-auto text-sm leading-relaxed font-light">
-            Identifique os sinais que o seu corpo lhe está a dar. Se reconhece algum destes sintomas, uma consulta de nutrição pode ajudá-lo a encontrar alívio.
+            Identifica os sinais que o teu corpo te está a dar. Se reconheces algum destes sintomas, uma consulta de nutrição pode ajudar-te a encontrar alívio.
           </p>
         </div>
 
@@ -71,7 +71,7 @@ const SintomasPage = () => {
         <div className="text-center bg-gradient-to-br from-[#6FA89E]/5 to-transparent rounded-3xl p-12">
           <h2 className="text-2xl font-serif text-[#2C4A3E] mb-4">Precisa de Ajuda?</h2>
           <p className="text-gray-500 mb-8 max-w-xl mx-auto">
-            Se identifica algum destes sintomas, uma consulta de nutrição pode ajudá-lo a encontrar alívio e melhorar a sua qualidade de vida.
+            Se identificas algum destes sintomas, uma consulta de nutrição pode ajudar-te a encontrar alívio e melhorar a tua qualidade de vida.
           </p>
           <a
             href="/contactos"

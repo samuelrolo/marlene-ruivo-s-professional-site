@@ -108,7 +108,7 @@ const ContactosPage = () => {
       }
     } catch (error) {
       console.error('Payment error:', error);
-      alert('Erro ao processar pagamento. Por favor, tente novamente.');
+      alert('Erro ao processar pagamento. Por favor, tenta novamente.');
       setPaymentStatus('failed');
     } finally {
       setLoading(false);
@@ -134,12 +134,12 @@ const ContactosPage = () => {
             AGENDAR CONSULTA
           </span>
           <h1 className="text-2xl md:text-3xl font-serif text-[#2C4A3E] mt-3 mb-3">
-            {paymentStatus === 'confirmed' ? 'Pagamento Confirmado' : 'Marque a Sua Consulta'}
+            {paymentStatus === 'confirmed' ? 'Pagamento Confirmado' : 'Marca a Tua Consulta'}
           </h1>
           <p className="text-gray-400 text-xs font-light max-w-md mx-auto leading-relaxed">
             {paymentStatus === 'confirmed'
-              ? 'Receberá um email de confirmação com os detalhes da sua consulta.'
-              : 'Selecione o horário e efetue o pagamento para confirmar o agendamento.'}
+              ? 'Vais receber um email de confirmação com os detalhes da tua consulta.'
+              : 'Seleciona o horário e efetua o pagamento para confirmares o agendamento.'}
           </p>
         </div>
 
@@ -194,8 +194,8 @@ const ContactosPage = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="text-lg font-serif text-[#2C4A3E] mb-2">Aguardando MB WAY</h3>
-                  <p className="text-gray-400 text-xs mb-8">Confirme o pagamento no seu telemóvel</p>
+                  <h3 className="text-lg font-serif text-[#2C4A3E] mb-2">À espera do MB WAY</h3>
+                  <p className="text-gray-400 text-xs mb-8">Confirma o pagamento no teu telemóvel</p>
                   <button onClick={resetForm} className="text-xs text-gray-400 hover:text-gray-600 underline">Cancelar</button>
                 </div>
               ) : paymentStatus === 'failed' ? (

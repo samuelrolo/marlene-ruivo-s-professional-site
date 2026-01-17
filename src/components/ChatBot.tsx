@@ -112,13 +112,13 @@ const ChatBot = () => {
       const data = await resp.json();
       const assistantMsg: Message = { 
         role: "assistant", 
-        content: data.reply || data.choices?.[0]?.message?.content || "Desculpe, não consegui processar a sua mensagem." 
+        content: data.reply || data.choices?.[0]?.message?.content || "Desculpa, não consegui processar a tua mensagem." 
       };
       setMessages(prev => [...prev, assistantMsg]);
     } catch (err) {
       setMessages(prev => [...prev, { 
         role: "assistant", 
-        content: "Desculpe, ocorreu um erro ao conectar com o assistente. Por favor, tente novamente ou contacte-nos diretamente através do formulário." 
+        content: "Desculpa, ocorreu um erro ao ligar ao assistente. Por favor, tenta novamente ou contacta-nos diretamente através do formulário." 
       }]);
     } finally {
       setIsLoading(false);
@@ -216,7 +216,7 @@ const ChatBot = () => {
           <div className="flex gap-3 justify-start">
             <NutriGenAvatar size="sm" />
             <div className="max-w-[85%] px-4 py-2.5 rounded-2xl rounded-bl-md text-sm bg-white text-gray-900 shadow-sm border border-gray-100">
-              Olá! 👋 Sou a NutriGen, especialista em dieta FODMAP e saúde intestinal. Como posso ajudar?
+              Olá! 👋 Sou a NutriGen, especialista em dieta FODMAP e saúde intestinal. Como te posso ajudar?
             </div>
           </div>
 
@@ -268,7 +268,7 @@ const ChatBot = () => {
               value={input} 
               onChange={(e) => setInput(e.target.value)} 
               onKeyPress={handleKeyPress} 
-              placeholder="Escreve a tua dúvida..." 
+              placeholder="Escreve a tua mensagem..." 
               className="flex-1 px-4 py-2.5 rounded-full border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#6FA89E]/30 focus:border-transparent" 
               disabled={isLoading} 
             />

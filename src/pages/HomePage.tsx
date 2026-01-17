@@ -47,8 +47,8 @@ const HomePage = () => {
         {/* Quick Actions */}
         <section className="py-20 px-4 max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
           {[
-            { title: 'Dieta FODMAP', desc: 'Saiba como a dieta FODMAP pode ajudar', btn: 'Saber mais →', link: '/fodmap' },
-            { title: 'Testemunhos', desc: 'Veja o que os pacientes dizem', btn: 'Ver testemunhos →', link: '/testemunhos' }
+            { title: 'Dieta FODMAP', desc: 'Sabe como a dieta FODMAP te pode ajudar', btn: 'Saber mais →', link: '/fodmap' },
+            { title: 'Testemunhos', desc: 'Vê o que os pacientes dizem', btn: 'Ver testemunhos →', link: '/testemunhos' }
           ].map((item, i) => (
             <div key={i} className="bg-white p-10 rounded-3xl border border-gray-100 hover:border-[#6FA89E]/30 transition-all group">
               <h3 className="text-2xl font-serif text-[#2C4A3E] mb-4">{item.title}</h3>

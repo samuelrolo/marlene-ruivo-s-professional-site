@@ -29,7 +29,7 @@ const FodmapPage = () => {
             <p className="text-gray-500 text-sm font-light leading-relaxed">
               A dieta FODMAP é implementada em três fases: eliminação, reintrodução e 
               personalização. Cada fase é cuidadosamente monitorizada para identificar 
-              os gatilhos individuais de cada paciente.
+              os teus gatilhos individuais.
             </p>
           </div>
           

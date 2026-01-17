@@ -123,8 +123,8 @@ const TestemunhosPage = () => {
         {/* Submit Review Form */}
         <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-gray-100 p-10 shadow-sm">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-serif text-[#2C4A3E] mb-2">Partilhe a sua experiência</h2>
-            <p className="text-gray-400 text-sm font-light">A sua opinião é fundamental para continuarmos a melhorar.</p>
+            <h2 className="text-2xl font-serif text-[#2C4A3E] mb-2">Partilha a tua experiência</h2>
+            <p className="text-gray-400 text-sm font-light">A tua opinião é fundamental para continuarmos a melhorar.</p>
           </div>
 
           {submitted ? (
@@ -132,8 +132,8 @@ const TestemunhosPage = () => {
               <div className="w-16 h-16 bg-[#6FA89E]/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Send className="w-8 h-8 text-[#6FA89E]" />
               </div>
-              <h3 className="text-xl font-serif text-[#2C4A3E] mb-2">Obrigado pelo seu testemunho!</h3>
-              <p className="text-gray-500 text-sm font-light">A sua avaliação foi enviada com sucesso para a Drª Marlene Ruivo.</p>
+              <h3 className="text-xl font-serif text-[#2C4A3E] mb-2">Obrigada pelo teu testemunho!</h3>
+              <p className="text-gray-500 text-sm font-light">A tua avaliação foi enviada com sucesso para a Drª Marlene Ruivo.</p>
               <button 
                 onClick={() => setSubmitted(false)}
                 className="mt-6 text-[#6FA89E] text-sm font-medium hover:underline"
@@ -173,7 +173,7 @@ const TestemunhosPage = () => {
               }
             }} className="space-y-6">
               <div className="flex flex-col items-center mb-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">A sua classificação</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">A tua classificação</label>
                 <div className="flex gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -203,17 +203,17 @@ const TestemunhosPage = () => {
                     type="text" 
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="O seu nome" 
+                    placeholder="O teu nome" 
                     className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm"
                     required
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">O seu comentário</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">O teu comentário</label>
                   <textarea 
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    placeholder="Conte-nos como foi a sua experiência..." 
+                    placeholder="Conta-nos como foi a tua experiência..." 
                     rows={4}
                     className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm resize-none"
                     required
@@ -236,7 +236,7 @@ const TestemunhosPage = () => {
         <div className="mt-24 text-center bg-[#2C4A3E] rounded-3xl p-12 text-white overflow-hidden relative">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
           <div className="relative z-10">
-            <h2 className="text-2xl md:text-3xl font-serif mb-4">Pronto para começar a sua jornada?</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-4">Pronto para começar a tua jornada?</h2>
             <p className="text-white/70 mb-8 max-w-xl mx-auto font-light text-sm">
               Junte-se a dezenas de pacientes que recuperaram a sua qualidade de vida e o prazer de comer sem medos.
             </p>
