@@ -35,3 +35,5 @@ const App = () => (
 );
 
 export default App;
+
+// Force re-deploy to apply UI updates and user account system
