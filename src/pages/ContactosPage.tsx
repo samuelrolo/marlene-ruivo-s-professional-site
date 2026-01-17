@@ -373,8 +373,7 @@ const ContactosPage = () => {
         )}
 
         {/* Contact Info Section - Always visible below */}
-        {paymentStatus !== 'confirmed' && (
-          <div className="max-w-6xl mx-auto mt-8">
+        <div className="max-w-6xl mx-auto mt-8">
             <div className="grid md:grid-cols-3 gap-6">
               {/* Email Card */}
               <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
@@ -441,7 +440,7 @@ const ContactosPage = () => {
               </div>
             </div>
           </div>
-        )}
+      </div>
       </main>
       <Footer />
       <ChatBot />
