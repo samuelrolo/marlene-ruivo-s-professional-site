@@ -11,21 +11,19 @@ const ContactosPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [consultationType, setConsultationType] = useState("first");
+  const [consultationType, setConsultationType] = useState<'first' | 'followup'>('first');
   const [loading, setLoading] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState<'idle' | 'pending' | 'confirmed' | 'failed'>('idle');
   const [requestId, setRequestId] = useState("");
 
   const amounts = {
     'first': '60.00€',
-    'followup': '40.00€',
-    'online': '55.00€'
+    'followup': '40.00€'
   };
 
   const consultationLabels = {
     'first': 'Primeira Consulta',
-    'followup': 'Consulta de Seguimento',
-    'online': 'Consulta Online'
+    'followup': 'Consulta de Seguimento'
   };
 
   // Poll payment status
@@ -262,8 +260,8 @@ const ContactosPage = () => {
                           <label
                             key={key}
                             className={`flex items-center justify-between p-4 border-2 rounded-xl cursor-pointer transition-all ${consultationType === key
-                                ? 'border-[#6FA89E] bg-[#6FA89E]/5'
-                                : 'border-gray-200 hover:border-[#6FA89E]/50'
+                              ? 'border-[#6FA89E] bg-[#6FA89E]/5'
+                              : 'border-gray-200 hover:border-[#6FA89E]/50'
                               }`}
                           >
                             <div className="flex items-center gap-3">
