@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, Loader2, ChevronLeft, Leaf, Maximize2, Minimize2 } from 'lucide-react';
+import { X, Send, Loader2, ChevronRight, Leaf, Maximize2, Minimize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type Message = { role: "user" | "assistant"; content: string };
@@ -138,26 +138,17 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* Tab vertical à direita - refinado */}
+      {/* Tab vertical à esquerda - Posicionado no lado oposto ao scroll */}
       <div className={cn(
-        "fixed right-0 top-1/2 -translate-y-1/2 z-50 flex items-center",
+        "fixed left-0 top-1/2 -translate-y-1/2 z-50 flex items-center",
         "transition-all duration-300",
-        isOpen && "translate-x-full opacity-0 pointer-events-none"
+        isOpen && "-translate-x-full opacity-0 pointer-events-none"
       )}>
-        {/* Botão semi-circular para abrir */}
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-[#6FA89E] text-white p-3 rounded-l-full shadow-md hover:bg-[#5d8d84] transition-all hover:shadow-lg"
-          aria-label="Abrir NutriGen"
-        >
-          <ChevronLeft className="w-5 h-5 animate-pulse" />
-        </button>
-        
         {/* Caixa vertical - mais estreita, arredondada, com bevel */}
         <div 
-          className="bg-[#6FA89E] text-white px-2 py-6 flex flex-col items-center gap-4 rounded-l-xl"
+          className="bg-[#6FA89E] text-white px-2 py-6 flex flex-col items-center gap-4 rounded-r-xl"
           style={{
-            boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.2), inset 0 -2px 4px rgba(0,0,0,0.1), -2px 0 8px rgba(0,0,0,0.1)'
+            boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.2), inset 0 -2px 4px rgba(0,0,0,0.1), 2px 0 8px rgba(0,0,0,0.1)'
           }}
         >
           {/* Avatar minimalista NG + Folha */}
@@ -173,6 +164,15 @@ const ChatBot = () => {
             ))}
           </div>
         </div>
+
+        {/* Botão semi-circular para abrir */}
+        <button
+          onClick={() => setIsOpen(true)}
+          className="bg-[#6FA89E] text-white p-3 rounded-r-full shadow-md hover:bg-[#5d8d84] transition-all hover:shadow-lg"
+          aria-label="Abrir NutriGen"
+        >
+          <ChevronRight className="w-5 h-5 animate-pulse" />
+        </button>
       </div>
 
       {/* Janela do chat */}
@@ -181,8 +181,8 @@ const ChatBot = () => {
           "fixed z-50 overflow-hidden bg-white border border-gray-200 shadow-2xl transition-all duration-300 transform flex flex-col",
           isMaximized 
             ? "inset-4 md:inset-10 w-auto h-auto rounded-3xl" 
-            : "right-6 top-1/2 -translate-y-1/2 w-[380px] max-w-[calc(100vw-3rem)] h-[500px] rounded-2xl",
-          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none translate-x-8"
+            : "left-6 top-1/2 -translate-y-1/2 w-[380px] max-w-[calc(100vw-3rem)] h-[500px] rounded-2xl",
+          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none -translate-x-8"
         )}
       >
         {/* Header */}
