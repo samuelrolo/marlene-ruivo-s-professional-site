@@ -16,8 +16,7 @@ interface PaymentRequest {
 const getAmount = (type: string): string => {
     const amounts = {
         'first': '60.00',
-        'followup': '40.00',
-        'online': '55.00'
+        'followup': '50.00'
     };
     return amounts[type] || '60.00';
 };

@@ -18,7 +18,7 @@ const ContactosPage = () => {
 
   const amounts = {
     'first': '60.00€',
-    'followup': '40.00€'
+    'followup': '50.00€'
   };
 
   const consultationLabels = {
