@@ -17,7 +17,7 @@ const HomePage = () => {
             <h1 className="text-5xl md:text-7xl font-serif text-[#2C4A3E] leading-tight">
               Nutrição especializada em <span className="text-[#6FA89E]">saúde intestinal</span> e dieta FODMAP
             </h1>
-            <p className="text-lg text-gray-600 max-w-xl leading-relaxed">
+            <p className="text-gray-500 text-sm font-light max-w-xl leading-relaxed">
               Apoio clínico baseado em ciência para reduzir sintomas e recuperar o bem-estar digestivo. A Marlene estreia-se como nutricionista freelance em dezembro de 2025, mantendo o acompanhamento próximo e humano que marca a sua carreira.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -28,7 +28,7 @@ const HomePage = () => {
           </div>
           <div className="relative">
             <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
-              <img src="https://marleneruivo.pt/marlene.jpg" alt="Dra. Marlene Ruivo" className="w-full h-full object-cover" />
+              <img src="/assets/fotoprofissional.jpg" alt="Dra. Marlene Ruivo" className="w-full h-full object-cover" />
             </div>
             <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl border border-gray-50 max-w-[240px]">
               <div className="flex items-center gap-4 mb-3">
@@ -52,8 +52,8 @@ const HomePage = () => {
           ].map((item, i) => (
             <div key={i} className="bg-white p-10 rounded-3xl border border-gray-100 hover:border-[#6FA89E]/30 transition-all group">
               <h3 className="text-2xl font-serif text-[#2C4A3E] mb-4">{item.title}</h3>
-              <p className="text-gray-500 mb-8">{item.desc}</p>
-              <button className="text-[#6FA89E] font-medium group-hover:translate-x-2 transition-transform">{item.btn}</button>
+              <p className="text-gray-500 text-sm font-light mb-8">{item.desc}</p>
+              <button className="text-[#6FA89E] text-sm font-medium group-hover:translate-x-2 transition-transform">{item.btn}</button>
             </div>
           ))}
         </section>
