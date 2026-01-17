@@ -323,7 +323,7 @@ const ContactosPage = () => {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#6FA89E] focus:ring-2 focus:ring-[#6FA89E]/20 outline-none"
-                        placeholder="912345678"
+                        placeholder="915089256"
                         maxLength={9}
                         pattern="9[0-9]{8}"
                         required
@@ -422,7 +422,7 @@ const ContactosPage = () => {
               {/* WhatsApp Card */}
               <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
                 <a
-                  href="https://wa.me/351912345678"
+                  href="https://wa.me/351915089256"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 text-[#25D366] hover:text-[#20bd5a] transition-colors"
