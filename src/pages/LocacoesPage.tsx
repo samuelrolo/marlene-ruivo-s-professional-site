@@ -13,37 +13,37 @@ const LocacoesPage = () => {
           <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed font-light">Escolha o local mais conveniente para si: consultas presenciais ou online.</p>
         </div>
 
-        {/* Horário Semanal - Invertido */}
+        {/* Horário Semanal - Invertido (Períodos nas Linhas, Dias nas Colunas) */}
         <div className="mb-20">
           <h2 className="text-xl font-serif text-[#2C4A3E] mb-8 text-center">Horário Semanal</h2>
-          <div className="max-w-4xl mx-auto overflow-x-auto rounded-2xl border border-gray-100 bg-white/50 shadow-sm">
-            <table className="w-full text-left border-collapse min-w-[600px]">
+          <div className="max-w-4xl mx-auto overflow-x-auto rounded-3xl border border-gray-100 bg-white shadow-sm">
+            <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
                 <tr className="bg-gray-50/50">
-                  <th className="py-4 px-6 text-[#6FA89E] font-medium uppercase text-[10px] tracking-widest border-b border-gray-100">Período</th>
-                  <th className="py-4 px-6 text-[#6FA89E] font-medium uppercase text-[10px] tracking-widest border-b border-gray-100">Segunda</th>
-                  <th className="py-4 px-6 text-[#6FA89E] font-medium uppercase text-[10px] tracking-widest border-b border-gray-100">Terça</th>
-                  <th className="py-4 px-6 text-[#6FA89E] font-medium uppercase text-[10px] tracking-widest border-b border-gray-100">Quarta</th>
-                  <th className="py-4 px-6 text-[#6FA89E] font-medium uppercase text-[10px] tracking-widest border-b border-gray-100">Quinta</th>
-                  <th className="py-4 px-6 text-[#6FA89E] font-medium uppercase text-[10px] tracking-widest border-b border-gray-100">Sexta</th>
+                  <th className="py-5 px-8 text-[#6FA89E] font-bold uppercase text-[10px] tracking-[0.2em] border-b border-gray-100">Período</th>
+                  <th className="py-5 px-8 text-[#6FA89E] font-bold uppercase text-[10px] tracking-[0.2em] border-b border-gray-100 text-center">Segunda</th>
+                  <th className="py-5 px-8 text-[#6FA89E] font-bold uppercase text-[10px] tracking-[0.2em] border-b border-gray-100 text-center">Terça</th>
+                  <th className="py-5 px-8 text-[#6FA89E] font-bold uppercase text-[10px] tracking-[0.2em] border-b border-gray-100 text-center">Quarta</th>
+                  <th className="py-5 px-8 text-[#6FA89E] font-bold uppercase text-[10px] tracking-[0.2em] border-b border-gray-100 text-center">Quinta</th>
+                  <th className="py-5 px-8 text-[#6FA89E] font-bold uppercase text-[10px] tracking-[0.2em] border-b border-gray-100 text-center">Sexta</th>
                 </tr>
               </thead>
               <tbody className="text-gray-500 text-sm font-light">
-                <tr className="border-b border-gray-50 hover:bg-white transition-colors">
-                  <td className="py-4 px-6 font-medium text-[#2C4A3E] bg-gray-50/30">Manhã</td>
-                  <td className="py-4 px-6">Clínica Hygeia</td>
-                  <td className="py-4 px-6">Instituto Bettencourt</td>
-                  <td className="py-4 px-6">Clínica Sousi</td>
-                  <td className="py-4 px-6">Online</td>
-                  <td className="py-4 px-6">Online</td>
+                <tr className="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
+                  <td className="py-6 px-8 font-serif text-[#2C4A3E] bg-gray-50/30 font-medium">Manhã</td>
+                  <td className="py-6 px-8 text-center">Clínica Hygeia</td>
+                  <td className="py-6 px-8 text-center">Instituto Bettencourt</td>
+                  <td className="py-6 px-8 text-center">Clínica Sousi</td>
+                  <td className="py-6 px-8 text-center">Online</td>
+                  <td className="py-6 px-8 text-center">Online</td>
                 </tr>
-                <tr className="hover:bg-white transition-colors">
-                  <td className="py-4 px-6 font-medium text-[#2C4A3E] bg-gray-50/30">Tarde</td>
-                  <td className="py-4 px-6">Clínica Sousi</td>
-                  <td className="py-4 px-6">Instituto Bettencourt</td>
-                  <td className="py-4 px-6">Online</td>
-                  <td className="py-4 px-6">Online</td>
-                  <td className="py-4 px-6">Online</td>
+                <tr className="hover:bg-gray-50/30 transition-colors">
+                  <td className="py-6 px-8 font-serif text-[#2C4A3E] bg-gray-50/30 font-medium">Tarde</td>
+                  <td className="py-6 px-8 text-center">Clínica Sousi</td>
+                  <td className="py-6 px-8 text-center">Instituto Bettencourt</td>
+                  <td className="py-6 px-8 text-center">Online</td>
+                  <td className="py-6 px-8 text-center">Online</td>
+                  <td className="py-6 px-8 text-center">Online</td>
                 </tr>
               </tbody>
             </table>
