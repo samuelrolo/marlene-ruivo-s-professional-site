@@ -132,9 +132,9 @@ const ContactosPage = () => {
               <div className="flex items-center gap-4">
                 <div className="w-14 h-10 bg-white rounded-lg flex items-center justify-center border border-gray-100">
                   <img 
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/MB_Way_logo.svg/1200px-MB_Way_logo.svg.png" 
+                    src="/assets/mbway-logo.png" 
                     alt="MB WAY" 
-                    className="w-10 h-auto object-contain"
+                    className="w-14 h-auto object-contain"
                   />
                 </div>
                 <div>
