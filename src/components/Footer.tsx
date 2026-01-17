@@ -8,9 +8,10 @@ const Footer = () => {
           {/* Logo Branco */}
           <div className="flex items-center gap-4">
             <img
-              src="/assets/logo-white.png"
+              src="/assets/logo-marlene-ruivo.png"
               alt="Drª Marlene Ruivo - Nutricionista"
-              className="h-20 w-auto object-contain"
+              className="h-20 w-auto object-contain brightness-0 invert"
+              style={{ filter: 'brightness(0) invert(1)' }}
             />
           </div>
 
