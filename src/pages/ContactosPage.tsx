@@ -4,8 +4,8 @@ import Footer from "../components/Footer";
 import ChatBot from "../components/ChatBot";
 
 // Supabase GenNutri project
-const SUPABASE_URL = "https://hihzmjqkszcxxdrhnqpy.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhpaHptanFrc3pjeHhkcmhucXB5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY3ODU4MTIsImV4cCI6MjA1MjM2MTgxMn0.z3HQs5_zYNQQF2s7gZvGrP6FrQHXQSdNw_PREejl1y4";
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 const ContactosPage = () => {
   const [name, setName] = useState("");
