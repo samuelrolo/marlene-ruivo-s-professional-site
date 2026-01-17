@@ -166,7 +166,7 @@ const ContactosPage = () => {
                 <div className="mt-8">
                   <p className="text-sm text-gray-500 mb-4">Escolha o horário da sua consulta:</p>
                   <iframe
-                    src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3hfXPF7VRs8vqLPqGJQvLZJwKYn9RzYCdO0Qp_bPUdLuGzJlBBWbY8M5z_4OPfXXPOgHs4nX0P?gv=true"
+                    src="https://calendar.app.google/qhbF3KM1hqJCrcbV6"
                     style={{ border: 0 }}
                     width="100%"
                     height="600"
