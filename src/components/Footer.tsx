@@ -10,7 +10,7 @@ const Footer = () => {
             <img
               src="/assets/logo-white.png"
               alt="Drª Marlene Ruivo - Nutricionista"
-              className="h-20 w-auto object-contain"
+              className="h-40 w-auto object-contain"
             />
           </div>
 
@@ -18,7 +18,7 @@ const Footer = () => {
           <div className="flex items-center gap-2 text-sm text-white/70">
             <span>© 2026 Marlene Ruivo.</span>
             <span className="hidden sm:inline">Feito com</span>
-            <Leaf className="hidden sm:inline w-4 h-4 text-[#6FA89E]" fill="currentColor" />
+            <Leaf className="hidden sm:inline w-4 h-4 text-white" fill="currentColor" />
             <span className="hidden sm:inline">em Portugal</span>
           </div>
 

@@ -7,7 +7,7 @@ const navItems = [
   { label: 'Sobre', href: '/sobre' },
   { label: 'FODMAP', href: '/fodmap' },
   { label: 'Sintomas', href: '/sintomas' },
-  { label: 'Locais', href: '/localizacoes' },
+  { label: 'Onde Estou', href: '/localizacoes' },
   { label: 'Testemunhos', href: '/testemunhos' },
   { label: 'Contactos', href: '/contactos' },
 ];
@@ -27,7 +27,7 @@ const NavLink = ({ href, children, onClick }: NavLinkProps) => {
     <Link
       to={href}
       onClick={onClick}
-      className={`px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-accent ${match ? 'text-primary bg-accent' : 'text-foreground/80 hover:text-primary'
+      className={`px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-[#6FA89E]/10 ${match ? 'text-[#6FA89E] bg-[#6FA89E]/10' : 'text-foreground/80 hover:text-[#6FA89E]'
         }`}
     >
       {children}

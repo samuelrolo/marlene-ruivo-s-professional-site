@@ -37,12 +37,38 @@ const PagamentoPage = () => {
 
     setLoading(true);
     
-    setTimeout(() => {
+    try {
+      const response = await fetch('https://share2inspire-backend.vercel.app/api/payment/initiate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: selectedPricing?.price,
+          phone: phone,
+          email: email,
+          name: 'Cliente Marlene Ruivo',
+          description: `Consulta Marlene Ruivo: ${selectedPricing?.name} (${selectedPricing?.description})`,
+          paymentMethod: 'mbway',
+          orderId: `MR-${Date.now()}`
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert(`Pedido de pagamento enviado com sucesso!\n\nValor: €${selectedPricing?.price}\nTelemóvel: ${phone}\n\nPor favor, confirme na sua aplicação MB WAY.`);
+        setPhone('');
+        setEmail('');
+      } else {
+        alert(`Erro ao processar pagamento: ${result.error || 'Erro desconhecido'}`);
+      }
+    } catch (error) {
+      console.error('Erro ao processar pagamento:', error);
+      alert('Ocorreu um erro ao ligar ao sistema de pagamentos. Por favor, tente novamente mais tarde.');
+    } finally {
       setLoading(false);
-      alert(`Pedido de pagamento enviado com sucesso!\n\nValor: €${selectedPricing?.price}\nTelemóvel: ${phone}\nEmail: ${email}\n\nPor favor, confirme na sua aplicação MB WAY.`);
-      setPhone('');
-      setEmail('');
-    }, 1500);
+    }
   };
 
   return (

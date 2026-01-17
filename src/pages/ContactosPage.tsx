@@ -7,21 +7,60 @@ const ContactosPage = () => {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [selectedType, setSelectedType] = useState("primeira");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+
+  const prices = {
+    primeira: 60,
+    seguimento: 50,
+    online: 55
+  };
+
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!phone) {
-      alert("Por favor, preencha o número de telemóvel.");
+    if (!phone || !email || !name) {
+      alert("Por favor, preencha todos os campos.");
       return;
     }
 
     setLoading(true);
     
-    setTimeout(() => {
+    try {
+      const amount = prices[selectedType as keyof typeof prices];
+      const response = await fetch('https://share2inspire-backend.vercel.app/api/payment/initiate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: amount,
+          phone: phone,
+          email: email,
+          name: name,
+          description: `Consulta Marlene Ruivo: ${selectedType}`,
+          paymentMethod: 'mbway',
+          orderId: `MR-CONTACT-${Date.now()}`
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert(`Pedido de pagamento enviado com sucesso!\n\nValor: ${amount}€\nTelemóvel: ${phone}\n\nPor favor, confirme na sua aplicação MB WAY.`);
+        setPhone("");
+        setEmail("");
+        setName("");
+      } else {
+        alert(`Erro ao processar pagamento: ${result.error || 'Erro desconhecido'}`);
+      }
+    } catch (error) {
+      console.error('Erro ao processar pagamento:', error);
+      alert('Ocorreu um erro ao ligar ao sistema de pagamentos. Por favor, tente novamente mais tarde.');
+    } finally {
       setLoading(false);
-      alert(`Pedido de pagamento enviado com sucesso!\n\nValor: 60€\nTelemóvel: ${phone}\n\nPor favor, confirme na sua aplicação MB WAY.`);
-      setPhone("");
-    }, 1500);
+    }
   };
 
   return (
@@ -54,14 +93,37 @@ const ContactosPage = () => {
               efetue o pagamento seguro via MB WAY e selecione o seu horário preferido.
             </p>
             
+            {/* Tipo de Consulta */}
+            <div className="mb-6">
+              <label className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 block">Tipo de Consulta</label>
+              <div className="space-y-2">
+                {[
+                  { id: 'primeira', label: 'Primeira Consulta', price: '60.00€' },
+                  { id: 'seguimento', label: 'Consulta de Seguimento', price: '50.00€' },
+                  { id: 'online', label: 'Consulta Online', price: '55.00€' }
+                ].map((type) => (
+                  <label key={type.id} className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${selectedType === type.id ? 'border-[#6FA89E] bg-[#6FA89E]/5' : 'border-gray-100 hover:border-gray-200'}`}>
+                    <div className="flex items-center gap-3">
+                      <input 
+                        type="radio" 
+                        name="consultationType" 
+                        checked={selectedType === type.id}
+                        onChange={() => setSelectedType(type.id)}
+                        className="text-[#6FA89E] focus:ring-[#6FA89E]"
+                      />
+                      <span className="text-sm font-medium text-[#2C4A3E]">{type.label}</span>
+                    </div>
+                    <span className="text-sm font-serif text-[#2C4A3E]">{type.price}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
             {/* Payment Info Box */}
             <div className="bg-gray-50 rounded-xl p-5 mb-6">
-              <p className="text-sm text-gray-500 mb-3">
-                Enviaremos um pedido de pagamento para o seu telemóvel.
-              </p>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Total a pagar</span>
-                <span className="text-2xl font-serif text-[#2C4A3E]">60.00€</span>
+                <span className="text-2xl font-serif text-[#2C4A3E]">{prices[selectedType as keyof typeof prices]}.00€</span>
               </div>
             </div>
 
@@ -84,6 +146,43 @@ const ContactosPage = () => {
 
             {/* Form */}
             <form onSubmit={handlePayment} className="space-y-4">
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Nome Completo</label>
+                  <input 
+                    type="text" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="João Silva" 
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm"
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Telemóvel MB WAY</label>
+                    <input 
+                      type="tel" 
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="9XXXXXXXX" 
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Email</label>
+                    <input 
+                      type="email" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="seu@email.com" 
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <button 
                   type="button"
