@@ -1,74 +1,46 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ChatBot from '../components/ChatBot';
+import { Wind, Activity, RefreshCw, Cloud, AlertCircle, Zap } from 'lucide-react';
 
 const SintomasPage = () => {
   const sintomas = [
     {
       titulo: 'Inchaço Abdominal',
       descricao: 'Sensação de barriga inchada após refeições.',
-      icon: (
-        <svg className="w-12 h-12 text-[#6FA89E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10" strokeWidth="2" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01" />
-        </svg>
-      )
+      icon: <Wind className="w-8 h-8 text-[#6FA89E]" strokeWidth={1.5} />
     },
     {
       titulo: 'Dor Abdominal',
       descricao: 'Desconforto ou dor na região do abdómen.',
-      icon: (
-        <svg className="w-12 h-12 text-[#6FA89E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          <circle cx="12" cy="12" r="10" strokeWidth="2" />
-        </svg>
-      )
+      icon: <Activity className="w-8 h-8 text-[#6FA89E]" strokeWidth={1.5} />
     },
     {
       titulo: 'Alterações Intestinais',
       descricao: 'Diarreia, obstipação ou alternância entre ambos.',
-      icon: (
-        <svg className="w-12 h-12 text-[#6FA89E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v16h16M8 14l4-4 4 4" />
-        </svg>
-      )
+      icon: <RefreshCw className="w-8 h-8 text-[#6FA89E]" strokeWidth={1.5} />
     },
     {
       titulo: 'Gases Excessivos',
       descricao: 'Flatulência frequente e desconfortável.',
-      icon: (
-        <svg className="w-12 h-12 text-[#6FA89E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <circle cx="8" cy="16" r="2" strokeWidth="2" />
-          <circle cx="12" cy="10" r="2" strokeWidth="2" />
-          <circle cx="16" cy="14" r="2" strokeWidth="2" />
-        </svg>
-      )
+      icon: <Cloud className="w-8 h-8 text-[#6FA89E]" strokeWidth={1.5} />
     },
     {
       titulo: 'Náuseas',
       descricao: 'Sensação de enjoo, especialmente após comer.',
-      icon: (
-        <svg className="w-12 h-12 text-[#6FA89E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4" />
-        </svg>
-      )
+      icon: <AlertCircle className="w-8 h-8 text-[#6FA89E]" strokeWidth={1.5} />
     },
     {
       titulo: 'Fadiga',
       descricao: 'Cansaço persistente relacionado com problemas digestivos.',
-      icon: (
-        <svg className="w-12 h-12 text-[#6FA89E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      )
+      icon: <Zap className="w-8 h-8 text-[#6FA89E]" strokeWidth={1.5} />
     },
   ];
 
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
       <Header />
-      <main className="pt-32 pb-20 px-4 max-w-6xl mx-auto">
+      <main className="pt-40 lg:pt-48 pb-20 px-4 max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Sinais a Identificar</span>
           <h1 className="text-4xl md:text-5xl font-serif text-[#2C4A3E] mt-4 mb-6">Sintomas Comuns</h1>
