@@ -62,7 +62,7 @@ html {
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -76,4 +76,13 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--deep);
+}
+
+/* Scroll margin to prevent text cut-off */
+section {
+  scroll-margin-top: 90px;
+}
+
+h2 {
+  scroll-margin-top: 90px;
 }

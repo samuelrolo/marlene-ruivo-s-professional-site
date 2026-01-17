@@ -27,8 +27,8 @@ const HomePage = () => {
             </div>
           </div>
           <div className="relative">
-            <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
-              <img src="https://marleneruivo.pt/marlene.jpg" alt="Dra. Marlene Ruivo" className="w-full h-full object-cover" />
+            <div className="aspect-[4/5] rounded-3xl overflow-hidden">
+              <img src="/assets/Foto Marlene 1.png" alt="Marlene Ruivo - Nutricionista" className="w-full h-full object-cover" />
             </div>
             <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl border border-gray-50 max-w-[240px]">
               <div className="flex items-center gap-4 mb-3">
