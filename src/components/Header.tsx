@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Menu, X, User } from 'lucide-react';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 
 const navItems = [
   { label: 'Início', href: '/' },
@@ -37,6 +38,23 @@ const NavLink = ({ href, children, onClick }: NavLinkProps) => {
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    checkAuth();
+    
+    // Ouvir mudanças no estado de autenticação
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsLoggedIn(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const checkAuth = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setIsLoggedIn(!!user);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
@@ -58,6 +76,13 @@ const Header = () => {
                 {item.label}
               </NavLink>
             ))}
+            <Link
+              to={isLoggedIn ? "/dashboard" : "/login"}
+              className="ml-2 px-4 py-2 bg-[#6FA89E] text-white text-sm font-medium rounded-lg hover:bg-[#5d8d84] transition-all flex items-center gap-2"
+            >
+              <User className="w-4 h-4" />
+              {isLoggedIn ? 'Conta' : 'Entrar'}
+            </Link>
           </nav>
 
 
@@ -83,7 +108,14 @@ const Header = () => {
                   {item.label}
                 </NavLink>
               ))}
-
+              <Link
+                to={isLoggedIn ? "/dashboard" : "/login"}
+                onClick={() => setIsMenuOpen(false)}
+                className="px-4 py-2 bg-[#6FA89E] text-white text-sm font-medium rounded-lg hover:bg-[#5d8d84] transition-all flex items-center gap-2 justify-center"
+              >
+                <User className="w-4 h-4" />
+                {isLoggedIn ? 'A Minha Conta' : 'Entrar'}
+              </Link>
             </div>
           </nav>
         )}

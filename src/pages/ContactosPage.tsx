@@ -216,13 +216,13 @@ const ContactosPage = () => {
             </div>
           </div>
         ) : (
-          <div className="grid lg:grid-cols-2 gap-6 items-start">
+          <div className="grid lg:grid-cols-2 gap-4 items-start">
             {/* Left Column - Calendar Widget */}
-            <div className="bg-white rounded-2xl p-4 border border-gray-50 shadow-sm">
-              <h2 className="text-xs font-serif text-[#2C4A3E] mb-3 uppercase tracking-wider">
+            <div className="bg-white rounded-2xl p-3 border border-gray-50 shadow-sm">
+              <h2 className="text-xs font-serif text-[#2C4A3E] mb-2 uppercase tracking-wider">
                 1. Escolha o Horário
               </h2>
-              <div className="rounded-xl overflow-hidden border border-gray-100" style={{ height: '380px' }}>
+              <div className="rounded-xl overflow-hidden border border-gray-100" style={{ height: '300px' }}>
                 <iframe
                   src="https://calendar.app.google/qhbF3KM1hqJCrcbV6"
                   width="100%"
@@ -234,7 +234,7 @@ const ContactosPage = () => {
             </div>
 
             {/* Right Column - Payment Form */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-50 shadow-sm">
+            <div className="bg-white rounded-2xl p-4 border border-gray-50 shadow-sm">
               {paymentStatus === 'pending' ? (
                 <div className="text-center py-10">
                   <div className="animate-pulse mb-6">
@@ -263,12 +263,12 @@ const ContactosPage = () => {
                   <h2 className="text-xs font-serif text-[#2C4A3E] mb-4 uppercase tracking-wider">
                     2. Dados de Pagamento
                   </h2>
-                  <form onSubmit={handlePayment} className="space-y-3">
+                  <form onSubmit={handlePayment} className="space-y-2">
                     <div className="grid grid-cols-2 gap-2">
                       {Object.entries(consultationLabels).map(([key, label]) => (
                         <label
                           key={key}
-                          className={`cursor-pointer p-3 rounded-2xl border transition-all text-center ${
+                          className={`cursor-pointer p-2 rounded-xl border transition-all text-center text-xs ${
                             consultationType === key ? 'border-[#6FA89E] bg-[#6FA89E]/5' : 'border-gray-100 hover:border-gray-200'
                           }`}
                         >
@@ -277,8 +277,7 @@ const ContactosPage = () => {
                             name="consultationType"
                             value={key}
                             checked={consultationType === key}
-                            onChange={(e) => setConsultationType(e.target.value as 'first' | 'followup')}
-                            className="hidden"
+                            onChange={(e) => setConsultationType(e.target.value as 'first' | 'followup')}                            className="hidden"
                           />
                           <p className="text-[10px] text-gray-400 uppercase mb-1">{label}</p>
                           <p className="text-sm font-serif text-[#2C4A3E]">{amounts[key as keyof typeof amounts]}</p>
@@ -286,20 +285,20 @@ const ContactosPage = () => {
                       ))}
                     </div>
 
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       <input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-100 text-sm focus:border-[#6FA89E] outline-none transition-all"
-                        placeholder="Nome Completo"
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-gray-100 text-xs focus:border-[#6FA89E] outline-none transition-all"
+                        placeholder="Nome"
                         required
                       />
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-100 text-sm focus:border-[#6FA89E] outline-none transition-all"
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-gray-100 text-xs focus:border-[#6FA89E] outline-none transition-all"
                         placeholder="Email"
                         required
                       />
@@ -308,12 +307,11 @@ const ContactosPage = () => {
                           type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
-                          className="w-full px-3 py-2.5 rounded-xl border border-gray-100 text-sm focus:border-[#6FA89E] outline-none transition-all"
-                          placeholder="Telemóvel (MB WAY)"
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-gray-100 text-xs focus:border-[#6FA89E] outline-none transition-all"
+                          placeholder="Telemovel (9 dígitos)"
                           maxLength={9}
                           required
                         />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] text-gray-300">9 dígitos</span>
                       </div>
                     </div>
 

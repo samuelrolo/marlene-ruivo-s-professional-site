@@ -17,7 +17,7 @@ const Footer = () => {
               <span className="text-xs font-medium">© 2026 Marlene Ruivo</span>
               <div className="flex items-center gap-1 text-[10px] text-white/60">
                 <span>Feito com</span>
-                <Leaf className="w-3 h-3 text-white" fill="currentColor" />
+                <Leaf className="w-3 h-3 text-white" fill="white" stroke="white" strokeWidth={0} />
                 <span>em Portugal</span>
               </div>
             </div>
