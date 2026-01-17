@@ -395,7 +395,7 @@ const ContactosPage = () => {
                 <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-4">REDES SOCIAIS</p>
                 <div className="flex gap-3">
                   <a
-                    href="https://instagram.com/marleneruivo.nutri"
+                    href="https://www.instagram.com/nutri_fodmap_marleneruivo/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center w-12 h-12 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
