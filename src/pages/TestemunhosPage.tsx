@@ -1,8 +1,15 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Star, StarHalf, Quote } from 'lucide-react';
+import { useState } from "react";
+import { Star, StarHalf, Quote, Send } from 'lucide-react';
 
 const TestemunhosPage = () => {
+  const [rating, setRating] = useState(5);
+  const [hover, setHover] = useState(0);
+  const [comment, setComment] = useState("");
+  const [name, setName] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const testemunhos = [
     {
       nome: "Ana S.",
@@ -85,7 +92,7 @@ const TestemunhosPage = () => {
         </div>
         
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
           {testemunhos.map((testemunho, index) => (
             <div 
               key={index}
@@ -111,6 +118,117 @@ const TestemunhosPage = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Submit Review Form */}
+        <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-gray-100 p-10 shadow-sm">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-serif text-[#2C4A3E] mb-2">Partilhe a sua experiência</h2>
+            <p className="text-gray-400 text-sm font-light">A sua opinião é fundamental para continuarmos a melhorar.</p>
+          </div>
+
+          {submitted ? (
+            <div className="text-center py-10">
+              <div className="w-16 h-16 bg-[#6FA89E]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Send className="w-8 h-8 text-[#6FA89E]" />
+              </div>
+              <h3 className="text-xl font-serif text-[#2C4A3E] mb-2">Obrigado pelo seu testemunho!</h3>
+              <p className="text-gray-500 text-sm font-light">A sua avaliação foi enviada com sucesso para a Drª Marlene Ruivo.</p>
+              <button 
+                onClick={() => setSubmitted(false)}
+                className="mt-6 text-[#6FA89E] text-sm font-medium hover:underline"
+              >
+                Enviar outra avaliação
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              setIsSubmitting(true);
+              try {
+                const response = await fetch('https://share2inspire-backend.vercel.app/api/feedback/submit', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    name,
+                    rating,
+                    message: comment,
+                    email: 'marleneruivonutricao@gmail.com', // Destinatário fixo no backend ou passado aqui
+                    source: 'Testemunhos Website'
+                  })
+                });
+                if (response.ok) {
+                  setSubmitted(true);
+                  setName("");
+                  setComment("");
+                  setRating(5);
+                } else {
+                  alert("Ocorreu um erro ao enviar. Por favor, tente novamente.");
+                }
+              } catch (error) {
+                alert("Erro de ligação ao servidor.");
+              } finally {
+                setIsSubmitting(false);
+              }
+            }} className="space-y-6">
+              <div className="flex flex-col items-center mb-4">
+                <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">A sua classificação</label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      className="focus:outline-none transition-transform hover:scale-110"
+                      onClick={() => setRating(star)}
+                      onMouseEnter={() => setHover(star)}
+                      onMouseLeave={() => setHover(0)}
+                    >
+                      <Star 
+                        className={`w-8 h-8 ${
+                          (hover || rating) >= star 
+                            ? 'fill-yellow-400 text-yellow-400' 
+                            : 'text-gray-200'
+                        }`} 
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Nome</label>
+                  <input 
+                    type="text" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="O seu nome" 
+                    className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">O seu comentário</label>
+                  <textarea 
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="Conte-nos como foi a sua experiência..." 
+                    rows={4}
+                    className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm resize-none"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className={`w-full py-5 bg-[#6FA89E] text-white rounded-2xl font-medium text-sm hover:bg-[#5d8d84] transition-all shadow-sm flex items-center justify-center gap-3 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+              >
+                {isSubmitting ? "A enviar..." : "Submeter Avaliação"}
+              </button>
+            </form>
+          )}
         </div>
 
         {/* Call to Action */}
