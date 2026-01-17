@@ -406,7 +406,7 @@ const ContactosPage = () => {
                     </svg>
                   </a>
                   <a
-                    href="https://linkedin.com/in/marleneruivo"
+                    href="https://www.linkedin.com/in/marlene-ruivo-b2a2104a/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center w-12 h-12 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
