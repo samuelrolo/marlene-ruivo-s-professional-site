@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import { Menu, X } from 'lucide-react';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -8,7 +9,7 @@ const navItems = [
   { label: 'Sobre', href: '/sobre' },
   { label: 'FODMAP', href: '/fodmap' },
   { label: 'Sintomas', href: '/sintomas' },
-  { label: 'Locais', href: '/localizacoes' },
+  { label: 'Consultas', href: '/consultas' },
   { label: 'Testemunhos', href: '/testemunhos' },
   { label: 'Contactos', href: '/contactos' },
 ];
