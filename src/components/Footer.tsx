@@ -16,7 +16,7 @@ const Footer = () => {
           </div>
 
           {/* Copyright */}
-          <div className="flex items-center gap-2 text-sm text-white/70">
+          <div className="flex items-center gap-2 text-sm text-white">
             <span>© 2026 Marlene Ruivo.</span>
             <span className="hidden sm:inline">Feito com</span>
             <Leaf className="hidden sm:inline w-4 h-4 text-[#6FA89E]" fill="currentColor" />
@@ -25,10 +25,10 @@ const Footer = () => {
 
           {/* Links */}
           <div className="flex items-center gap-6 text-sm">
-            <a href="#" className="text-white/70 hover:text-white transition-colors">
+            <a href="#" className="text-white hover:text-white/80 transition-colors">
               Política de Privacidade
             </a>
-            <a href="#" className="text-white/70 hover:text-white transition-colors">
+            <a href="#" className="text-white hover:text-white/80 transition-colors">
               Termos
             </a>
           </div>
