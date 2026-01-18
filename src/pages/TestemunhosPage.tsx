@@ -145,20 +145,18 @@ const TestemunhosPage = () => {
             <form onSubmit={async (e) => {
               e.preventDefault();
               setIsSubmitting(true);
-              try {
-	                const response = await fetch('https://share2inspire-backend.vercel.app/api/feedback/submit', {
-	                  method: 'POST',
-	                  headers: { 'Content-Type': 'application/json' },
-	                  body: JSON.stringify({
-	                    name,
-	                    rating,
-	                    message: comment,
-	                    email: 'marleneruivonutricao@gmail.com',
-	                    admin_email: 'marleneruivonutricao@gmail.com',
-	                    source: 'Testemunhos Website'
-	                  })
-	                });
-                if (response.ok) {
+	              try {
+		                const response = await fetch('/api/send-email', {
+		                  method: 'POST',
+		                  headers: { 'Content-Type': 'application/json' },
+		                  body: JSON.stringify({
+		                    name,
+		                    email: 'marleneruivonutricao@gmail.com',
+		                    phone: `Avaliação: ${rating} estrelas`,
+		                    message: comment
+		                  })
+		                });
+	                if (response.ok) {
                   setSubmitted(true);
                   setName("");
                   setComment("");
