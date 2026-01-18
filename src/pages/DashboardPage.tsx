@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 interface UserProfile {
   full_name: string;
@@ -26,6 +24,9 @@ const DashboardPage = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [userEmail, setUserEmail] = useState("");
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editedProfile, setEditedProfile] = useState<UserProfile | null>(null);
+  const [savingProfile, setSavingProfile] = useState(false);
 
   useEffect(() => {
     checkUser();
@@ -74,6 +75,46 @@ const DashboardPage = () => {
     navigate("/login");
   };
 
+  const startEditingProfile = () => {
+    setEditedProfile(profile);
+    setIsEditingProfile(true);
+  };
+
+  const cancelEditingProfile = () => {
+    setIsEditingProfile(false);
+    setEditedProfile(null);
+  };
+
+  const saveProfileChanges = async () => {
+    if (!editedProfile) return;
+
+    setSavingProfile(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Utilizador não encontrado");
+
+      const { error } = await supabase
+        .from('user_profiles')
+        .update({
+          full_name: editedProfile.full_name,
+          phone: editedProfile.phone,
+          nif: editedProfile.nif,
+        })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      setProfile(editedProfile);
+      setIsEditingProfile(false);
+      alert('Perfil atualizado com sucesso!');
+    } catch (error: any) {
+      console.error('Erro ao atualizar perfil:', error);
+      alert('Erro ao atualizar perfil. Por favor, tenta novamente.');
+    } finally {
+      setSavingProfile(false);
+    }
+  };
+
   const getStatusLabel = (status: string) => {
     const labels: Record<string, string> = {
       pending: 'Por Efectuar',
@@ -119,8 +160,7 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
-      <Header />
-      <main className="pt-40 pb-20 px-4 max-w-4xl mx-auto">
+      <main className="pb-20 px-4 max-w-4xl mx-auto">
         {/* Header com Logo e Logout */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -137,31 +177,89 @@ const DashboardPage = () => {
 
         {/* Perfil */}
         <div className="bg-white rounded-2xl p-6 border border-gray-50 shadow-sm mb-6">
-          <h2 className="text-sm font-serif text-[#2C4A3E] mb-4 uppercase tracking-wider">Dados Pessoais</h2>
-          <div className="grid md:grid-cols-2 gap-4 text-sm">
-            <div>
-              <p className="text-gray-400 text-xs mb-1">Nome</p>
-              <p className="text-[#2C4A3E]">{profile?.full_name}</p>
-            </div>
-            <div>
-              <p className="text-gray-400 text-xs mb-1">Telemóvel</p>
-              <p className="text-[#2C4A3E]">{profile?.phone}</p>
-            </div>
-            <div>
-              <p className="text-gray-400 text-xs mb-1">Email</p>
-              <p className="text-[#2C4A3E]">{userEmail}</p>
-            </div>
-            <div>
-              <p className="text-gray-400 text-xs mb-1">NIF</p>
-              <p className="text-[#2C4A3E]">{profile?.nif || "Não indicado"}</p>
-            </div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-serif text-[#2C4A3E] uppercase tracking-wider">Dados Pessoais</h2>
+            {!isEditingProfile && (
+              <button
+                onClick={startEditingProfile}
+                className="text-xs text-[#6FA89E] hover:text-[#5d8d84] transition-colors"
+              >
+                Editar
+              </button>
+            )}
           </div>
+          
+          {isEditingProfile && editedProfile ? (
+            <div className="space-y-4">
+              <div>
+                <label className="text-gray-400 text-xs mb-2 block">Nome</label>
+                <input
+                  type="text"
+                  value={editedProfile.full_name}
+                  onChange={(e) => setEditedProfile({ ...editedProfile, full_name: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:border-[#6FA89E] outline-none"
+                />
+              </div>
+              <div>
+                <label className="text-gray-400 text-xs mb-2 block">Telemóvel</label>
+                <input
+                  type="tel"
+                  value={editedProfile.phone}
+                  onChange={(e) => setEditedProfile({ ...editedProfile, phone: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:border-[#6FA89E] outline-none"
+                />
+              </div>
+              <div>
+                <label className="text-gray-400 text-xs mb-2 block">NIF</label>
+                <input
+                  type="text"
+                  value={editedProfile.nif || ''}
+                  onChange={(e) => setEditedProfile({ ...editedProfile, nif: e.target.value || null })}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:border-[#6FA89E] outline-none"
+                />
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={saveProfileChanges}
+                  disabled={savingProfile}
+                  className="flex-1 px-4 py-2 bg-[#6FA89E] text-white rounded-lg text-sm font-medium hover:bg-[#5d8d84] transition-all disabled:opacity-50"
+                >
+                  {savingProfile ? 'A guardar...' : 'Guardar'}
+                </button>
+                <button
+                  onClick={cancelEditingProfile}
+                  className="flex-1 px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 transition-all"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-gray-400 text-xs mb-1">Nome</p>
+                <p className="text-[#2C4A3E]">{profile?.full_name}</p>
+              </div>
+              <div>
+                <p className="text-gray-400 text-xs mb-1">Telemóvel</p>
+                <p className="text-[#2C4A3E]">{profile?.phone}</p>
+              </div>
+              <div>
+                <p className="text-gray-400 text-xs mb-1">Email</p>
+                <p className="text-[#2C4A3E]">{userEmail}</p>
+              </div>
+              <div>
+                <p className="text-gray-400 text-xs mb-1">NIF</p>
+                <p className="text-[#2C4A3E]">{profile?.nif || "Não indicado"}</p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Botão Agendar Nova Consulta */}
         <div className="mb-6">
           <Link
-            to="/contactos"
+            to="/agendamento"
             className="inline-block px-6 py-3 bg-[#6FA89E] text-white rounded-xl text-sm font-medium hover:bg-[#5d8d84] transition-all"
           >
             Agendar Nova Consulta
@@ -242,8 +340,9 @@ const DashboardPage = () => {
         {appointments.length === 0 && (
           <div className="bg-white rounded-2xl p-12 border border-gray-50 shadow-sm text-center">
             <p className="text-gray-400 text-sm mb-4">Ainda não tens consultas agendadas.</p>
+            <p className="text-gray-400 text-xs mb-6">Após marcar uma consulta no Google Calendar, ela aparecerá aqui automaticamente.</p>
             <Link
-              to="/contactos"
+              to="/agendamento"
               className="inline-block px-6 py-3 bg-[#6FA89E] text-white rounded-xl text-sm font-medium hover:bg-[#5d8d84] transition-all"
             >
               Agendar Primeira Consulta
@@ -251,7 +350,6 @@ const DashboardPage = () => {
           </div>
         )}
       </main>
-      <Footer />
     </div>
   );
 };
