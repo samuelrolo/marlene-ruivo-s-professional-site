@@ -9,8 +9,10 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const CHAT_URL = `${SUPABASE_URL}/functions/v1/nutrition-chat`;
 
 const QUICK_PROMPTS = [
-  { label: "O que é FODMAP?", message: "O que é FODMAP?" },
-  { label: "Tenho sintomas", message: "Tenho sintomas intestinais, como inchaço e desconforto. O que posso fazer?" },
+  { label: "Quem é a Dra. Marlene?", message: "Quem é a Dra. Marlene Ruivo?" },
+  { label: "O que é a abordagem FODMAP?", message: "Podes explicar a abordagem FODMAP da Dra. Marlene Ruivo?" },
+  { label: "Quero emagrecer", message: "Como posso emagrecer com a vossa abordagem?" },
+  { label: "Marcar consulta", message: "Como posso marcar uma consulta?" },
 ];
 
 // Componente de Avatar Unificado
@@ -49,6 +51,10 @@ const formatMessageWithLinks = (text: string) => {
         linkText = "📍 Agendar em Lisboa";
       } else if (cleanUrl.includes("sousiclinica")) {
         linkText = "📍 Agendar em Sintra";
+      } else if (cleanUrl.includes("instagram.com")) {
+        linkText = "📸 Instagram";
+      } else if (cleanUrl.includes("linkedin.com")) {
+        linkText = "💼 LinkedIn";
       }
       
       return (
