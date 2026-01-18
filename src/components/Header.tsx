@@ -60,13 +60,13 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-24 lg:h-36">
+        <div className="flex items-center justify-between py-4 lg:py-6">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <img
               src="/assets/logo-marlene-ruivo.png"
               alt="Drª Marlene Ruivo - Nutricionista"
-              className="h-32 lg:h-48 w-auto object-contain transition-opacity group-hover:opacity-90"
+              className="h-auto max-h-20 lg:max-h-32 w-auto object-contain transition-opacity group-hover:opacity-90"
             />
           </Link>
 
