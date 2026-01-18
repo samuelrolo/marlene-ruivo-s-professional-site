@@ -26,8 +26,8 @@ export default async function handler(req, res) {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        sender: { name: "Site Marlene Ruivo", email: "marleneruivo@gmail.com" },
-        to: [{ email: "marleneruivo@gmail.com", name: "Marlene Ruivo" }],
+        sender: { name: "Site Marlene Ruivo", email: "marleneruivonutricao@gmail.com" },
+        to: [{ email: "marleneruivonutricao@gmail.com", name: "Marlene Ruivo" }],
         replyTo: { email: email, name: name },
         subject: `Novo Contacto do Site: ${name}`,
         htmlContent: `

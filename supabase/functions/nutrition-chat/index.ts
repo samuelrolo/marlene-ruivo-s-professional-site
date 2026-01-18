@@ -52,8 +52,8 @@ async function sendNotificationEmail(userName: string, userEmail: string, userPh
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        sender: { name: "NutriGen AI", email: "marleneruivo@gmail.com" },
-        to: [{ email: "marleneruivo@gmail.com", name: "Marlene Ruivo" }],
+        sender: { name: "NutriGen AI", email: "marleneruivonutricao@gmail.com" },
+        to: [{ email: "marleneruivonutricao@gmail.com", name: "Marlene Ruivo" }],
         subject: `NutriGen: Novo Lead/Interesse de ${userName || 'Utilizador'}`,
         htmlContent: `
           <h3>A NutriGen detetou um novo interesse de consulta!</h3>

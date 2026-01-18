@@ -75,8 +75,8 @@ const ContactosPage = () => {
               </svg>
             </div>
             <h3 className="text-lg font-serif text-[#2C4A3E] mb-2">Email</h3>
-            <p className="text-sm text-gray-600 font-light">marleneruivo@gmail.com</p>
-            <a href="mailto:marleneruivo@gmail.com" className="text-[#6FA89E] text-sm font-medium hover:underline mt-3 inline-block">
+            <p className="text-sm text-gray-600 font-light">marleneruivonutricao@gmail.com</p>
+            <a href="mailto:marleneruivonutricao@gmail.com" className="text-[#6FA89E] text-sm font-medium hover:underline mt-3 inline-block">
               Enviar email →
             </a>
           </div>
