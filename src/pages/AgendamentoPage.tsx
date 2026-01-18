@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import ChatBot from '../components/ChatBot';
 
 type PricingOption = {
   id: string;
@@ -184,7 +183,6 @@ const AgendamentoPage = () => {
         </div>
       </main>
       <Footer />
-      <ChatBot />
     </div>
   );
 };

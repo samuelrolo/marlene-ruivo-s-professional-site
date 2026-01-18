@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import { CookieConsent } from "./components/CookieConsent";
+import ChatBot from "./components/ChatBot";
 import SobrePage from "./pages/SobrePage";
 import FodmapPage from "./pages/FodmapPage";
 import SintomasPage from "./pages/SintomasPage";
@@ -17,6 +18,7 @@ import NotFound from "./pages/NotFound";
 const App = () => (
   <BrowserRouter>
     <CookieConsent />
+    <ChatBot />
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/sobre" element={<SobrePage />} />

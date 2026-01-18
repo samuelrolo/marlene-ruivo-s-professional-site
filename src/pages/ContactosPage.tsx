@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import ChatBot from "../components/ChatBot";
 
 const ContactosPage = () => {
   const [name, setName] = useState("");
@@ -217,7 +216,6 @@ const ContactosPage = () => {
           </div>
         </div>
       </main>
-      <ChatBot />
       <Footer />
     </div>
   );
