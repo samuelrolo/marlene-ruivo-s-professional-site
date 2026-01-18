@@ -145,7 +145,7 @@ const ChatBot = () => {
       <button
         onClick={() => setIsOpen(true)}
         className={cn(
-          "fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center",
+          "fixed bottom-8 right-8 z-[9999] w-16 h-16 rounded-full shadow-2xl transition-all duration-300 flex items-center justify-center",
           "bg-[#6FA89E] text-white hover:bg-[#5d8d84] hover:shadow-xl",
           "border-2 border-white",
           isOpen && "scale-0 opacity-0 pointer-events-none"
@@ -165,7 +165,7 @@ const ChatBot = () => {
           "fixed z-[9999] overflow-hidden bg-white border border-gray-200 shadow-2xl transition-all duration-300 transform flex flex-col",
           isMaximized 
             ? "inset-4 md:inset-10 w-auto h-auto rounded-3xl" 
-            : "bottom-24 right-6 w-[380px] max-w-[calc(100vw-3rem)] h-[500px] rounded-2xl",
+            : "bottom-28 right-8 w-[380px] max-w-[calc(100vw-3rem)] h-[500px] rounded-2xl",
           isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-4 pointer-events-none"
         )}
       >
