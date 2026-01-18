@@ -84,7 +84,7 @@ const AgendamentoPage = () => {
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden h-[600px]">
               <iframe 
-                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2GsiuM1biYW7?gv=true" 
+                src="https://calendar.google.com/calendar/appointments/schedules/Zpde7DGsiuM1biYW7?gv=true" 
                 style={{ border: 0 }} 
                 width="100%" 
                 height="100%" 
