@@ -18,11 +18,23 @@ interface Appointment {
   created_at: string;
 }
 
+interface PatientDocument {
+  id: string;
+  title: string;
+  document_type: string;
+  description?: string;
+  file_url?: string;
+  file_name?: string;
+  file_size?: number;
+  created_at: string;
+}
+
 const DashboardPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [documents, setDocuments] = useState<PatientDocument[]>([]);
   const [userEmail, setUserEmail] = useState("");
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editedProfile, setEditedProfile] = useState<UserProfile | null>(null);
@@ -62,6 +74,16 @@ const DashboardPage = () => {
 
       if (appointmentsError) throw appointmentsError;
       setAppointments(appointmentsData || []);
+
+      // Carregar documentos
+      const { data: documentsData, error: documentsError } = await supabase
+        .from('patient_documents')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (documentsError) throw documentsError;
+      setDocuments(documentsData || []);
 
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
@@ -142,6 +164,25 @@ const DashboardPage = () => {
   const isPastAppointment = (date: string | null) => {
     if (!date) return false;
     return new Date(date) < new Date();
+  };
+
+  const getDocumentTypeLabel = (type: string) => {
+    const labels: Record<string, string> = {
+      evaluation: 'Avaliação',
+      meal_plan: 'Plano Alimentar',
+      weight_record: 'Registo de Peso',
+      intolerance: 'Intolerância',
+      clinical_analysis: 'Análise Clínica',
+      consultation_notes: 'Notas de Consulta',
+      other: 'Outro'
+    };
+    return labels[type] || type;
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
 
   const futureAppointments = appointments.filter(apt => !isPastAppointment(apt.appointment_date));
@@ -340,7 +381,54 @@ const DashboardPage = () => {
         {/* Documentos do Paciente */}
         <div className="bg-white rounded-2xl p-6 border border-gray-50 shadow-sm mb-6">
           <h2 className="text-sm font-serif text-[#2C4A3E] mb-4 uppercase tracking-wider">Os Meus Documentos</h2>
-          <p className="text-gray-400 text-sm">Os seus documentos, avaliações e planos alimentares aparecerão aqui.</p>
+          {documents.length > 0 ? (
+            <div className="space-y-3">
+              {documents.map((doc) => (
+                <div key={doc.id} className="border border-gray-100 rounded-lg p-4 hover:bg-gray-50/50 transition-all">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="inline-block px-2 py-1 bg-[#6FA89E]/10 text-[#6FA89E] text-xs rounded">
+                          {getDocumentTypeLabel(doc.document_type)}
+                        </span>
+                        <span className="text-gray-400 text-xs">
+                          {new Date(doc.created_at).toLocaleDateString('pt-PT')}
+                        </span>
+                      </div>
+                      <h3 className="text-[#2C4A3E] font-medium text-sm mb-1">{doc.title}</h3>
+                      {doc.description && (
+                        <p className="text-gray-400 text-xs mb-2">{doc.description}</p>
+                      )}
+                      {doc.file_name && (
+                        <div className="flex items-center gap-2 text-xs text-gray-400">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                          <span>{doc.file_name}</span>
+                          {doc.file_size && <span>({formatFileSize(doc.file_size)})</span>}
+                        </div>
+                      )}
+                    </div>
+                    {doc.file_url && (
+                      <a
+                        href={doc.file_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-4 px-4 py-2 bg-[#6FA89E] text-white rounded-lg text-xs font-medium hover:bg-[#5d8d84] transition-all flex items-center gap-2"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Abrir
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-sm">Os seus documentos, avaliações e planos alimentares aparecerão aqui.</p>
+          )}
         </div>
 
         {/* Sem consultas */}
