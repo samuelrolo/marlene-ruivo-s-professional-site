@@ -27,7 +27,7 @@ const RegisterPage = () => {
     e.preventDefault();
 
     if (!formData.gdprConsent) {
-      alert("Tens de aceitar os termos de tratamento de dados pessoais.");
+      alert("Tens de aceitar os termos de tratamento de dados e comunicações.");
       return;
     }
 
@@ -169,7 +169,7 @@ const RegisterPage = () => {
                   required
                 />
                 <span className="text-xs text-gray-500 leading-relaxed">
-                  Aceito o tratamento dos meus dados pessoais de acordo com o RGPD para fins de agendamento de consultas e comunicação relacionada com os serviços de nutrição.
+                  Aceito o tratamento dos meus dados pessoais de acordo com o RGPD e aceito receber informações e comunicações futuras de Marlene Ruivo.
                 </span>
               </label>
             </div>
