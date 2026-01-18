@@ -120,7 +120,7 @@ const DashboardPage = () => {
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
       <Header />
-      <main className="pt-32 pb-20 px-4 max-w-4xl mx-auto">
+      <main className="pt-40 pb-20 px-4 max-w-4xl mx-auto">
         {/* Header com Logo e Logout */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -151,12 +151,10 @@ const DashboardPage = () => {
               <p className="text-gray-400 text-xs mb-1">Email</p>
               <p className="text-[#2C4A3E]">{userEmail}</p>
             </div>
-            {profile?.nif && (
-              <div>
-                <p className="text-gray-400 text-xs mb-1">NIF</p>
-                <p className="text-[#2C4A3E]">{profile.nif}</p>
-              </div>
-            )}
+            <div>
+              <p className="text-gray-400 text-xs mb-1">NIF</p>
+              <p className="text-[#2C4A3E]">{profile?.nif || "Não indicado"}</p>
+            </div>
           </div>
         </div>
 

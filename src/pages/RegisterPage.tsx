@@ -66,7 +66,7 @@ const RegisterPage = () => {
       if (authError) throw authError;
 
       if (authData.user) {
-        alert("Conta criada com sucesso! Verifica o teu email para confirmar a conta.");
+        alert("Conta criada com sucesso! Podes agora entrar na tua conta.");
         navigate("/login");
       }
     } catch (error: any) {
