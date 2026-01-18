@@ -40,7 +40,7 @@ const LoginPage = () => {
             <img 
               src="/assets/logo-marlene-ruivo.png" 
               alt="Marlene Ruivo" 
-              className="h-16 mx-auto mb-4"
+              className="h-32 mx-auto mb-6"
             />
           </Link>
           <h1 className="text-2xl font-serif text-[#2C4A3E] mb-2">Entrar</h1>
