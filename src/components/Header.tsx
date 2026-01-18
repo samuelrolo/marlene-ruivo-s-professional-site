@@ -65,7 +65,7 @@ const Header = () => {
             <img
               src="/assets/logo-marlene-ruivo.png"
               alt="Drª Marlene Ruivo - Nutricionista"
-              className="h-24 lg:h-32 w-auto object-contain transition-opacity group-hover:opacity-90"
+              className="h-32 lg:h-48 w-auto object-contain transition-opacity group-hover:opacity-90"
             />
           </Link>
 

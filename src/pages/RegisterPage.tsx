@@ -95,7 +95,7 @@ const RegisterPage = () => {
             <img 
               src="/assets/logo-marlene-ruivo.png" 
               alt="Marlene Ruivo" 
-              className="h-32 mx-auto mb-6"
+              className="h-48 mx-auto mb-6"
             />
           </Link>
           <h1 className="text-2xl font-serif text-[#2C4A3E] mb-2">Criar Conta</h1>
