@@ -59,47 +59,46 @@ const RegisterPage = () => {
       if (authError) throw authError;
 
       if (authData.user) {
-        // Adicionar um pequeno delay para garantir que o utilizador é propagado no Supabase
-        // Isto ajuda a evitar o erro de chave estrangeira (foreign key constraint)
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Aumentar o delay inicial para 2 segundos para garantir a propagação no Supabase
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
-        // 2. Criar perfil de utilizador
-        const { error: profileError } = await supabase
-          .from('user_profiles')
-          .insert([
-            {
-              id: authData.user.id,
-              full_name: formData.fullName,
-              phone: formData.phone,
-              nif: formData.nif || null,
-              gdpr_consent: formData.gdprConsent,
-              gdpr_consent_date: new Date().toISOString()
-            }
-          ]);
-
-        if (profileError) {
-          // Se o erro for de chave estrangeira, tentar mais uma vez após 2 segundos
-          if (profileError.code === '23503') {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            const { error: retryError } = await supabase
-              .from('user_profiles')
-              .insert([
-                {
-                  id: authData.user.id,
-                  full_name: formData.fullName,
-                  phone: formData.phone,
-                  nif: formData.nif || null,
-                  gdpr_consent: formData.gdprConsent,
-                  gdpr_consent_date: new Date().toISOString()
-                }
-              ]);
-            if (retryError) throw retryError;
+        // 2. Criar perfil de utilizador com múltiplas tentativas (Exponential Backoff)
+        let profileError = null;
+        for (let i = 0; i < 3; i++) {
+          const { error } = await supabase
+            .from('user_profiles')
+            .insert([
+              {
+                id: authData.user.id,
+                full_name: formData.fullName,
+                phone: formData.phone,
+                nif: formData.nif || null,
+                gdpr_consent: formData.gdprConsent,
+                gdpr_consent_date: new Date().toISOString()
+              }
+            ]);
+          
+          if (!error) {
+            profileError = null;
+            break;
+          }
+          
+          profileError = error;
+          if (error.code === '23503') { // Foreign key violation
+            console.log(`Tentativa ${i + 1} falhou (chave estrangeira). A aguardar...`);
+            await new Promise(resolve => setTimeout(resolve, 2000 * (i + 1)));
           } else {
-            throw profileError;
+            break;
           }
         }
 
-        alert("Conta criada com sucesso! Verifica o teu email para confirmar a conta.");
+        if (profileError) {
+          console.error("Erro persistente ao criar perfil:", profileError);
+          alert("A tua conta foi criada, mas houve um pequeno atraso ao configurar o teu perfil. Por favor, tenta fazer login. Se o erro persistir, contacta o suporte.");
+        } else {
+          alert("Conta criada com sucesso! Verifica o teu email para confirmar a conta.");
+        }
+        
         navigate("/login");
       }
     } catch (error: any) {
