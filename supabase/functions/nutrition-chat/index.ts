@@ -6,6 +6,7 @@ const corsHeaders = {
 };
 
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
+const BREVO_API_KEY = Deno.env.get("BREVO_API_KEY");
 
 const SYSTEM_PROMPT = `Você é a NutriGen, a assistente virtual inteligente e especializada da Dra. Marlene Ruivo, nutricionista de referência em saúde intestinal e dieta FODMAP.
 
@@ -16,24 +17,14 @@ IDENTIDADE E POSTURA:
 
 CONTACTO DIRETO E CASOS EXTREMOS:
 - Em caso de dúvida extrema, urgência ou se o utilizador necessitar de falar diretamente com a Dra. Marlene, forneça o contacto de telemóvel/WhatsApp: +351 915 089 256.
-- Use frases como: "Em situações de dúvida extrema ou se necessitar de um contacto mais direto, pode contactar a Dra. Marlene Ruivo através do telemóvel ou WhatsApp: 915 089 256."
 
 CONHECIMENTO ESPECIALIZADO (DIETA FODMAP E NUTRIÇÃO):
-- Você tem conhecimento profundo sobre a dieta FODMAP (Fermentable Oligosaccharides, Disaccharides, Monosaccharides And Polyols).
-- Explique que a dieta tem 3 fases: Eliminação, Reintrodução e Personalização.
-- Ajude a identificar sintomas comuns: inchaço abdominal, dor, gases, alterações intestinais e fadiga.
-- Explique que a nutrição funcional foca na causa raiz dos problemas digestivos, não apenas nos sintomas.
+- Você tem conhecimento profundo sobre a dieta FODMAP. Explique as 3 fases: Eliminação, Reintrodução e Personalização.
 - NUNCA dê diagnósticos médicos. Use frases como: "Estes sinais podem indicar sensibilidade, mas é fundamental uma avaliação personalizada em consulta com a Dra. Marlene."
 
-GESTÃO DE CONVERSA E CONTEXTO:
-- Você consegue manter conversas longas e contextuais. Lembre-se do que foi dito anteriormente na sessão.
-- Se o utilizador parecer confuso, simplifique a explicação.
-- Se o utilizador fizer perguntas fora do âmbito da nutrição, responda: "Como assistente da Dra. Marlene, o meu foco é a sua saúde nutricional e intestinal. Posso ajudar com dúvidas sobre alimentação ou agendamento de consultas?"
-
-GUIA DE MARCAÇÃO DE CONSULTAS (MUITO IMPORTANTE):
+GUIA DE MARCAÇÃO DE CONSULTAS:
 - O seu papel é guiar o utilizador ativamente para a marcação.
-- Se o utilizador mostrar interesse em marcar, pergunte: "Prefere uma consulta Online ou Presencial (Mafra, Lisboa ou Sintra)?"
-- Forneça os links de agendamento direto conforme a preferência:
+- Links de agendamento direto:
   * Online: https://calendar.app.google/qhbF3KM1hqJCrcbV6
   * Mafra (Clínica Hygeia): https://hygeia.pt/agendamentos/
   * Lisboa (Instituto Bettencourt): https://institutobettencourt.com/contactos/
@@ -41,16 +32,45 @@ GUIA DE MARCAÇÃO DE CONSULTAS (MUITO IMPORTANTE):
 
 REGRAS DE LINGUAGEM (PT-PT):
 - Use EXCLUSIVAMENTE Português de Portugal.
-- Termos obrigatórios: "pequeno-almoço", "agendar", "contacte-nos", "consigo", "si", "autocarro", "telemóvel".
-- NUNCA use "você" de forma brasileira. Use o tratamento formal ou a omissão do sujeito.
 
-HORÁRIOS DE REFERÊNCIA:
-- Mafra: 2ªs feiras (Manhã)
-- Lisboa: 2ªs feiras (Tarde) e 4ªs feiras (Manhã)
-- Sintra: 3ªs feiras (Dia completo)
-- Online: 4ªs feiras (Tarde), 5ªs e 6ªs feiras.
+NOTIFICAÇÃO DE CONTACTO (NOVO):
+- Se o utilizador fornecer o seu nome, email ou telemóvel e demonstrar interesse claro em ser contactado ou em marcar uma consulta, você deve confirmar que irá passar essa informação à Dra. Marlene.
+- Internamente, você tem a capacidade de enviar um email de notificação para a Dra. Marlene com o resumo desta conversa.`;
 
-Sempre que terminar uma explicação técnica, pergunte se o utilizador gostaria de agendar uma avaliação para personalizar estas orientações.`;
+async function sendNotificationEmail(userName: string, userEmail: string, userPhone: string, conversationSummary: string) {
+  if (!BREVO_API_KEY) {
+    console.error("BREVO_API_KEY não configurada");
+    return;
+  }
+
+  try {
+    await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "api-key": BREVO_API_KEY,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: { name: "NutriGen AI", email: "marleneruivo@gmail.com" },
+        to: [{ email: "marleneruivo@gmail.com", name: "Marlene Ruivo" }],
+        subject: `NutriGen: Novo Lead/Interesse de ${userName || 'Utilizador'}`,
+        htmlContent: `
+          <h3>A NutriGen detetou um novo interesse de consulta!</h3>
+          <p><strong>Nome:</strong> ${userName || 'Não fornecido'}</p>
+          <p><strong>Email:</strong> ${userEmail || 'Não fornecido'}</p>
+          <p><strong>Telefone:</strong> ${userPhone || 'Não fornecido'}</p>
+          <hr>
+          <p><strong>Resumo da Conversa:</strong></p>
+          <p>${conversationSummary.replace(/\n/g, '<br>')}</p>
+        `,
+      }),
+    });
+    console.log("Email de notificação enviado com sucesso.");
+  } catch (error) {
+    console.error("Erro ao enviar email via Brevo:", error);
+  }
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -67,7 +87,6 @@ serve(async (req) => {
 
     const { messages } = await req.json();
     
-    // Garantir que enviamos o histórico completo para manter o contexto
     const conversationHistory = messages.map((msg: { role: string; content: string }) => ({
       role: msg.role === "user" ? "user" : "model",
       parts: [{ text: msg.content }]
@@ -92,23 +111,30 @@ serve(async (req) => {
     );
 
     const data = await response.json();
-    
-    if (data.error) {
-      console.error("Gemini API Error:", data.error);
-      throw new Error(data.error.message);
+    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Desculpe, não consegui processar a sua mensagem.";
+
+    // Lógica simples para detetar se deve enviar notificação (Lead Detection)
+    const lastUserMessage = messages[messages.length - 1]?.content?.toLowerCase() || "";
+    const isInterested = lastUserMessage.includes("marcar") || 
+                         lastUserMessage.includes("consulta") || 
+                         lastUserMessage.includes("agendar") ||
+                         (lastUserMessage.includes("@") && lastUserMessage.length > 5);
+
+    if (isInterested && messages.length >= 2) {
+      // Enviar notificação em background (não bloqueia a resposta da IA)
+      const summary = messages.slice(-4).map((m: any) => `${m.role}: ${m.content}`).join("\n");
+      sendNotificationEmail("Interessado no Chat", "Ver histórico", "Ver histórico", summary);
     }
 
-    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
     return new Response(
-      JSON.stringify({ reply: aiResponse || "Desculpe, não consegui processar a sua mensagem." }),
+      JSON.stringify({ reply: aiResponse }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
   } catch (error) {
     console.error("Function Error:", error);
     return new Response(
-      JSON.stringify({ reply: "Olá! Sou a assistente da Dra. Marlene. De momento estou com uma pequena dificuldade técnica, mas pode agendar a sua consulta diretamente na página de Contactos ou enviar um email para marleneruivonutricao@gmail.com." }),
+      JSON.stringify({ reply: "Olá! Sou a assistente da Dra. Marlene. De momento estou com uma pequena dificuldade técnica, mas pode agendar a sua consulta diretamente na página de Contactos." }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
