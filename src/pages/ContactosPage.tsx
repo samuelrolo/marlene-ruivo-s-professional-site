@@ -23,20 +23,24 @@ const ContactosPage = () => {
     setSubmitStatus('idle');
 
     try {
-      // Simular envio de email (em produção, seria feito via backend)
-      console.log('Mensagem de contacto:', { name, email, phone, message });
-      
-      // Simular delay de envio
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setSubmitStatus('success');
-      setName("");
-      setEmail("");
-      setPhone("");
-      setMessage("");
-      
-      // Limpar mensagem de sucesso após 5 segundos
-      setTimeout(() => setSubmitStatus('idle'), 5000);
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, phone, message }),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setName("");
+        setEmail("");
+        setPhone("");
+        setMessage("");
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      } else {
+        throw new Error('Falha ao enviar email');
+      }
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
       setSubmitStatus('error');
