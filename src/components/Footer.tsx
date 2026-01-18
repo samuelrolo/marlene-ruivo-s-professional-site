@@ -39,7 +39,7 @@ const Footer = () => {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-4">
               <a 
-                href="https://www.instagram.com/nutri_fodmap_marleneruivo/" 
+                href="https://www.instagram.com/nutri_fodmap_marleneruivo" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-1.5 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"

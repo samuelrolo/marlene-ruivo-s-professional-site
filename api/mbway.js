@@ -85,10 +85,10 @@ export default async function handler(req, res) {
                   </div>
                   
                   <div>
-                    <a href="https://www.instagram.com/marleneruivo.nutricao/" style="display: inline-block; margin-right: 10px; text-decoration: none;">
+                    <a href="https://www.instagram.com/nutri_fodmap_marleneruivo" style="display: inline-block; margin-right: 10px; text-decoration: none;">
                       <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" style="width: 24px; height: 24px;">
                     </a>
-                    <a href="https://www.linkedin.com/in/marlene-ruivo-0a1b2c3d/" style="display: inline-block; text-decoration: none;">
+                    <a href="https://www.linkedin.com/in/marlene-ruivo-b2a2104a/" style="display: inline-block; text-decoration: none;">
                       <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" style="width: 24px; height: 24px;">
                     </a>
                   </div>
