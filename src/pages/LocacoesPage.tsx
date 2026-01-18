@@ -1,15 +1,13 @@
-import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const LocacoesPage = () => {
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
-      <Header />
-      <main className="pt-48 lg:pt-56 pb-20 px-4 max-w-6xl mx-auto">
+      <main className="pb-20 px-4 max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Onde Atendo</span>
-          <h1 className="text-4xl md:text-5xl font-serif text-[#2C4A3E] mt-4 mb-6">Onde Estou</h1>
-          <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed font-light">Escolhe o local mais conveniente para ti: consultas presenciais ou online.</p>
+          <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Locais de Consulta</span>
+          <h1 className="text-4xl md:text-5xl font-serif text-[#2C4A3E] mt-4 mb-6">Onde Atendo</h1>
+          <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed font-light">Escolha o local mais conveniente para si: consultas presenciais em Mafra, Lisboa e Sintra, ou consultas online.</p>
         </div>
 
         {/* Horário Semanal - Invertido (Períodos nas Linhas, Dias nas Colunas) */}
@@ -104,7 +102,6 @@ const LocacoesPage = () => {
               <p className="text-[#6FA89E] text-xs font-medium mb-4 tracking-wide">Quarta (tarde), Quinta e Sexta</p>
               <p className="text-gray-400 text-sm font-light leading-relaxed max-w-md">Consultas por videochamada com total flexibilidade de horário, ideal para quem não se pode deslocar.</p>
             </div>
-
           </div>
         </div>
 
@@ -126,7 +123,6 @@ const LocacoesPage = () => {
                   <p className="text-[#6FA89E] text-[10px] font-medium mt-2 uppercase tracking-widest">{pack.save}</p>
                 </div>
                 <p className="text-gray-400 text-xs font-light mb-10 flex-1 leading-relaxed">{pack.desc}</p>
-
               </div>
             ))}
           </div>

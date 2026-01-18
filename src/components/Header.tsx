@@ -8,7 +8,7 @@ const navItems = [
   { label: 'Sobre', href: '/sobre' },
   { label: 'FODMAP', href: '/fodmap' },
   { label: 'Sintomas', href: '/sintomas' },
-  { label: 'Onde Estou', href: '/localizacoes' },
+  { label: 'Onde Atendo', href: '/localizacoes' },
   { label: 'Testemunhos', href: '/testemunhos' },
   { label: 'Contactos', href: '/contactos' },
   { label: 'Marcar Consulta', href: '/agendamento' },
