@@ -11,6 +11,7 @@ const navItems = [
   { label: 'Onde Estou', href: '/localizacoes' },
   { label: 'Testemunhos', href: '/testemunhos' },
   { label: 'Contactos', href: '/contactos' },
+  { label: 'Marcar Consulta', href: '/agendamento' },
 ];
 
 // Custom NavLink component to highlight active links
