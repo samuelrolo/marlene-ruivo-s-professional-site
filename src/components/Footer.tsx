@@ -10,8 +10,7 @@ const Footer = () => {
             <img
               src="/assets/logo-marlene-ruivo.png"
               alt="Drª Marlene Ruivo - Nutricionista"
-              className="h-10 w-auto object-contain brightness-0 invert"
-              style={{ filter: 'brightness(0) invert(1)' }}
+              className="h-16 w-auto object-contain brightness-0 invert"
             />
             <div className="flex flex-col">
               <span className="text-xs font-medium">© 2026 Marlene Ruivo</span>
