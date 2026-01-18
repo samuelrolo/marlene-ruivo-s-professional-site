@@ -6,7 +6,6 @@ export default async function handler(req, res) {
 
   const { phoneNumber, amount, email } = req.body;
   
-  // Prioridade para variáveis de ambiente da Vercel
   const mbWayKey = process.env.MBWAYKEY || 'BCS-378163';
   const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
@@ -17,7 +16,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Pedido à IFThenPay
     const ifthenUrl = 'https://mbway.ifthenpay.com/ifthenpaymbw.asmx/SetPedidoJSON';
     const orderId = 'MR' + Date.now();
 
@@ -41,7 +39,6 @@ export default async function handler(req, res) {
     const data = await ifthenResponse.json();
     console.log('Resposta IFThenPay:', data);
 
-    // 2. Se o pedido foi aceite, tentar enviar email de confirmação
     if ((data.Estado === '000' || data.Estado === '0') && email && BREVO_API_KEY) {
       try {
         console.log('Enviando email de confirmação via Brevo...');
@@ -58,19 +55,48 @@ export default async function handler(req, res) {
             bcc: [{ email: "marleneruivonutricao@gmail.com" }],
             subject: "Confirmação de Pedido de Agendamento - Dra. Marlene Ruivo",
             htmlContent: `
-              <div style="font-family: sans-serif; color: #2C4A3E; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #f0f0f0; border-radius: 20px;">
-                <h2 style="color: #6FA89E; text-align: center;">Confirmação de Pedido</h2>
-                <p>Olá,</p>
-                <p>Este email confirma a receção do pedido de agendamento para a consulta de nutrição.</p>
-                <div style="background-color: #FDFCFB; padding: 15px; border-radius: 15px; margin: 20px 0;">
-                  <p style="margin: 5px 0;"><strong>Valor:</strong> ${amount}€</p>
-                  <p style="margin: 5px 0;"><strong>Método:</strong> MB WAY (${phoneNumber})</p>
-                  <p style="margin: 5px 0;"><strong>Referência:</strong> ${orderId}</p>
+              <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #2C4A3E; max-width: 600px; margin: 0 auto; padding: 40px 20px; border: 1px solid #f0f0f0; border-radius: 24px; background-color: #ffffff;">
+                <div style="text-align: center; margin-bottom: 30px;">
+                  <img src="https://marleneruivo.pt/assets/logo-marlene-ruivo.png" alt="Dra. Marlene Ruivo" style="height: 120px; width: auto;">
                 </div>
-                <p>Para concluir o processo, basta validar a notificação na aplicação MB WAY no telemóvel. Após a confirmação do pagamento, a vaga no calendário fica garantida de forma automática.</p>
-                <p>Caso surja alguma dúvida ou dificuldade, basta responder a este email ou contactar através do número 915 089 256.</p>
-                <p style="margin-top: 30px;">Com os melhores cumprimentos,</p>
-                <p><strong>Dra. Marlene Ruivo</strong><br><small>Nutricionista</small></p>
+                
+                <h2 style="color: #6FA89E; text-align: center; font-size: 24px; margin-bottom: 20px;">Confirmação de Pedido</h2>
+                
+                <p style="font-size: 16px; line-height: 1.6;">Olá,</p>
+                <p style="font-size: 16px; line-height: 1.6;">Este email confirma a receção do pedido de agendamento para a consulta de nutrição.</p>
+                
+                <div style="background-color: #FDFCFB; padding: 25px; border-radius: 20px; margin: 30px 0; border: 1px solid #6FA89E15;">
+                  <p style="margin: 0 0 10px 0; font-size: 14px; color: #666; text-transform: uppercase; tracking: 1px;">Detalhes do Pagamento</p>
+                  <p style="margin: 5px 0; font-size: 18px;"><strong>Valor:</strong> ${amount}€</p>
+                  <p style="margin: 5px 0; font-size: 16px;"><strong>Método:</strong> MB WAY (${phoneNumber})</p>
+                  <p style="margin: 5px 0; font-size: 14px; color: #999;"><strong>Referência:</strong> ${orderId}</p>
+                </div>
+                
+                <p style="font-size: 15px; line-height: 1.6; color: #444;">Para concluir o processo, basta validar a notificação na aplicação MB WAY no telemóvel. Após a confirmação do pagamento, a vaga no calendário fica garantida de forma automática.</p>
+                
+                <p style="font-size: 15px; line-height: 1.6; color: #444;">Caso surja alguma dúvida ou dificuldade, basta responder a este email ou contactar através do número <strong>915 089 256</strong>.</p>
+                
+                <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #f0f0f0;">
+                  <p style="margin: 0; font-size: 16px; font-weight: bold; color: #2C4A3E;">Dra. Marlene Ruivo</p>
+                  <p style="margin: 4px 0 20px 0; font-size: 14px; color: #6FA89E;">Nutricionista</p>
+                  
+                  <div style="margin-bottom: 20px;">
+                    <a href="https://marleneruivo.pt" style="color: #6FA89E; text-decoration: none; font-size: 14px; margin-right: 15px;">www.marleneruivo.pt</a>
+                  </div>
+                  
+                  <div>
+                    <a href="https://www.instagram.com/marleneruivo.nutricao/" style="display: inline-block; margin-right: 10px; text-decoration: none;">
+                      <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" style="width: 24px; height: 24px;">
+                    </a>
+                    <a href="https://www.linkedin.com/in/marlene-ruivo-0a1b2c3d/" style="display: inline-block; text-decoration: none;">
+                      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" style="width: 24px; height: 24px;">
+                    </a>
+                  </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px;">
+                  <p style="font-size: 10px; color: #ccc; text-transform: uppercase; letter-spacing: 2px;">© 2026 Dra. Marlene Ruivo • Nutrição Funcional</p>
+                </div>
               </div>
             `
           })
@@ -79,8 +105,6 @@ export default async function handler(req, res) {
         if (!brevoResponse.ok) {
           const brevoError = await brevoResponse.json();
           console.error('Erro na API da Brevo:', brevoError);
-        } else {
-          console.log('Email enviado com sucesso.');
         }
       } catch (emailErr) {
         console.error('Erro ao processar envio de email:', emailErr);
