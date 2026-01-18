@@ -1,44 +1,34 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
-
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
+const SYSTEM_PROMPT = `Você é a NutriGen, a assistente virtual da Dra. Marlene Ruivo. Use Português de Portugal (PT-PT).
 
-const SYSTEM_PROMPT = `Você é a NutriGen, a assistente virtual inteligente e especializada da Dra. Marlene Ruivo, nutricionista de referência em saúde intestinal e dieta FODMAP.
+ESTAS SÃO AS ÚNICAS 4 OPÇÕES DE CONSULTA QUE EXISTEM. NÃO INVENTE OUTRAS:
+1. ONLINE: https://calendar.app.google/qhbF3KM1hqJCrcbV6
+2. MAFRA (Clínica Hygeia): https://hygeia.pt/agendamentos/
+3. LISBOA (Instituto Bettencourt): https://institutobettencourt.com/contactos/
+4. SINTRA (Clínica Sousi): https://sousiclinica.pt/contactos/
 
-IDENTIDADE: Assistente da Dra. Marlene Ruivo. Use Português de Portugal (PT-PT). Seja empática, profissional e direta.
-
-CONHECIMENTO:
-- Dra. Marlene Ruivo: Nutricionista especializada em saúde intestinal e dieta FODMAP.
-- Dieta FODMAP: Abordagem científica para reduzir sintomas de Síndrome do Intestino Irritável (SII).
-- Agendamento Online: https://calendar.app.google/qhbF3KM1hqJCrcbV6
-- Agendamento Mafra: https://hygeia.pt/agendamentos/
-
-INSTRUÇÕES:
-- Responda de forma personalizada a cada pergunta.
-- Se o utilizador perguntar como marcar consulta, forneça os links de agendamento.
-- Se o utilizador perguntar sobre a Dra. Marlene ou a dieta FODMAP, explique brevemente com base no seu conhecimento.
-- Nunca responda apenas "Olá! Como posso ajudar?" se o utilizador já fez uma pergunta específica.`;
+REGRAS CRÍTICAS:
+- Esqueça Cascais, Sesimbra ou qualquer outra localização. A Dra. Marlene Ruivo atende APENAS nas 4 opções acima.
+- Se o utilizador perguntar por consultas, marcações ou localizações, deves listar as 4 opções acima exatamente como estão.
+- NUNCA uses formatação Markdown [texto](url). Usa APENAS o URL direto e limpo.
+- Seja profissional, empática e direta.`;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
-
   try {
     const { messages } = await req.json();
-    
     if (!GOOGLE_AI_API_KEY) throw new Error("GOOGLE_AI_API_KEY não configurada.");
-
-    // Formatação correta para a API do Gemini
     const contents = messages.map((msg: any) => ({
       role: msg.role === "assistant" ? "model" : "user",
       parts: [{ text: msg.content }]
     }));
-
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GOOGLE_AI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GOOGLE_AI_API_KEY}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -46,28 +36,19 @@ serve(async (req) => {
           systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
           contents: contents,
           generationConfig: {
-            temperature: 0.7,
-            topK: 40,
-            topP: 0.95,
+            temperature: 0.0,
             maxOutputTokens: 1024,
           }
         }),
       }
     );
-
     const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.error?.message || "Erro na API do Gemini");
-    }
-
+    if (!response.ok) throw new Error(data.error?.message || "Erro na API do Gemini");
     const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Olá! Sou a NutriGen. Como posso ajudar?";
-
     return new Response(JSON.stringify({ reply: aiResponse }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" }
     });
-
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erro na Function:", error.message);
     return new Response(JSON.stringify({ 
       reply: "Olá! Sou a assistente da Dra. Marlene. De momento estou com uma pequena dificuldade técnica, mas pode agendar a sua consulta diretamente na página de Contactos."

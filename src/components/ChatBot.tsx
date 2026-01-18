@@ -165,8 +165,8 @@ const ChatBot = () => {
           "fixed z-[9999] overflow-hidden bg-white border border-gray-200 shadow-2xl transition-all duration-300 transform flex flex-col",
           isMaximized 
             ? "inset-4 md:inset-10 w-auto h-auto rounded-3xl" 
-            : "bottom-6 right-6 w-[380px] max-w-[calc(100vw-3rem)] h-[500px] rounded-2xl",
-          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
+            : "bottom-24 right-6 w-[380px] max-w-[calc(100vw-3rem)] h-[500px] rounded-2xl",
+          isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-4 pointer-events-none"
         )}
       >
         {/* Header */}
