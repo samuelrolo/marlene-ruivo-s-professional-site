@@ -336,6 +336,12 @@ const DashboardPage = () => {
           </div>
         )}
 
+        {/* Documentos do Paciente */}
+        <div className="bg-white rounded-2xl p-6 border border-gray-50 shadow-sm mb-6">
+          <h2 className="text-sm font-serif text-[#2C4A3E] mb-4 uppercase tracking-wider">Os Meus Documentos</h2>
+          <p className="text-gray-400 text-sm">Os seus documentos, avaliações e planos alimentares aparecerão aqui.</p>
+        </div>
+
         {/* Sem consultas */}
         {appointments.length === 0 && (
           <div className="bg-white rounded-2xl p-12 border border-gray-50 shadow-sm text-center">
