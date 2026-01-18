@@ -14,6 +14,7 @@ import AgendamentoPage from "./pages/AgendamentoPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
+import AdminPanelPage from "./pages/AdminPanelPage";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
@@ -35,6 +36,7 @@ const App = () => (
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/admin" element={<AdminPanelPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
