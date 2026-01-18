@@ -160,7 +160,7 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
-      <main className="pb-20 px-4 max-w-4xl mx-auto pt-32">
+      <main className="pb-20 px-4 max-w-4xl mx-auto" style={{ paddingTop: '180px' }}>
         {/* Header com Logo e Logout */}
         <div className="flex items-center justify-between mb-8">
           <div>
