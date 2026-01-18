@@ -1,13 +1,11 @@
-import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
-      <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-40 pb-20 px-4 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <section className="pt-10 pb-20 px-4 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <div className="flex gap-2">
               <span className="px-4 py-1 rounded-full bg-[#6FA89E]/10 text-[#6FA89E] text-xs font-medium uppercase tracking-widest">Saúde intestinal</span>

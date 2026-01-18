@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import Header from '../components/Header';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { supabase } from "../lib/supabaseClient";
 import Footer from '../components/Footer';
+import { User, LogIn, Info } from 'lucide-react';
 
 type PricingOption = {
   id: string;
@@ -12,9 +14,13 @@ type PricingOption = {
 
 const AgendamentoPage = () => {
   const [selectedOption, setSelectedOption] = useState<string>('avulso-60');
+  const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [nif, setNif] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
 
   const pricingOptions: PricingOption[] = [
     { id: 'avulso-60', name: 'Consulta Avulso', price: 60, description: '1ª consulta', type: 'avulso' },
@@ -26,11 +32,37 @@ const AgendamentoPage = () => {
 
   const selectedPricing = pricingOptions.find(opt => opt.id === selectedOption);
 
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  const checkUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      setIsLoggedIn(true);
+      setEmail(user.email || '');
+      
+      // Carregar perfil para preenchimento automático
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      
+      if (profile) {
+        setUserProfile(profile);
+        setName(profile.full_name || '');
+        setPhone(profile.phone || '');
+        setNif(profile.nif || '');
+      }
+    }
+  };
+
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!phone || !email) {
-      alert('Por favor, preencha todos os campos.');
+    if (!phone || !email || !name) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
@@ -43,9 +75,11 @@ const AgendamentoPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          name,
           phoneNumber: phone,
           amount: selectedPricing?.price.toFixed(2),
-          email: email
+          email: email,
+          nif: nif
         }),
       });
 
@@ -53,8 +87,12 @@ const AgendamentoPage = () => {
 
       if (result.Estado === '000' || result.Estado === '0') {
         alert(`Pedido de pagamento enviado com sucesso!\n\nValor: €${selectedPricing?.price}\nTelemóvel: ${phone}\n\nPor favor, confirme na sua aplicação MB WAY.`);
-        setPhone('');
-        setEmail('');
+        if (!isLoggedIn) {
+          setName('');
+          setPhone('');
+          setEmail('');
+          setNif('');
+        }
       } else {
         alert(`Erro ao processar pagamento: ${result.Message || result.error || 'Erro desconhecido'}`);
       }
@@ -68,8 +106,7 @@ const AgendamentoPage = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
-      <Header />
-      <main className="pt-40 pb-20 px-4 max-w-6xl mx-auto">
+      <main className="pb-20 px-4 max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Agendamento Online</span>
           <h1 className="text-4xl font-serif text-[#2C4A3E] mt-4 mb-4">Marque a sua Consulta</h1>
@@ -77,6 +114,40 @@ const AgendamentoPage = () => {
             Escolha o horário que melhor lhe convém no calendário abaixo e finalize o pagamento via MB WAY para confirmar a sua vaga.
           </p>
         </div>
+
+        {/* Banner de Incentivo ao Login */}
+        {!isLoggedIn && (
+          <div className="mb-10 bg-[#6FA89E]/5 border border-[#6FA89E]/20 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#6FA89E]/10 flex items-center justify-center text-[#6FA89E]">
+                <Info className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-[#2C4A3E]">Já tem conta de paciente?</p>
+                <p className="text-xs text-gray-500">Faça login para preencher os seus dados automaticamente.</p>
+              </div>
+            </div>
+            <Link 
+              to="/login" 
+              className="flex items-center gap-2 px-6 py-2.5 bg-white border border-[#6FA89E]/30 text-[#6FA89E] rounded-xl text-sm font-medium hover:bg-[#6FA89E]/5 transition-all"
+            >
+              <LogIn className="w-4 h-4" />
+              Entrar na Conta
+            </Link>
+          </div>
+        )}
+
+        {isLoggedIn && (
+          <div className="mb-10 bg-green-50 border border-green-100 rounded-2xl p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+              <User className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-green-800">Sessão iniciada como {userProfile?.full_name || 'Paciente'}</p>
+              <p className="text-xs text-green-600/80">Os seus dados foram preenchidos automaticamente.</p>
+            </div>
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Coluna 1 & 2: Calendário */}
@@ -130,7 +201,19 @@ const AgendamentoPage = () => {
 
               <form onSubmit={handlePayment} className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Telemóvel MB WAY</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1 block">Nome Completo *</label>
+                  <input 
+                    type="text" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="O seu nome" 
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1 block">Telemóvel MB WAY *</label>
                   <input 
                     type="tel" 
                     value={phone}
@@ -142,7 +225,7 @@ const AgendamentoPage = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Email</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1 block">Email *</label>
                   <input 
                     type="email" 
                     value={email}
@@ -150,6 +233,17 @@ const AgendamentoPage = () => {
                     placeholder="seu@email.com" 
                     className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm"
                     required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1 block">NIF (Opcional)</label>
+                  <input 
+                    type="text" 
+                    value={nif}
+                    onChange={(e) => setNif(e.target.value)}
+                    placeholder="Contribuinte para fatura" 
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-[#6FA89E]/30 focus:ring-0 transition-all text-sm"
                   />
                 </div>
 

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 const ContactosPage = () => {
@@ -50,8 +49,7 @@ const ContactosPage = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
-      <Header />
-      <main className="pt-40 pb-20 px-4 max-w-6xl mx-auto">
+      <main className="pb-20 px-4 max-w-6xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-16">
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">
