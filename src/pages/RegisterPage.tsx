@@ -59,6 +59,10 @@ const RegisterPage = () => {
       if (authError) throw authError;
 
       if (authData.user) {
+        // Adicionar um pequeno delay para garantir que o utilizador é propagado no Supabase
+        // Isto ajuda a evitar o erro de chave estrangeira (foreign key constraint)
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
         // 2. Criar perfil de utilizador
         const { error: profileError } = await supabase
           .from('user_profiles')
@@ -73,7 +77,27 @@ const RegisterPage = () => {
             }
           ]);
 
-        if (profileError) throw profileError;
+        if (profileError) {
+          // Se o erro for de chave estrangeira, tentar mais uma vez após 2 segundos
+          if (profileError.code === '23503') {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            const { error: retryError } = await supabase
+              .from('user_profiles')
+              .insert([
+                {
+                  id: authData.user.id,
+                  full_name: formData.fullName,
+                  phone: formData.phone,
+                  nif: formData.nif || null,
+                  gdpr_consent: formData.gdprConsent,
+                  gdpr_consent_date: new Date().toISOString()
+                }
+              ]);
+            if (retryError) throw retryError;
+          } else {
+            throw profileError;
+          }
+        }
 
         alert("Conta criada com sucesso! Verifica o teu email para confirmar a conta.");
         navigate("/login");
