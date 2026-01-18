@@ -184,7 +184,7 @@ const ChatBot = () => {
       {/* Janela do chat */}
       <div
         className={cn(
-          "fixed z-50 overflow-hidden bg-white border border-gray-200 shadow-2xl transition-all duration-300 transform flex flex-col",
+          "fixed z-[9999] overflow-hidden bg-white border border-gray-200 shadow-2xl transition-all duration-300 transform flex flex-col",
           isMaximized 
             ? "inset-4 md:inset-10 w-auto h-auto rounded-3xl" 
             : "left-4 top-1/2 -translate-y-1/2 w-[380px] max-w-[calc(100vw-3rem)] h-[500px] rounded-2xl",
