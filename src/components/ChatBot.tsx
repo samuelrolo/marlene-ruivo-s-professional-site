@@ -1,18 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, Loader2, ChevronRight, Leaf, Maximize2, Minimize2 } from 'lucide-react';
+import { X, Send, Loader2, Leaf, Maximize2, Minimize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type Message = { role: "user" | "assistant"; content: string };
 
 const SUPABASE_URL = 'https://hihzmjqkszcxxdrhnqpy.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhpaHptanFrc3pjeHhkcmhucXB5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMjc1ODMsImV4cCI6MjA4MzkwMzU4M30.gKVFx9ZUO8rjtrPDkcUBRToexX2IlmkwZY2S3IgwNkY';
 const CHAT_URL = `${SUPABASE_URL}/functions/v1/nutrition-chat`;
 
 const QUICK_PROMPTS = [
-  { label: "Quem é a Dra. Marlene?", message: "Quem é a Dra. Marlene Ruivo?" },
-  { label: "O que é a abordagem FODMAP?", message: "Podes explicar a abordagem FODMAP da Dra. Marlene Ruivo?" },
-  { label: "Quero emagrecer", message: "Como posso emagrecer com a vossa abordagem?" },
   { label: "Marcar consulta", message: "Como posso marcar uma consulta?" },
+  { label: "Triagem de sintomas", message: "Gostaria de fazer uma triagem de sintomas." },
+  { label: "Analisar rótulo", message: "Podes ajudar-me a analisar um rótulo alimentar?" },
+  { label: "Receitas Low FODMAP", message: "Sugeres algumas receitas Low FODMAP?" },
 ];
 
 // Componente de Avatar Unificado
@@ -106,9 +105,7 @@ const ChatBot = () => {
       const resp = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${SUPABASE_KEY}`,
-          "apikey": SUPABASE_KEY
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({ messages: [...messages, userMsg] })
       });
@@ -118,7 +115,7 @@ const ChatBot = () => {
       const data = await resp.json();
       const assistantMsg: Message = { 
         role: "assistant", 
-        content: data.reply || data.choices?.[0]?.message?.content || "Desculpa, não consegui processar a tua mensagem." 
+        content: data.reply || "Desculpa, não consegui processar a tua mensagem." 
       };
       setMessages(prev => [...prev, assistantMsg]);
     } catch (err) {
@@ -144,42 +141,23 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* Tab vertical à esquerda - Posicionado no lado oposto ao scroll */}
-      <div className={cn(
-        "fixed left-0 top-1/2 -translate-y-1/2 z-50 flex items-center",
-        "transition-all duration-300",
-        isOpen && "-translate-x-full opacity-0 pointer-events-none"
-      )}>
-        {/* Caixa vertical - mais estreita, arredondada, com bevel */}
-        <div 
-          className="bg-[#6FA89E] text-white px-2 py-6 flex flex-col items-center gap-4 rounded-r-xl"
-          style={{
-            boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.2), inset 0 -2px 4px rgba(0,0,0,0.1), 2px 0 8px rgba(0,0,0,0.1)'
-          }}
-        >
-          {/* Avatar minimalista NG + Folha */}
-          <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center relative border border-white/30 shadow-inner">
-            <span className="text-[10px] font-bold text-white tracking-tighter">NG</span>
-            <Leaf className="absolute -right-0.5 -bottom-0.5 w-3 h-3 text-white opacity-80 rotate-12" />
-          </div>
-          
-          {/* Texto vertical - mais fino e elegante */}
-          <div className="flex flex-col items-center gap-1 text-xs font-semibold tracking-widest uppercase">
-            {'NutriGen'.split('').map((letter, i) => (
-              <span key={i} className="leading-none">{letter}</span>
-            ))}
-          </div>
+      {/* Botão Flutuante Circular */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className={cn(
+          "fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center",
+          "bg-[#6FA89E] text-white hover:bg-[#5d8d84] hover:shadow-xl",
+          "border-2 border-white",
+          isOpen && "scale-0 opacity-0 pointer-events-none"
+        )}
+        aria-label="Abrir NutriGen"
+        title="Abrir NutriGen"
+      >
+        <div className="flex flex-col items-center justify-center gap-0.5">
+          <Leaf className="w-5 h-5" />
+          <span className="text-[10px] font-bold tracking-tighter">NG</span>
         </div>
-
-        {/* Botão semi-circular para abrir */}
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-[#6FA89E] text-white p-3 rounded-r-full shadow-md hover:bg-[#5d8d84] transition-all hover:shadow-lg"
-          aria-label="Abrir NutriGen"
-        >
-          <ChevronRight className="w-5 h-5 animate-pulse" />
-        </button>
-      </div>
+      </button>
 
       {/* Janela do chat */}
       <div
@@ -187,8 +165,8 @@ const ChatBot = () => {
           "fixed z-[9999] overflow-hidden bg-white border border-gray-200 shadow-2xl transition-all duration-300 transform flex flex-col",
           isMaximized 
             ? "inset-4 md:inset-10 w-auto h-auto rounded-3xl" 
-            : "left-4 top-1/2 -translate-y-1/2 w-[380px] max-w-[calc(100vw-3rem)] h-[500px] rounded-2xl",
-          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none translate-x-0"
+            : "bottom-6 right-6 w-[380px] max-w-[calc(100vw-3rem)] h-[500px] rounded-2xl",
+          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         )}
       >
         {/* Header */}
