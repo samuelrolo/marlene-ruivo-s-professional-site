@@ -38,30 +38,26 @@ const AgendamentoPage = () => {
     setLoading(true);
     
     try {
-      const response = await fetch('https://share2inspire-backend.vercel.app/api/payment/initiate', {
+      const response = await fetch('/api/mbway', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          amount: selectedPricing?.price,
-          phone: phone,
-          email: email,
-          name: 'Cliente Marlene Ruivo',
-          description: `Consulta Marlene Ruivo: ${selectedPricing?.name} (${selectedPricing?.description})`,
-          paymentMethod: 'mbway',
-          orderId: `MR-${Date.now()}`
+          phoneNumber: phone,
+          amount: selectedPricing?.price.toFixed(2),
+          email: email
         }),
       });
 
       const result = await response.json();
 
-      if (result.success) {
+      if (result.Estado === '000' || result.Estado === '0') {
         alert(`Pedido de pagamento enviado com sucesso!\n\nValor: €${selectedPricing?.price}\nTelemóvel: ${phone}\n\nPor favor, confirme na sua aplicação MB WAY.`);
         setPhone('');
         setEmail('');
       } else {
-        alert(`Erro ao processar pagamento: ${result.error || 'Erro desconhecido'}`);
+        alert(`Erro ao processar pagamento: ${result.Message || result.error || 'Erro desconhecido'}`);
       }
     } catch (error) {
       console.error('Erro ao processar pagamento:', error);
@@ -74,7 +70,7 @@ const AgendamentoPage = () => {
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
       <Header />
-      <main className="pt-32 pb-20 px-4 max-w-6xl mx-auto">
+      <main className="pt-40 pb-20 px-4 max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Agendamento Online</span>
           <h1 className="text-4xl font-serif text-[#2C4A3E] mt-4 mb-4">Marque a sua Consulta</h1>

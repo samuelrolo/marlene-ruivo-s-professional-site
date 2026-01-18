@@ -6,8 +6,7 @@ module.exports = async (req, res) => {
   }
 
   const { phoneNumber, amount, email } = req.body;
-  // const mbWayKey = process.env.MBWAY_KEY;
-  const mbWayKey = 'BCS-378163'; // Updated API Key
+  const mbWayKey = process.env.MBWAY_KEY || 'BCS-378163';
 
   if (!mbWayKey) {
     return res.status(500).json({ error: 'Configuração em falta: MBWAY_KEY não encontrada no servidor.' });
