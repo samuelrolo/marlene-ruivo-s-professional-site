@@ -98,8 +98,8 @@ const ContactosPage = () => {
               </svg>
             </div>
             <h3 className="text-lg font-serif text-[#2C4A3E] mb-2">Localização</h3>
-            <p className="text-sm text-gray-600 font-light">Estrada Principal 56<br />Igreja Nova, Mafra<br />2640-303</p>
-            <a href="https://maps.google.com/?q=Estrada+Principal+56+Igreja+Nova+Mafra" target="_blank" rel="noopener noreferrer" className="text-[#6FA89E] text-sm font-medium hover:underline mt-3 inline-block">
+            <p className="text-sm text-gray-600 font-light">Mafra</p>
+            <a href="https://maps.google.com/?q=Mafra" target="_blank" rel="noopener noreferrer" className="text-[#6FA89E] text-sm font-medium hover:underline mt-3 inline-block">
               Ver no mapa →
             </a>
           </div>
@@ -108,41 +108,20 @@ const ContactosPage = () => {
         {/* Horários Section */}
         <div className="bg-gradient-to-br from-[#6FA89E]/5 to-[#0f766e]/5 rounded-3xl p-8 md:p-12 mb-16 border border-[#6FA89E]/10">
           <h2 className="text-2xl font-serif text-[#2C4A3E] mb-8 text-center">Horários de Atendimento</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-sm font-bold text-[#6FA89E] uppercase tracking-wider mb-4">Consultas Presenciais</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Segunda a Sexta</span>
-                  <span className="font-medium text-[#2C4A3E]">09:00 - 18:00</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Sábado</span>
-                  <span className="font-medium text-[#2C4A3E]">10:00 - 14:00</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Domingo</span>
-                  <span className="font-medium text-[#2C4A3E]">Fechado</span>
-                </div>
+          <div className="max-w-md mx-auto">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center p-4 bg-white/50 rounded-2xl border border-[#6FA89E]/10">
+                <span className="text-gray-600 font-medium">Segunda a Sexta</span>
+                <span className="font-serif text-[#2C4A3E] text-lg">09:00 - 18:00</span>
+              </div>
+              <div className="flex justify-between items-center p-4 bg-white/30 rounded-2xl border border-gray-100">
+                <span className="text-gray-400">Sábado e Domingo</span>
+                <span className="text-gray-400 font-light italic">Fechado</span>
               </div>
             </div>
-            <div>
-              <h3 className="text-sm font-bold text-[#6FA89E] uppercase tracking-wider mb-4">Consultas Online</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Segunda a Sexta</span>
-                  <span className="font-medium text-[#2C4A3E]">09:00 - 20:00</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Sábado</span>
-                  <span className="font-medium text-[#2C4A3E]">10:00 - 16:00</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Domingo</span>
-                  <span className="font-medium text-[#2C4A3E]">Por agendamento</span>
-                </div>
-              </div>
-            </div>
+            <p className="text-center text-[10px] text-gray-400 mt-6 uppercase tracking-widest">
+              * Horário aplicável a consultas presenciais e online
+            </p>
           </div>
         </div>
 
