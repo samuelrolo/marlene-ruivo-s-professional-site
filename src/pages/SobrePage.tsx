@@ -60,22 +60,31 @@ const SobrePage = () => {
               <div>
                 <h3 className="text-base font-medium text-[#2C4A3E] mb-4">Licenças e Certificados</h3>
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Award className="w-6 h-6 text-[#2C4A3E]" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-700">Identification and management disordered eating in gastrointestinal disorders</p>
-                      <p className="text-xs text-gray-500">Monash University · Jun 2023</p>
+                  {/* 2023 */}
+                  <div className="border-l-2 border-[#D4E8E4] pl-4">
+                    <p className="text-xs font-medium text-[#2C4A3E] mb-2">2023</p>
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Award className="w-5 h-5 text-[#2C4A3E]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">Identification and management disordered eating in gastrointestinal disorders</p>
+                        <p className="text-xs text-gray-500">Monash University · Junho 2023</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Award className="w-6 h-6 text-[#2C4A3E]" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-700">Dieta Low Fodmap</p>
-                      <p className="text-xs text-gray-500">Monash University · Mai 2021</p>
+                  
+                  {/* 2021 */}
+                  <div className="border-l-2 border-[#D4E8E4] pl-4">
+                    <p className="text-xs font-medium text-[#2C4A3E] mb-2">2021</p>
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Award className="w-5 h-5 text-[#2C4A3E]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">Dieta Low FODMAP</p>
+                        <p className="text-xs text-gray-500">Monash University · Maio 2021</p>
+                      </div>
                     </div>
                   </div>
                 </div>
