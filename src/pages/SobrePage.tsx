@@ -33,9 +33,7 @@ const SobrePage = () => {
           <div className="bg-white rounded-3xl p-10 border border-gray-100 shadow-sm">
             <h2 className="text-2xl font-serif text-[#2C4A3E] mb-6">A Minha Missão</h2>
             <p className="text-gray-500 text-sm font-light leading-relaxed">
-              Devolver o prazer de comer e a liberdade de viver a quem sofre de problemas digestivos.
-              Através de uma abordagem personalizada e baseada em evidência científica, ajudo os meus
-              pacientes a recuperar a sua qualidade de vida.
+              Com uma carreira de cerca de 15 anos como Nutricionista Clínica, desenvolvi uma prática consolidada em clínica privada, onde tive o privilégio de acompanhar centenas de pessoas em diferentes fases da vida. A minha abordagem é pautada por um atendimento personalizado, sempre baseado na mais recente evidência científica e no respeito pela individualidade de cada paciente. A minha principal área de foco tem sido a perda de peso e a obesidade, onde ajudo os pacientes a alcançar os seus objetivos de forma saudável e sustentável, promovendo uma relação equilibrada com a alimentação. Para além desta área, trabalhei também com pessoas ligadas ao desporto, bem como em contextos de gravidez e pós-parto, a adaptar a intervenção nutricional às necessidades específicas de cada fase.
             </p>
           </div>
           
@@ -51,9 +49,7 @@ const SobrePage = () => {
             <div className="bg-white rounded-3xl p-10 border border-gray-100 shadow-sm">
               <h2 className="text-2xl font-serif text-[#2C4A3E] mb-6">Experiência</h2>
               <p className="text-gray-500 text-sm font-light leading-relaxed">
-                Anos de experiência a ajudar pacientes com síndrome do intestino irritável,
-                intolerâncias alimentares e outros problemas digestivos a encontrar alívio
-                através da alimentação adequada.
+                Nos últimos cinco anos, dediquei-me de forma mais aprofundada à área da saúde gastrointestinal, a realizar várias formações especializadas em Síndrome do Intestino Irritável, SIBO, entre outras patologias digestivas. Esta especialização permitiu-me desenvolver uma abordagem mais completa e integrada, a ajudar pessoas que convivem diariamente com sintomas digestivos a melhorar significativamente a sua qualidade de vida. A minha experiência estende-se ainda à nutrição comunitária, onde integro a elaboração de ementas escolares e fichas técnicas, a colaborar com instituições na promoção de hábitos alimentares mais equilibrados e adequados. Acredito que a nutrição vai muito além de planos alimentares. É um processo de acompanhamento, educação e mudança sustentável, ajustado à realidade, aos objetivos e ao estilo de vida de cada pessoa. O meu compromisso é capacitar cada paciente com as ferramentas necessárias para tomar decisões informadas e alcançar um bem-estar duradouro.
               </p>
             </div>
           </div>
