@@ -14,8 +14,19 @@ import AgendamentoPage from "./pages/AgendamentoPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
-import AdminPanelPage from "./pages/AdminPanelPage";
 import NotFound from "./pages/NotFound";
+
+// Admin Pages
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDocumentsPage from "./pages/admin/AdminDocumentsPage";
+import AllocateQuestionnairePage from "./pages/admin/AllocateQuestionnairePage";
+import AllocateFODMAPPage from "./pages/admin/AllocateFODMAPPage";
+
+// Patient Pages
+import QuestionnairesList from "./pages/patient/QuestionnairesList";
+import QuestionnaireFormPage from "./pages/patient/QuestionnaireFormPage";
+import QuestionnaireResultPage from "./pages/patient/QuestionnaireResultPage";
+import FODMAPChecklistPage from "./pages/patient/FODMAPChecklistPage";
 
 const App = () => (
   <BrowserRouter>
@@ -24,6 +35,7 @@ const App = () => (
     <Header />
     <main className="pt-24 lg:pt-32">
       <Routes>
+        {/* Rotas Públicas */}
         <Route path="/" element={<HomePage />} />
         <Route path="/sobre" element={<SobrePage />} />
         <Route path="/fodmap" element={<FodmapPage />} />
@@ -35,8 +47,27 @@ const App = () => (
         <Route path="/agendamento" element={<AgendamentoPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+
+        {/* Dashboard do Paciente */}
         <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/admin" element={<AdminPanelPage />} />
+        
+        {/* Rotas de Questionários do Paciente */}
+        <Route path="/dashboard/questionarios" element={<QuestionnairesList />} />
+        <Route path="/dashboard/questionarios/:id" element={<QuestionnaireFormPage />} />
+        <Route path="/dashboard/questionarios/:id/resultado" element={<QuestionnaireResultPage />} />
+        
+        {/* Rota de Checklist FODMAP do Paciente */}
+        <Route path="/dashboard/fodmap" element={<FODMAPChecklistPage />} />
+
+        {/* Painel Administrativo com Sub-rotas */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDocumentsPage />} />
+          <Route path="documentos" element={<AdminDocumentsPage />} />
+          <Route path="questionarios/alocar" element={<AllocateQuestionnairePage />} />
+          <Route path="fodmap/alocar" element={<AllocateFODMAPPage />} />
+        </Route>
+
+        {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
