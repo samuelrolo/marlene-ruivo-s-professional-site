@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "../../lib/supabaseClient";
 import { FileText, Apple, FolderOpen, Menu, X } from "lucide-react";
 
 const ADMIN_EMAIL = "marleneruivonutricao@gmail.com";

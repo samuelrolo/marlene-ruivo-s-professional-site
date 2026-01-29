@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import { Questionnaire } from '@/types/questionnaire';
+import { supabase } from '../../lib/supabaseClient';
+import { Questionnaire } from '../../types/questionnaire';
 import { Loader2, FileText, User, Calendar, StickyNote, CheckCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
 interface Patient {
   id: string;
