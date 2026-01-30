@@ -21,6 +21,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDocumentsPage from "./pages/admin/AdminDocumentsPage";
 import AllocateQuestionnairePage from "./pages/admin/AllocateQuestionnairePage";
 import AllocateFODMAPPage from "./pages/admin/AllocateFODMAPPage";
+import QuestionnaireResultsPage from "./pages/admin/QuestionnaireResultsPage";
 
 // Patient Pages
 import QuestionnairesList from "./pages/patient/QuestionnairesList";
@@ -64,6 +65,7 @@ const App = () => (
           <Route index element={<AdminDocumentsPage />} />
           <Route path="documentos" element={<AdminDocumentsPage />} />
           <Route path="questionarios/alocar" element={<AllocateQuestionnairePage />} />
+          <Route path="questionarios/resultados" element={<QuestionnaireResultsPage />} />
           <Route path="fodmap/alocar" element={<AllocateFODMAPPage />} />
         </Route>
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
-import { FileText, Apple, FolderOpen, Menu, X } from "lucide-react";
+import { FileText, Apple, FolderOpen, Menu, X, BarChart3 } from "lucide-react";
 
 const ADMIN_EMAILS = [
   "marleneruivonutricao@gmail.com",
@@ -47,6 +47,12 @@ const AdminLayout = () => {
       icon: FileText,
       label: "Alocar Questionários",
       description: "Atribuir questionários a pacientes"
+    },
+    {
+      path: "/admin/questionarios/resultados",
+      icon: BarChart3,
+      label: "Ver Respostas",
+      description: "Visualizar respostas dos pacientes"
     },
     {
       path: "/admin/fodmap/alocar",
@@ -95,7 +101,7 @@ const AdminLayout = () => {
           </div>
 
           {/* Menu de Navegação - Desktop */}
-          <div className="hidden lg:grid lg:grid-cols-3 gap-4">
+          <div className="hidden lg:grid lg:grid-cols-4 gap-4">
             {menuItems.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.path);
