@@ -24,28 +24,28 @@ export const PatientHealthDataPage: React.FC = () => {
     try {
       setLoading(true);
 
-      // Carregar todos os pacientes
-      const { data: patientsData, error: patientsError } = await supabase
-        .from('user_profiles')
-        .select('id, full_name, email, role')
-        .eq('role', 'patient')
-        .order('full_name');
-
-      if (patientsError) throw patientsError;
-
-      // Carregar dados de saúde de todos os pacientes
+      // Carregar dados de saúde com informação do paciente (JOIN)
       const { data: healthData, error: healthError } = await supabase
         .from('patient_health_data')
-        .select('*');
+        .select(`
+          *,
+          user_profiles!patient_id (
+            id,
+            full_name,
+            email,
+            role
+          )
+        `);
 
-      if (healthError) throw healthError;
+      if (healthError) {
+        console.error('Erro ao carregar dados de saúde:', healthError);
+        throw healthError;
+      }
 
       console.log('Health data from Supabase:', healthData);
 
-      // Combinar dados
-      const combined: PatientWithHealthData[] = (patientsData || []).map((patient: any) => {
-        const health = healthData?.find((h: any) => h.patient_id === patient.id);
-        
+      // Transformar dados
+      const combined: PatientWithHealthData[] = (healthData || []).map((health: any) => {
         // Parse responses se vier como string
         if (health && typeof health.responses === 'string') {
           try {
@@ -56,7 +56,9 @@ export const PatientHealthDataPage: React.FC = () => {
         }
         
         return {
-          ...patient,
+          id: health.user_profiles.id,
+          full_name: health.user_profiles.full_name,
+          email: health.user_profiles.email,
           health_data: health
         };
       });
