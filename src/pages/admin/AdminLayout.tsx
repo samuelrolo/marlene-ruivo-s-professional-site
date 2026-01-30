@@ -3,7 +3,10 @@ import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import { FileText, Apple, FolderOpen, Menu, X } from "lucide-react";
 
-const ADMIN_EMAIL = "marleneruivonutricao@gmail.com";
+const ADMIN_EMAILS = [
+  "marleneruivonutricao@gmail.com",
+  "samuelrolo@gmail.com"
+];
 
 const AdminLayout = () => {
   const navigate = useNavigate();
@@ -19,7 +22,7 @@ const AdminLayout = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
-      if (!user || user.email !== ADMIN_EMAIL) {
+      if (!user || !ADMIN_EMAILS.includes(user.email)) {
         alert("Acesso negado. Esta área é exclusiva para administradores.");
         navigate("/");
         return;

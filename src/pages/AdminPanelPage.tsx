@@ -19,7 +19,10 @@ interface PatientDocument {
   created_at: string;
 }
 
-const ADMIN_EMAIL = "marleneruivonutricao@gmail.com";
+const ADMIN_EMAILS = [
+  "marleneruivonutricao@gmail.com",
+  "samuelrolo@gmail.com"
+];
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 
 const AdminPanelPage = () => {
@@ -44,7 +47,7 @@ const AdminPanelPage = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
-      if (!user || user.email !== ADMIN_EMAIL) {
+      if (!user || !ADMIN_EMAILS.includes(user.email)) {
         alert("Acesso negado. Esta área é exclusiva para administradores.");
         navigate("/");
         return;
