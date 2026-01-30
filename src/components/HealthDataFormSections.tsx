@@ -218,15 +218,6 @@ export const Section1: React.FC<SectionProps> = ({ formData, updateFormData, err
         placeholder="Digite a sua profissão"
       />
     )}
-
-    <FormInput
-      label="Data da Consulta"
-      type="date"
-      value={formData.dataConsulta}
-      onChange={(value) => updateFormData('dataConsulta', value)}
-      error={errors.dataConsulta}
-      required
-    />
   </div>
 );
 

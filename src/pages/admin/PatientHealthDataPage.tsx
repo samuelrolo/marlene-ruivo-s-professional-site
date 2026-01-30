@@ -323,7 +323,6 @@ const PatientDetailsModal: React.FC<{
             <DataRow label="Data de Nascimento" value={data.dataNascimento} />
             <DataRow label="Morada" value={data.morada} />
             <DataRow label="Profissão" value={data.profissao === 'Outro' ? data.profissaoOutro : data.profissao} />
-            <DataRow label="Data da Consulta" value={data.dataConsulta} />
           </Section>
 
           {/* Secção 2: Objetivos da Consulta */}

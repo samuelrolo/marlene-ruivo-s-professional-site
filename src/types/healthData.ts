@@ -7,7 +7,6 @@ export interface HealthDataFormData {
   morada: string;
   profissao: string;
   profissaoOutro?: string;
-  dataConsulta: string;
 
   // 2. Objetivos da Consulta
   objetivosConsulta: string[];
@@ -75,11 +74,37 @@ export interface PatientHealthData {
 }
 
 export const PROFISSAO_OPTIONS = [
-  'Estudante',
-  'Empregado(a) por conta de outrem',
-  'Trabalhador(a) independente',
-  'Reformado(a)',
+  'Administrativo(a)',
+  'Advogado(a)',
+  'Arquiteto(a)',
+  'Assistente Social',
+  'Atleta Profissional',
+  'Comercial/Vendas',
+  'Consultor(a)',
+  'Contabilista',
   'Desempregado(a)',
+  'Designer',
+  'Educador(a) de Infância',
+  'Empresário(a)',
+  'Enfermeiro(a)',
+  'Engenheiro(a)',
+  'Esteticista',
+  'Estudante',
+  'Farmácêutico(a)',
+  'Fisioterapeuta',
+  'Funcionário(a) Público(a)',
+  'Gestor(a)',
+  'Informático(a)/Programador(a)',
+  'Jornalista',
+  'Médico(a)',
+  'Nutricionista',
+  'Operário(a)',
+  'Personal Trainer',
+  'Psicólogo(a)',
+  'Professor(a)',
+  'Reformado(a)',
+  'Terapeuta',
+  'Trabalhador(a) Independente',
   'Outro'
 ];
 

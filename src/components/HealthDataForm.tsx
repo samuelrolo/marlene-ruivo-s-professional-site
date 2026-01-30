@@ -21,7 +21,6 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
     dataNascimento: '',
     morada: '',
     profissao: '',
-    dataConsulta: '',
 
     // 2. Objetivos da Consulta
     objetivosConsulta: [],
@@ -167,9 +166,6 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
         }
         if (formData.profissao === 'Outro' && !formData.profissaoOutro) {
           newErrors.profissaoOutro = 'Por favor especifique a profissão';
-        }
-        if (!formData.dataConsulta) {
-          newErrors.dataConsulta = 'Data da consulta é obrigatória';
         }
         break;
 
