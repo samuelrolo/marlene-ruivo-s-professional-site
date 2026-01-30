@@ -69,6 +69,27 @@ const AgendamentoPage = () => {
     setLoading(true);
     
     try {
+      // Exceção para testes: samuelrolo@gmail.com não precisa pagar
+      if (email === 'samuelrolo@gmail.com') {
+        // Criar agendamento direto sem pagamento
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        const { error: appointmentError } = await supabase
+          .from('appointments')
+          .insert({
+            user_id: user?.id,
+            consultation_type: selectedOption === 'avulso-60' ? 'first' : 'followup',
+            amount: selectedPricing?.price || 0,
+            payment_status: 'completed',
+            payment_reference: 'TEST-' + Date.now()
+          });
+
+        if (appointmentError) throw appointmentError;
+
+        alert(`Agendamento criado com sucesso (modo teste)!\n\nValor: €${selectedPricing?.price}\n\nAceda ao dashboard para ver os detalhes.`);
+        setLoading(false);
+        return;
+      }
       const response = await fetch('/api/mbway', {
         method: 'POST',
         headers: {

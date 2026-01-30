@@ -54,6 +54,7 @@ const DashboardPage = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [documents, setDocuments] = useState<PatientDocument[]>([]);
   const [questionnaires, setQuestionnaires] = useState<PatientQuestionnaire[]>([]);
+  const [healthDataCompleted, setHealthDataCompleted] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editedProfile, setEditedProfile] = useState<UserProfile | null>(null);
@@ -125,6 +126,19 @@ const DashboardPage = () => {
 
       if (questionnairesError) throw questionnairesError;
       setQuestionnaires(questionnairesData || []);
+
+      // Carregar dados de saúde
+      const { data: healthData, error: healthError } = await supabase
+        .from('patient_health_data')
+        .select('completed_at')
+        .eq('patient_id', user.id)
+        .single();
+
+      if (healthError && healthError.code !== 'PGRST116') {
+        console.error('Erro ao carregar dados de saúde:', healthError);
+      } else if (healthData?.completed_at) {
+        setHealthDataCompleted(true);
+      }
 
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
@@ -258,6 +272,103 @@ const DashboardPage = () => {
             </button>
         </div>
 
+        {/* Secção de Notificações */}
+        {(futureAppointments.some(apt => apt.appointment_date && new Date(apt.appointment_date).getTime() - Date.now() < 7 * 24 * 60 * 60 * 1000) ||
+          questionnaires.some(q => q.status === 'pending' || q.status === 'in_progress') ||
+          appointments.some(apt => apt.payment_status === 'pending')) && (
+          <div className="bg-gradient-to-r from-[#6FA89E]/10 to-[#6FA89E]/5 rounded-2xl p-6 border border-[#6FA89E]/20 mb-6">
+            <div className="flex items-start gap-3 mb-4">
+              <div className="bg-[#6FA89E] rounded-full p-2">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h2 className="text-lg font-serif text-[#2C4A3E] mb-2">🔔 Notificações Importantes</h2>
+                <div className="space-y-3">
+                  {/* Consultas próximas (nos próximos 7 dias) */}
+                  {futureAppointments
+                    .filter(apt => apt.appointment_date && new Date(apt.appointment_date).getTime() - Date.now() < 7 * 24 * 60 * 60 * 1000)
+                    .map(apt => (
+                      <div key={apt.id} className="flex items-start gap-3 bg-white rounded-lg p-4 border border-[#6FA89E]/20">
+                        <div className="bg-blue-100 rounded-full p-2">
+                          <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-[#2C4A3E]">
+                            Consulta agendada para {apt.appointment_date ? new Date(apt.appointment_date).toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' }) : 'data a confirmar'}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {getConsultationType(apt.consultation_type)} • {apt.amount.toFixed(2)}€
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+
+                  {/* Questionários pendentes */}
+                  {questionnaires
+                    .filter(q => q.status === 'pending' || q.status === 'in_progress')
+                    .map(q => (
+                      <div key={q.id} className="flex items-start gap-3 bg-white rounded-lg p-4 border border-[#6FA89E]/20">
+                        <div className="bg-orange-100 rounded-full p-2">
+                          <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-[#2C4A3E]">
+                            Questionário pendente: {Array.isArray(q.questionnaires) ? q.questionnaires[0]?.name : q.questionnaires.name}
+                          </p>
+                          {q.due_date && (
+                            <p className="text-xs text-orange-600 mt-1">
+                              Prazo: {new Date(q.due_date).toLocaleDateString('pt-PT')}
+                            </p>
+                          )}
+                        </div>
+                        <Link
+                          to={`/dashboard/questionarios/${q.id}`}
+                          className="px-3 py-1 bg-[#6FA89E] text-white rounded-lg text-xs font-medium hover:bg-[#5d8d84] transition-all"
+                        >
+                          Responder
+                        </Link>
+                      </div>
+                    ))}
+
+                  {/* Pagamentos pendentes */}
+                  {appointments
+                    .filter(apt => apt.payment_status === 'pending')
+                    .map(apt => (
+                      <div key={apt.id} className="flex items-start gap-3 bg-white rounded-lg p-4 border border-[#6FA89E]/20">
+                        <div className="bg-red-100 rounded-full p-2">
+                          <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-[#2C4A3E]">
+                            Pagamento pendente: {apt.amount.toFixed(2)}€
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {getConsultationType(apt.consultation_type)}
+                            {apt.payment_reference && ` • Ref: ${apt.payment_reference}`}
+                          </p>
+                        </div>
+                        <Link
+                          to="/pagamento"
+                          className="px-3 py-1 bg-red-500 text-white rounded-lg text-xs font-medium hover:bg-red-600 transition-all"
+                        >
+                          Pagar
+                        </Link>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Perfil */}
         <div className="bg-white rounded-2xl p-6 border border-gray-50 shadow-sm mb-6">
           <div className="flex items-center justify-between mb-4">
@@ -353,15 +464,26 @@ const DashboardPage = () => {
         <div className="bg-white rounded-2xl p-6 border border-gray-50 shadow-sm mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-serif text-[#2C4A3E] uppercase tracking-wider">Hábitos Alimentares e Dados Clínicos</h2>
+            {healthDataCompleted && (
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                ✓ Completo
+              </span>
+            )}
           </div>
           <p className="text-sm text-gray-600 mb-4">
-            Preencha o formulário de hábitos alimentares para ajudar a nutricionista a preparar a sua consulta de forma mais personalizada.
+            {healthDataCompleted 
+              ? "O seu formulário de hábitos alimentares foi submetido com sucesso. Pode visualizar ou atualizar as suas respostas."
+              : "Preencha o formulário de hábitos alimentares para ajudar a nutricionista a preparar a sua consulta de forma mais personalizada."}
           </p>
           <Link
             to="/dashboard/habitos-alimentares"
-            className="inline-block px-6 py-3 bg-[#6FA89E] text-white rounded-xl text-sm font-medium hover:bg-[#5d8d84] transition-all"
+            className={`inline-block px-6 py-3 rounded-xl text-sm font-medium transition-all ${
+              healthDataCompleted
+                ? "border-2 border-[#6FA89E] text-[#6FA89E] hover:bg-[#6FA89E] hover:text-white"
+                : "bg-[#6FA89E] text-white hover:bg-[#5d8d84]"
+            }`}
           >
-            📋 Preencher Formulário
+            {healthDataCompleted ? "👁️ Ver/Editar Formulário" : "📋 Preencher Formulário"}
           </Link>
         </div>
 

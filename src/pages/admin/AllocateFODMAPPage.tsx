@@ -7,6 +7,7 @@ interface Patient {
   id: string;
   full_name: string;
   phone: string;
+  email: string;
 }
 
 const AllocateFODMAPPage = () => {
@@ -29,7 +30,7 @@ const AllocateFODMAPPage = () => {
 
       const { data, error } = await supabase
         .from('user_profiles')
-        .select('id, full_name, phone')
+        .select('id, full_name, phone, email')
         .order('full_name');
 
       if (error) throw error;
@@ -84,18 +85,15 @@ const AllocateFODMAPPage = () => {
       // Obter dados do paciente para o email
       const patient = patients.find(p => p.id === selectedPatient);
 
-      // Obter email do paciente da tabela auth.users
-      const { data: { user: authUser } } = await supabase.auth.admin.getUserById(selectedPatient);
-
       // Enviar notificação por email
-      if (patient && authUser?.email) {
+      if (patient && patient.email) {
         try {
           await fetch('/api/send-fodmap-notification', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               patientName: patient.full_name,
-              patientEmail: authUser.email,
+              patientEmail: patient.email,
               notes: notes || null
             })
           });

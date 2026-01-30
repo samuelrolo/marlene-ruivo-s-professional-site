@@ -8,6 +8,7 @@ interface Patient {
   id: string;
   full_name: string;
   phone: string;
+  email: string;
 }
 
 const AllocateQuestionnairePage = () => {
@@ -44,7 +45,7 @@ const AllocateQuestionnairePage = () => {
       // Carregar pacientes
       const { data: patientsData, error: patientsError } = await supabase
         .from('user_profiles')
-        .select('id, full_name, phone')
+        .select('id, full_name, phone, email')
         .order('full_name');
 
       if (patientsError) throw patientsError;
@@ -88,18 +89,15 @@ const AllocateQuestionnairePage = () => {
       const patient = patients.find(p => p.id === selectedPatient);
       const questionnaire = questionnaires.find(q => q.id === selectedQuestionnaire);
 
-      // Obter email do paciente da tabela auth.users
-      const { data: { user: authUser } } = await supabase.auth.admin.getUserById(selectedPatient);
-
       // Enviar notificação por email
-      if (patient && questionnaire && authUser?.email) {
+      if (patient && questionnaire && patient.email) {
         try {
           await fetch('/api/send-questionnaire-notification', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               patientName: patient.full_name,
-              patientEmail: authUser.email,
+              patientEmail: patient.email,
               questionnaireName: questionnaire.name,
               deadline: dueDate || null,
               notes: notes || null
