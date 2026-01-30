@@ -39,6 +39,7 @@ export const PatientHealthDataPage: React.FC = () => {
 
       if (healthError) {
         console.error('Erro ao carregar dados de saúde:', healthError);
+        alert(`Erro RLS ou Query:\n\nCode: ${healthError.code}\nMessage: ${healthError.message}\nDetails: ${healthError.details}\nHint: ${healthError.hint}`);
         throw healthError;
       }
 
@@ -65,9 +66,10 @@ export const PatientHealthDataPage: React.FC = () => {
 
       console.log('Combined data:', combined);
       setPatients(combined);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao carregar pacientes:', error);
-      alert('Erro ao carregar dados dos pacientes');
+      const errorMsg = error?.message || error?.toString() || 'Erro desconhecido';
+      alert(`Erro ao carregar dados dos pacientes:\n\n${errorMsg}\n\nDetalhes: ${JSON.stringify(error, null, 2)}`);
     } finally {
       setLoading(false);
     }
