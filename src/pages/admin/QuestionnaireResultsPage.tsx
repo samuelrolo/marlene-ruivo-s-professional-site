@@ -39,37 +39,50 @@ const QuestionnaireResultsPage = () => {
     try {
       setLoading(true);
 
-      const { data: results, error } = await supabase
+      // 1. Obter patient_questionnaires
+      const { data: pqData, error: pqError } = await supabase
         .from('patient_questionnaires')
-        .select(`
-          id,
-          status,
-          assigned_date,
-          completed_date,
-          due_date,
-          admin_notes,
-          user_profiles!patient_id (
-            id,
-            full_name
-          ),
-          questionnaires!questionnaire_id (
-            id,
-            name,
-            category
-          )
-        `)
+        .select('id, patient_id, questionnaire_id, status, assigned_date, completed_date, due_date, admin_notes')
         .order('assigned_date', { ascending: false });
 
-      if (error) throw error;
-      
-      // Normalizar dados (Supabase retorna arrays para relações)
-      const normalized = (results || []).map((item: any) => ({
-        ...item,
-        patient: Array.isArray(item.user_profiles) ? item.user_profiles[0] : item.user_profiles,
-        questionnaire: Array.isArray(item.questionnaires) ? item.questionnaires[0] : item.questionnaires
+      if (pqError) throw pqError;
+      if (!pqData || pqData.length === 0) {
+        setData([]);
+        return;
+      }
+
+      // 2. Obter IDs únicos de pacientes e questionários
+      const patientIds = [...new Set(pqData.map(pq => pq.patient_id))];
+      const questionnaireIds = [...new Set(pqData.map(pq => pq.questionnaire_id))];
+
+      // 3. Obter dados dos pacientes
+      const { data: patientsData, error: patientsError } = await supabase
+        .from('user_profiles')
+        .select('id, full_name')
+        .in('id', patientIds);
+
+      if (patientsError) throw patientsError;
+
+      // 4. Obter dados dos questionários
+      const { data: questionnairesData, error: questionnairesError } = await supabase
+        .from('questionnaires')
+        .select('id, name, category')
+        .in('id', questionnaireIds);
+
+      if (questionnairesError) throw questionnairesError;
+
+      // 5. Criar mapas para lookup rápido
+      const patientsMap = new Map(patientsData?.map(p => [p.id, p]) || []);
+      const questionnairesMap = new Map(questionnairesData?.map(q => [q.id, q]) || []);
+
+      // 6. Combinar dados
+      const combined = pqData.map(pq => ({
+        ...pq,
+        patient: patientsMap.get(pq.patient_id) || { id: pq.patient_id, full_name: 'Desconhecido' },
+        questionnaire: questionnairesMap.get(pq.questionnaire_id) || { id: pq.questionnaire_id, name: 'Desconhecido', category: '' }
       }));
-      
-      setData(normalized);
+
+      setData(combined);
 
     } catch (error) {
       console.error('Erro ao carregar resultados:', error);
