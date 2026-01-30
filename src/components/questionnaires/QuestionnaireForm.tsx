@@ -142,9 +142,11 @@ const QuestionnaireForm = ({ patientQuestionnaire, questionnaire }: Questionnair
         .insert({
           patient_questionnaire_id: patientQuestionnaire.id,
           responses,
-          score,
-          classification: classification?.title,
-          interpretation: classification?.description
+          total_score: score,
+          classification_label: classification?.label,
+          classification_title: classification?.title,
+          classification_description: classification?.description,
+          classification_color: classification?.color
         });
 
       if (responseError) throw responseError;
