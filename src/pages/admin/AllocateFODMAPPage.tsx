@@ -84,22 +84,18 @@ const AllocateFODMAPPage = () => {
       // Obter dados do paciente para o email
       const patient = patients.find(p => p.id === selectedPatient);
 
-      // Obter email do paciente
-      const { data: profileData } = await supabase
-        .from('user_profiles')
-        .select('email')
-        .eq('id', selectedPatient)
-        .single();
+      // Obter email do paciente da tabela auth.users
+      const { data: { user: authUser } } = await supabase.auth.admin.getUserById(selectedPatient);
 
       // Enviar notificação por email
-      if (patient && profileData?.email) {
+      if (patient && authUser?.email) {
         try {
           await fetch('/api/send-fodmap-notification', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               patientName: patient.full_name,
-              patientEmail: profileData.email,
+              patientEmail: authUser.email,
               notes: notes || null
             })
           });

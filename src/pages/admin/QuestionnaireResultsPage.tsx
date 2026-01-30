@@ -9,8 +9,15 @@ interface PatientQuestionnaire {
   completed_at: string | null;
   due_date: string | null;
   admin_notes: string | null;
-  patient: any;
-  questionnaire: any;
+  patient: {
+    id: string;
+    full_name: string;
+  };
+  questionnaire: {
+    id: string;
+    name: string;
+    category: string;
+  };
   responses?: Array<{
     question_text: string;
     answer_value: any;
@@ -43,8 +50,7 @@ const QuestionnaireResultsPage = () => {
           admin_notes,
           patient:user_profiles!patient_id (
             id,
-            full_name,
-            email
+            full_name
           ),
           questionnaire:questionnaires!questionnaire_id (
             id,
@@ -231,7 +237,6 @@ const QuestionnaireResultsPage = () => {
                         <User className="w-4 h-4 text-gray-400" />
                         {item.patient.full_name}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">{item.patient.email}</p>
                     </div>
 
                     {/* Questionário */}

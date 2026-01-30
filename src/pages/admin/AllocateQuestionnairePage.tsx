@@ -88,22 +88,18 @@ const AllocateQuestionnairePage = () => {
       const patient = patients.find(p => p.id === selectedPatient);
       const questionnaire = questionnaires.find(q => q.id === selectedQuestionnaire);
 
-      // Obter email do paciente
-      const { data: profileData } = await supabase
-        .from('user_profiles')
-        .select('email')
-        .eq('id', selectedPatient)
-        .single();
+      // Obter email do paciente da tabela auth.users
+      const { data: { user: authUser } } = await supabase.auth.admin.getUserById(selectedPatient);
 
       // Enviar notificação por email
-      if (patient && questionnaire && profileData?.email) {
+      if (patient && questionnaire && authUser?.email) {
         try {
           await fetch('/api/send-questionnaire-notification', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               patientName: patient.full_name,
-              patientEmail: profileData.email,
+              patientEmail: authUser.email,
               questionnaireName: questionnaire.name,
               deadline: dueDate || null,
               notes: notes || null
