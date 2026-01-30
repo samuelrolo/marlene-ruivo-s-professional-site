@@ -67,7 +67,7 @@ const AdminLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFCFB]">
+    <div className="min-h-screen bg-[#FDFCFB] pt-24">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Cabeçalho */}
         <div className="mb-8">
