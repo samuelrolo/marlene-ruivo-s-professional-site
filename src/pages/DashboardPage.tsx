@@ -29,12 +29,27 @@ interface PatientDocument {
   created_at: string;
 }
 
+interface PatientQuestionnaire {
+  id: string;
+  questionnaire_id: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  due_date: string | null;
+  assigned_at: string;
+  completed_at: string | null;
+  questionnaires: {
+    id: string;
+    name: string;
+    description: string | null;
+  };
+}
+
 const DashboardPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [documents, setDocuments] = useState<PatientDocument[]>([]);
+  const [questionnaires, setQuestionnaires] = useState<PatientQuestionnaire[]>([]);
   const [userEmail, setUserEmail] = useState("");
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editedProfile, setEditedProfile] = useState<UserProfile | null>(null);
@@ -84,6 +99,28 @@ const DashboardPage = () => {
 
       if (documentsError) throw documentsError;
       setDocuments(documentsData || []);
+
+      // Carregar questionários
+      const { data: questionnairesData, error: questionnairesError } = await supabase
+        .from('patient_questionnaires')
+        .select(`
+          id,
+          questionnaire_id,
+          status,
+          due_date,
+          assigned_at,
+          completed_at,
+          questionnaires (
+            id,
+            name,
+            description
+          )
+        `)
+        .eq('patient_id', user.id)
+        .order('assigned_at', { ascending: false });
+
+      if (questionnairesError) throw questionnairesError;
+      setQuestionnaires(questionnairesData || []);
 
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
@@ -307,6 +344,60 @@ const DashboardPage = () => {
             Agendar Nova Consulta
           </Link>
         </div>
+
+        {/* Os Meus Questionários */}
+        {questionnaires.length > 0 && (
+          <div className="bg-white rounded-2xl p-6 border border-gray-50 shadow-sm mb-6">
+            <h2 className="text-sm font-serif text-[#2C4A3E] mb-4 uppercase tracking-wider">Os Meus Questionários</h2>
+            <div className="space-y-4">
+              {questionnaires.map((q) => (
+                <div key={q.id} className="border border-gray-100 rounded-lg p-4 hover:border-[#6FA89E] transition-all">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="font-medium text-[#2C4A3E] mb-1">{q.questionnaires.name}</h3>
+                      {q.questionnaires.description && (
+                        <p className="text-sm text-gray-600 mb-2">{q.questionnaires.description}</p>
+                      )}
+                      <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <span>Atribuído: {new Date(q.assigned_at).toLocaleDateString('pt-PT')}</span>
+                        {q.due_date && (
+                          <span className="text-orange-600">Prazo: {new Date(q.due_date).toLocaleDateString('pt-PT')}</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        q.status === 'completed' ? 'bg-green-100 text-green-700' :
+                        q.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
+                        'bg-orange-100 text-orange-700'
+                      }`}>
+                        {q.status === 'completed' ? 'Concluído' :
+                         q.status === 'in_progress' ? 'Em Progresso' :
+                         'Pendente'}
+                      </span>
+                      {q.status !== 'completed' && (
+                        <Link
+                          to={`/dashboard/questionarios/${q.id}`}
+                          className="px-4 py-2 bg-[#6FA89E] text-white rounded-lg text-sm font-medium hover:bg-[#5d8d84] transition-all"
+                        >
+                          Responder
+                        </Link>
+                      )}
+                      {q.status === 'completed' && (
+                        <Link
+                          to={`/dashboard/questionarios/${q.id}/resultado`}
+                          className="px-4 py-2 border border-[#6FA89E] text-[#6FA89E] rounded-lg text-sm font-medium hover:bg-[#6FA89E] hover:text-white transition-all"
+                        >
+                          Ver Resultado
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Consultas Futuras */}
         {futureAppointments.length > 0 && (
