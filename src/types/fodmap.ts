@@ -25,7 +25,7 @@ export interface PatientFODMAPChecklist {
   id: string;
   patient_id: string;
   assigned_by: string;
-  assigned_at: string;
+  assigned_date: string;
   status: ChecklistStatus;
   notes?: string;
   created_at: string;

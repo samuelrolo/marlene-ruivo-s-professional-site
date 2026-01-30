@@ -43,11 +43,11 @@ const QuestionnaireForm = ({ patientQuestionnaire, questionnaire }: Questionnair
 
   const updateStatus = async (status: 'in_progress' | 'completed') => {
     const updateData: any = { status };
-    if (status === 'in_progress' && !patientQuestionnaire.started_at) {
-      updateData.started_at = new Date().toISOString();
+    if (status === 'in_progress' && !patientQuestionnaire.started_date) {
+      updateData.started_date = new Date().toISOString();
     }
     if (status === 'completed') {
-      updateData.completed_at = new Date().toISOString();
+      updateData.completed_date = new Date().toISOString();
     }
 
     await supabase

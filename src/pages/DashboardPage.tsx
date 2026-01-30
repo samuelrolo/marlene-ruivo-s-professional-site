@@ -34,8 +34,8 @@ interface PatientQuestionnaire {
   questionnaire_id: string;
   status: 'pending' | 'in_progress' | 'completed';
   due_date: string | null;
-  assigned_at: string;
-  completed_at: string | null;
+  assigned_date: string;
+  completed_date: string | null;
   questionnaires: {
     id: string;
     name: string;
@@ -112,8 +112,8 @@ const DashboardPage = () => {
           questionnaire_id,
           status,
           due_date,
-          assigned_at,
-          completed_at,
+          assigned_date,
+          completed_date,
           questionnaires (
             id,
             name,
@@ -121,7 +121,7 @@ const DashboardPage = () => {
           )
         `)
         .eq('patient_id', user.id)
-        .order('assigned_at', { ascending: false });
+        .order('assigned_date', { ascending: false });
 
       if (questionnairesError) throw questionnairesError;
       setQuestionnaires(questionnairesData || []);
@@ -363,7 +363,7 @@ const DashboardPage = () => {
                         <p className="text-sm text-gray-600 mb-2">{Array.isArray(q.questionnaires) ? q.questionnaires[0]?.description : q.questionnaires.description}</p>
                       )}
                       <div className="flex items-center gap-4 text-xs text-gray-500">
-                        <span>Atribuído: {new Date(q.assigned_at).toLocaleDateString('pt-PT')}</span>
+                        <span>Atribuído: {new Date(q.assigned_date).toLocaleDateString('pt-PT')}</span>
                         {q.due_date && (
                           <span className="text-orange-600">Prazo: {new Date(q.due_date).toLocaleDateString('pt-PT')}</span>
                         )}

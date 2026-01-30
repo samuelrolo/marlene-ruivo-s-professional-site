@@ -67,10 +67,10 @@ export interface PatientQuestionnaire {
   patient_id: string;
   questionnaire_id: string;
   assigned_by: string;
-  assigned_at: string;
+  assigned_date: string;
   status: QuestionnaireStatus;
-  started_at?: string;
-  completed_at?: string;
+  started_date?: string;
+  completed_date?: string;
   due_date?: string;
   notes?: string;
   created_at: string;
@@ -108,5 +108,5 @@ export interface QuestionnaireResult {
   classification: string;
   interpretation: string;
   responses: QuestionnaireResponse['responses'];
-  completed_at: string;
+  completed_date: string;
 }

@@ -5,8 +5,8 @@ import { Loader2, FileText, User, Calendar, CheckCircle, Clock, XCircle, Chevron
 interface PatientQuestionnaire {
   id: string;
   status: 'pending' | 'in_progress' | 'completed';
-  assigned_at: string;
-  completed_at: string | null;
+  assigned_date: string;
+  completed_date: string | null;
   due_date: string | null;
   admin_notes: string | null;
   patient: {
@@ -44,8 +44,8 @@ const QuestionnaireResultsPage = () => {
         .select(`
           id,
           status,
-          assigned_at,
-          completed_at,
+          assigned_date,
+          completed_date,
           due_date,
           admin_notes,
           patient:user_profiles!patient_id (
@@ -58,7 +58,7 @@ const QuestionnaireResultsPage = () => {
             category
           )
         `)
-        .order('assigned_at', { ascending: false });
+        .order('assigned_date', { ascending: false });
 
       if (error) throw error;
       
@@ -254,15 +254,15 @@ const QuestionnaireResultsPage = () => {
                       <p className="text-xs text-gray-500 mb-1">Data de Alocação</p>
                       <p className="text-sm text-gray-700 flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-gray-400" />
-                        {new Date(item.assigned_at).toLocaleDateString('pt-PT', {
+                        {new Date(item.assigned_date).toLocaleDateString('pt-PT', {
                           day: '2-digit',
                           month: 'short',
                           year: 'numeric'
                         })}
                       </p>
-                      {item.completed_at && (
+                      {item.completed_date && (
                         <p className="text-xs text-green-600 mt-1">
-                          Concluído: {new Date(item.completed_at).toLocaleDateString('pt-PT')}
+                          Concluído: {new Date(item.completed_date).toLocaleDateString('pt-PT')}
                         </p>
                       )}
                     </div>

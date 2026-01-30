@@ -218,7 +218,7 @@ const QuestionnairesList = () => {
                       )}
                       <div className="flex items-center gap-4 text-sm text-gray-500">
                         <span>
-                          Alocado em: {new Date(pq.assigned_at).toLocaleDateString('pt-PT')}
+                          Alocado em: {new Date(pq.assigned_date).toLocaleDateString('pt-PT')}
                         </span>
                         {pq.due_date && (
                           <span>
@@ -254,9 +254,9 @@ const QuestionnairesList = () => {
                       >
                         Ver Resultado
                       </Link>
-                      {pq.completed_at && (
+                      {pq.completed_date && (
                         <span className="text-sm text-gray-500">
-                          Concluído em: {new Date(pq.completed_at).toLocaleDateString('pt-PT')}
+                          Concluído em: {new Date(pq.completed_date).toLocaleDateString('pt-PT')}
                         </span>
                       )}
                     </>
