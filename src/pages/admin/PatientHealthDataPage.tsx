@@ -114,7 +114,31 @@ export const PatientHealthDataPage: React.FC = () => {
 
   const downloadClinicalFile = async (patient: PatientWithHealthData) => {
     if (!patient.health_data?.clinical_file_url) return;
-    window.open(patient.health_data.clinical_file_url, '_blank');
+    
+    try {
+      // Extrair o caminho do ficheiro do URL
+      const url = new URL(patient.health_data.clinical_file_url);
+      const pathParts = url.pathname.split('/');
+      const filePath = pathParts.slice(pathParts.indexOf('clinical-files') + 1).join('/');
+      
+      // Gerar signed URL
+      const { data, error } = await supabase.storage
+        .from('clinical-files')
+        .createSignedUrl(filePath, 60); // 60 segundos de validade
+      
+      if (error) {
+        console.error('Erro ao gerar signed URL:', error);
+        alert('Erro ao fazer download do ficheiro');
+        return;
+      }
+      
+      if (data?.signedUrl) {
+        window.open(data.signedUrl, '_blank');
+      }
+    } catch (error) {
+      console.error('Erro ao processar download:', error);
+      alert('Erro ao fazer download do ficheiro');
+    }
   };
 
   const formatDate = (dateString?: string) => {
@@ -380,7 +404,7 @@ const PatientDetailsModal: React.FC<{
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Secção 1: Dados Pessoais */}
-          <Section title="👤 Dados Pessoais">
+          <Section title="Dados Pessoais">
             <DataRow label="Nome" value={data.nome} />
             <DataRow label="Data de Nascimento" value={data.dataNascimento} />
             <DataRow label="Morada" value={data.morada} />
@@ -388,14 +412,14 @@ const PatientDetailsModal: React.FC<{
           </Section>
 
           {/* Secção 2: Objetivos da Consulta */}
-          <Section title="🎯 Objetivos da Consulta">
+          <Section title="Objetivos da Consulta">
             <DataRow label="Objetivos" value={data.objetivosConsulta.join(', ')} />
             {data.objetivosConsultaOutro && <DataRow label="Outro objetivo" value={data.objetivosConsultaOutro} />}
             <DataRow label="Como conheceu" value={data.comoConheceu === 'Outro' ? data.comoConheceuOutro : data.comoConheceu} />
           </Section>
 
           {/* Secção 3: Dados Clínicos */}
-          <Section title="🏥 Dados Clínicos">
+          <Section title="Dados Clínicos">
             <DataRow label="Diagnóstico de Doença" value={data.diagnosticoDoenca} multiline />
             <DataRow label="Operações" value={data.operacoes} multiline />
             <DataRow label="Medicação" value={data.medicacao} multiline />
@@ -418,7 +442,7 @@ const PatientDetailsModal: React.FC<{
           </Section>
 
           {/* Secção 4: Hábitos Alimentares */}
-          <Section title="🍽️ Hábitos Alimentares">
+          <Section title="Hábitos Alimentares">
             <DataRow label="Dia Alimentar" value={data.diaAlimentar} multiline />
             <DataRow label="Quantidade de Água" value={data.quantidadeAgua} />
             <DataRow label="Come Fora" value={data.comeFora ? 'Sim' : 'Não'} />
@@ -430,7 +454,7 @@ const PatientDetailsModal: React.FC<{
           </Section>
 
           {/* Secção 5: Estilo de Vida */}
-          <Section title="🏃 Estilo de Vida">
+          <Section title="Estilo de Vida">
             <DataRow label="Pratica Exercício" value={data.praticaExercicio ? 'Sim' : 'Não'} />
             {data.praticaExercicio && (
               <>
@@ -443,7 +467,7 @@ const PatientDetailsModal: React.FC<{
           </Section>
 
           {/* Secção 6: Sono e Stress */}
-          <Section title="😴 Sono e Stress">
+          <Section title="Sono e Stress">
             <DataRow label="Horas de Sono" value={`${data.horasSono}h`} />
             {(data.sonoLeve || data.sonoREM || data.sonoProfundo) && (
               <div className="mt-2 pl-4">
@@ -461,7 +485,7 @@ const PatientDetailsModal: React.FC<{
 
           {/* Análises Clínicas */}
           {patient.health_data?.clinical_file_url && (
-            <Section title="📄 Análises Clínicas">
+            <Section title="Análises Clínicas">
               <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
                 <div>
                   <p className="font-medium text-gray-900">{patient.health_data.clinical_file_name}</p>
@@ -469,21 +493,48 @@ const PatientDetailsModal: React.FC<{
                     {((patient.health_data.clinical_file_size || 0) / 1024 / 1024).toFixed(2)} MB
                   </p>
                 </div>
-                <a
-                  href={patient.health_data.clinical_file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={async () => {
+                    try {
+                      const url = new URL(patient.health_data!.clinical_file_url!);
+                      const pathParts = url.pathname.split('/');
+                      const filePath = pathParts.slice(pathParts.indexOf('clinical-files') + 1).join('/');
+                      
+                      const { data, error } = await supabase.storage
+                        .from('clinical-files')
+                        .createSignedUrl(filePath, 60);
+                      
+                      if (error) {
+                        alert('Erro ao fazer download do ficheiro');
+                        return;
+                      }
+                      
+                      if (data?.signedUrl) {
+                        window.open(data.signedUrl, '_blank');
+                      }
+                    } catch (error) {
+                      alert('Erro ao fazer download do ficheiro');
+                    }
+                  }}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                 >
                   Download
-                </a>
+                </button>
               </div>
             </Section>
           )}
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-gray-50 border-t px-6 py-4 flex justify-end">
+        <div className="sticky bottom-0 bg-gray-50 border-t px-6 py-4 flex justify-between">
+          <button
+            onClick={() => {
+              window.print();
+            }}
+            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            🖨️ Exportar PDF
+          </button>
           <button
             onClick={onClose}
             className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
