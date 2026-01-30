@@ -24,51 +24,80 @@ export const PatientHealthDataPage: React.FC = () => {
     try {
       setLoading(true);
 
-      // Carregar dados de saúde com informação do paciente (JOIN)
+      // 1. Carregar dados de saúde
       const { data: healthData, error: healthError } = await supabase
         .from('patient_health_data')
-        .select(`
-          *,
-          user_profiles!patient_id (
-            id,
-            full_name,
-            email
-          )
-        `);
+        .select('*')
+        .order('created_at', { ascending: false });
 
       if (healthError) {
         console.error('Erro ao carregar dados de saúde:', healthError);
-        alert(`Erro RLS ou Query:\n\nCode: ${healthError.code}\nMessage: ${healthError.message}\nDetails: ${healthError.details}\nHint: ${healthError.hint}`);
-        throw healthError;
+        throw new Error(`Erro ao carregar dados: ${healthError.message}`);
       }
 
-      console.log('Health data from Supabase:', healthData);
+      if (!healthData || healthData.length === 0) {
+        console.log('Nenhum dado de saúde encontrado');
+        setPatients([]);
+        return;
+      }
 
-      // Transformar dados
-      const combined: PatientWithHealthData[] = (healthData || []).map((health: any) => {
+      console.log('Health data carregado:', healthData);
+
+      // 2. Obter IDs dos pacientes
+      const patientIds = healthData.map((h: any) => h.patient_id);
+
+      // 3. Carregar informações dos pacientes
+      const { data: patientsData, error: patientsError } = await supabase
+        .from('user_profiles')
+        .select('id, full_name, email')
+        .in('id', patientIds);
+
+      if (patientsError) {
+        console.error('Erro ao carregar perfis:', patientsError);
+        throw new Error(`Erro ao carregar perfis: ${patientsError.message}`);
+      }
+
+      console.log('Perfis carregados:', patientsData);
+
+      // 4. Combinar dados com validação
+      const combined: PatientWithHealthData[] = [];
+      
+      for (const health of healthData) {
+        const patient = patientsData?.find((p: any) => p.id === health.patient_id);
+        
+        if (!patient) {
+          console.warn(`Paciente não encontrado para health_data id: ${health.id}`);
+          continue;
+        }
+
         // Parse responses se vier como string
-        if (health && typeof health.responses === 'string') {
+        let responses = health.responses;
+        if (typeof responses === 'string') {
           try {
-            health.responses = JSON.parse(health.responses);
+            responses = JSON.parse(responses);
           } catch (e) {
             console.error('Erro ao fazer parse de responses:', e);
+            continue;
           }
         }
-        
-        return {
-          id: health.user_profiles.id,
-          full_name: health.user_profiles.full_name,
-          email: health.user_profiles.email,
-          health_data: health
-        };
-      });
 
-      console.log('Combined data:', combined);
+        combined.push({
+          id: patient.id,
+          full_name: patient.full_name,
+          email: patient.email,
+          health_data: {
+            ...health,
+            responses
+          }
+        });
+      }
+
+      console.log('Dados combinados:', combined);
       setPatients(combined);
+
     } catch (error: any) {
       console.error('Erro ao carregar pacientes:', error);
-      const errorMsg = error?.message || error?.toString() || 'Erro desconhecido';
-      alert(`Erro ao carregar dados dos pacientes:\n\n${errorMsg}\n\nDetalhes: ${JSON.stringify(error, null, 2)}`);
+      alert(`Erro ao carregar dados dos pacientes:\n\n${error.message || 'Erro desconhecido'}`);
     } finally {
       setLoading(false);
     }
