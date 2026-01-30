@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import FODMAPChecklistView from '@/components/fodmap/FODMAPChecklistView';
+import { supabase } from '../../lib/supabaseClient';
+import FODMAPChecklistView from '../../components/fodmap/FODMAPChecklistView';
 import { Loader2, AlertCircle, Apple } from 'lucide-react';
 
 const FODMAPChecklistPage = () => {

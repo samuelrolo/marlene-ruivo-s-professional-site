@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Questionnaire, PatientQuestionnaire, Question } from '@/types/questionnaire';
+import { Questionnaire, PatientQuestionnaire } from '../../types/questionnaire';
 import QuestionRenderer from './QuestionRenderer';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '../../lib/supabaseClient';
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
 interface QuestionnaireFormProps {
   patientQuestionnaire: PatientQuestionnaire;

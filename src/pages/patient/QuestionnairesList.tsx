@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '@/lib/supabase';
-import { PatientQuestionnaire, Questionnaire } from '@/types/questionnaire';
+import { supabase } from '../../lib/supabaseClient';
+import { PatientQuestionnaire, Questionnaire } from '../../types/questionnaire';
 import { Loader2, FileText, Clock, CheckCircle, AlertCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
 interface QuestionnaireWithDetails extends PatientQuestionnaire {
   questionnaire: Questionnaire;
@@ -218,7 +218,7 @@ const QuestionnairesList = () => {
                       )}
                       <div className="flex items-center gap-4 text-sm text-gray-500">
                         <span>
-                          Alocado em: {new Date(pq.assigned_date).toLocaleDateString('pt-PT')}
+                          Alocado em: {new Date(pq.assigned_at).toLocaleDateString('pt-PT')}
                         </span>
                         {pq.due_date && (
                           <span>
@@ -226,10 +226,10 @@ const QuestionnairesList = () => {
                           </span>
                         )}
                       </div>
-                      {pq.admin_notes && (
+                      {pq.notes && (
                         <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
                           <p className="text-sm text-blue-800">
-                            <strong>Nota:</strong> {pq.admin_notes}
+                            <strong>Nota:</strong> {pq.notes}
                           </p>
                         </div>
                       )}
@@ -254,9 +254,9 @@ const QuestionnairesList = () => {
                       >
                         Ver Resultado
                       </Link>
-                      {pq.completed_date && (
+                      {pq.completed_at && (
                         <span className="text-sm text-gray-500">
-                          Concluído em: {new Date(pq.completed_date).toLocaleDateString('pt-PT')}
+                          Concluído em: {new Date(pq.completed_at).toLocaleDateString('pt-PT')}
                         </span>
                       )}
                     </>

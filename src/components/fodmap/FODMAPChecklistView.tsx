@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { FODMAPFood, FODMAPChecklistEntry, FODMAPCategory } from '@/types/fodmap';
-import { supabase } from '@/lib/supabase';
+import { FODMAPFood, FODMAPChecklistEntry, FODMAPCategory } from '../../types/fodmap';
+import { supabase } from '../../lib/supabaseClient';
 import { Loader2, Check, X, Calendar, StickyNote } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
 interface FODMAPChecklistViewProps {
   checklistId: string;

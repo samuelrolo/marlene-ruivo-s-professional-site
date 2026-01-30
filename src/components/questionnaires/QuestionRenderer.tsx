@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Question, QuestionOption } from '@/types/questionnaire';
-import { cn } from '@/lib/utils';
+import { Question } from '../../types/questionnaire';
+import { cn } from '../../lib/utils';
 
 interface QuestionRendererProps {
   question: Question;

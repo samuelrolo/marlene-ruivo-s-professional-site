@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import QuestionnaireForm from '@/components/questionnaires/QuestionnaireForm';
+import { supabase } from '../../lib/supabaseClient';
+import QuestionnaireForm from '../../components/questionnaires/QuestionnaireForm';
 import { Loader2, AlertCircle } from 'lucide-react';
-import { Questionnaire, PatientQuestionnaire } from '@/types/questionnaire';
+import { Questionnaire, PatientQuestionnaire } from '../../types/questionnaire';
 
 interface QuestionnaireData {
   patientQuestionnaire: PatientQuestionnaire;
@@ -139,10 +139,10 @@ const QuestionnaireFormPage = () => {
           )}
           
           {/* Nota do Admin */}
-          {data.patientQuestionnaire.admin_notes && (
+          {data.patientQuestionnaire.notes && (
             <div className="p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
               <p className="text-sm text-blue-800">
-                <strong>Nota da Dra. Marlene:</strong> {data.patientQuestionnaire.admin_notes}
+                <strong>Nota da Dra. Marlene:</strong> {data.patientQuestionnaire.notes}
               </p>
             </div>
           )}
