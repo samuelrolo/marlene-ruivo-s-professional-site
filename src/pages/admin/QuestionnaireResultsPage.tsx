@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { Loader2, FileText, User, Calendar, CheckCircle, Clock, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { cn } from '../../lib/utils';
 
 interface PatientQuestionnaire {
   id: string;
@@ -10,16 +9,8 @@ interface PatientQuestionnaire {
   completed_at: string | null;
   due_date: string | null;
   admin_notes: string | null;
-  patient: {
-    id: string;
-    full_name: string;
-    email: string;
-  };
-  questionnaire: {
-    id: string;
-    name: string;
-    category: string;
-  };
+  patient: any;
+  questionnaire: any;
   responses?: Array<{
     question_text: string;
     answer_value: any;
@@ -64,7 +55,15 @@ const QuestionnaireResultsPage = () => {
         .order('assigned_at', { ascending: false });
 
       if (error) throw error;
-      setData(results || []);
+      
+      // Normalizar dados (Supabase retorna arrays para relações)
+      const normalized = (results || []).map((item: any) => ({
+        ...item,
+        patient: Array.isArray(item.patient) ? item.patient[0] : item.patient,
+        questionnaire: Array.isArray(item.questionnaire) ? item.questionnaire[0] : item.questionnaire
+      }));
+      
+      setData(normalized);
 
     } catch (error) {
       console.error('Erro ao carregar resultados:', error);
