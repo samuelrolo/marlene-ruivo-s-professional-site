@@ -636,8 +636,138 @@ export const Section6: React.FC<SectionProps> = ({ formData, updateFormData, tog
   </div>
 );
 
-// Secção 7: Análises Clínicas
-export const Section7: React.FC<SectionProps> = ({ clinicalFile, handleFileChange, errors }) => (
+// Secção 7: Antropometria
+export const Section7: React.FC<SectionProps> = ({ formData, updateFormData, errors }) => {
+  // Calcular IMC automaticamente quando peso e altura são preenchidos
+  React.useEffect(() => {
+    if (formData.peso && formData.altura) {
+      const alturaMetros = formData.altura / 100;
+      const imc = formData.peso / (alturaMetros * alturaMetros);
+      updateFormData('imc', parseFloat(imc.toFixed(1)));
+    }
+  }, [formData.peso, formData.altura]);
+
+  return (
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Medidas Básicas */}
+        <FormInput
+          label="Peso"
+          type="number"
+          value={formData.peso?.toString() || ''}
+          onChange={(value) => updateFormData('peso', value ? parseFloat(value) : undefined)}
+          error={errors.peso}
+          placeholder="kg"
+          step={0.1}
+        />
+        
+        <FormInput
+          label="Altura"
+          type="number"
+          value={formData.altura?.toString() || ''}
+          onChange={(value) => updateFormData('altura', value ? parseFloat(value) : undefined)}
+          error={errors.altura}
+          placeholder="cm"
+          step={0.1}
+        />
+      </div>
+
+      {/* IMC Calculado */}
+      {formData.imc && (
+        <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <p className="text-sm font-medium text-green-800">
+            IMC Calculado: <strong>{formData.imc}</strong>
+          </p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Perímetros */}
+        <FormInput
+          label="Perímetro da Cintura"
+          type="number"
+          value={formData.perimetroCintura?.toString() || ''}
+          onChange={(value) => updateFormData('perimetroCintura', value ? parseFloat(value) : undefined)}
+          error={errors.perimetroCintura}
+          placeholder="cm"
+          step={0.1}
+        />
+        
+        <FormInput
+          label="Perímetro da Anca"
+          type="number"
+          value={formData.perimetroAnca?.toString() || ''}
+          onChange={(value) => updateFormData('perimetroAnca', value ? parseFloat(value) : undefined)}
+          error={errors.perimetroAnca}
+          placeholder="cm"
+          step={0.1}
+        />
+
+        <FormInput
+          label="Perímetro do Braço"
+          type="number"
+          value={formData.perimetroBraco?.toString() || ''}
+          onChange={(value) => updateFormData('perimetroBraco', value ? parseFloat(value) : undefined)}
+          error={errors.perimetroBraco}
+          placeholder="cm"
+          step={0.1}
+        />
+        
+        <FormInput
+          label="Perímetro da Coxa"
+          type="number"
+          value={formData.perimetroCoxa?.toString() || ''}
+          onChange={(value) => updateFormData('perimetroCoxa', value ? parseFloat(value) : undefined)}
+          error={errors.perimetroCoxa}
+          placeholder="cm"
+          step={0.1}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        {/* Composição Corporal */}
+        <FormInput
+          label="Percentagem de Gordura"
+          type="number"
+          value={formData.percentagemGordura?.toString() || ''}
+          onChange={(value) => updateFormData('percentagemGordura', value ? parseFloat(value) : undefined)}
+          error={errors.percentagemGordura}
+          placeholder="%"
+          step={0.1}
+        />
+        
+        <FormInput
+          label="Massa Muscular"
+          type="number"
+          value={formData.massaMuscular?.toString() || ''}
+          onChange={(value) => updateFormData('massaMuscular', value ? parseFloat(value) : undefined)}
+          error={errors.massaMuscular}
+          placeholder="kg"
+          step={0.1}
+        />
+        
+        <FormInput
+          label="Massa Gorda"
+          type="number"
+          value={formData.massaGorda?.toString() || ''}
+          onChange={(value) => updateFormData('massaGorda', value ? parseFloat(value) : undefined)}
+          error={errors.massaGorda}
+          placeholder="kg"
+          step={0.1}
+        />
+      </div>
+
+      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <p className="text-sm text-blue-800">
+          <strong>Nota:</strong> Todos os campos de antropometria são opcionais. Preencha apenas os dados que tiver disponíveis.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// Secção 8: Análises Clínicas
+export const Section8: React.FC<SectionProps> = ({ clinicalFile, handleFileChange, errors }) => (
   <div>
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-2">

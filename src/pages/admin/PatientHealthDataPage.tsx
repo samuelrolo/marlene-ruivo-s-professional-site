@@ -483,6 +483,26 @@ const PatientDetailsModal: React.FC<{
             {data.sintomasStressOutros && <DataRow label="Outros sintomas" value={data.sintomasStressOutros} />}
           </Section>
 
+          {/* Secção 7: Antropometria */}
+          {(data.peso || data.altura || data.perimetroCintura || data.perimetroAnca || 
+            data.percentagemGordura || data.massaMuscular || data.massaGorda || 
+            data.perimetroBraco || data.perimetroCoxa) && (
+            <Section title="Antropometria">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                {data.peso && <DataRow label="Peso" value={`${data.peso} kg`} />}
+                {data.altura && <DataRow label="Altura" value={`${data.altura} cm`} />}
+                {data.imc && <DataRow label="IMC" value={data.imc.toString()} />}
+                {data.perimetroCintura && <DataRow label="Perímetro da Cintura" value={`${data.perimetroCintura} cm`} />}
+                {data.perimetroAnca && <DataRow label="Perímetro da Anca" value={`${data.perimetroAnca} cm`} />}
+                {data.perimetroBraco && <DataRow label="Perímetro do Braço" value={`${data.perimetroBraco} cm`} />}
+                {data.perimetroCoxa && <DataRow label="Perímetro da Coxa" value={`${data.perimetroCoxa} cm`} />}
+                {data.percentagemGordura && <DataRow label="Percentagem de Gordura" value={`${data.percentagemGordura}%`} />}
+                {data.massaMuscular && <DataRow label="Massa Muscular" value={`${data.massaMuscular} kg`} />}
+                {data.massaGorda && <DataRow label="Massa Gorda" value={`${data.massaGorda} kg`} />}
+              </div>
+            </Section>
+          )}
+
           {/* Análises Clínicas */}
           {patient.health_data?.clinical_file_url && (
             <Section title="Análises Clínicas">

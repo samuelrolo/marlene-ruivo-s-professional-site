@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { Section1, Section2, Section3, Section4, Section5, Section6, Section7 } from './HealthDataFormSections';
+import { Section1, Section2, Section3, Section4, Section5, Section6, Section7, Section8 } from './HealthDataFormSections';
 import { HealthDataFormData } from '../types/healthData';
 
 interface HealthDataFormProps {
@@ -70,7 +70,8 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
     { id: 4, title: 'Hábitos Alimentares' },
     { id: 5, title: 'Estilo de Vida' },
     { id: 6, title: 'Sono e Stress' },
-    { id: 7, title: 'Análises Clínicas' }
+    { id: 7, title: 'Antropometria' },
+    { id: 8, title: 'Análises Clínicas' }
   ];
 
   // Calcular idade automaticamente
@@ -241,10 +242,12 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
         }
         break;
 
-      case 7: // Análises Clínicas
-        if (!clinicalFile) {
-          newErrors.clinicalFile = 'Por favor faça upload das análises clínicas';
-        }
+      case 7: // Antropometria (todos os campos opcionais)
+        // Sem validação obrigatória
+        break;
+
+      case 8: // Análises Clínicas (opcional)
+        // Sem validação obrigatória
         break;
     }
 
@@ -440,6 +443,7 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
         {currentSection === 5 && renderSection5()}
         {currentSection === 6 && renderSection6()}
         {currentSection === 7 && renderSection7()}
+        {currentSection === 8 && renderSection8()}
 
         {/* Navigation Buttons */}
         <div className="flex justify-between mt-8 pt-6 border-t">
@@ -499,5 +503,9 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
 
   function renderSection7() {
     return <Section7 formData={formData} updateFormData={updateFormData} updateSuplemento={updateSuplemento} toggleCheckbox={toggleCheckbox} errors={errors} age={age} clinicalFile={clinicalFile} handleFileChange={handleFileChange} />;
+  }
+
+  function renderSection8() {
+    return <Section8 formData={formData} updateFormData={updateFormData} updateSuplemento={updateSuplemento} toggleCheckbox={toggleCheckbox} errors={errors} age={age} clinicalFile={clinicalFile} handleFileChange={handleFileChange} />;
   }
 };

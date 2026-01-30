@@ -59,6 +59,18 @@ export interface HealthDataFormData {
   nivelStress: number;
   sintomasStress: string[];
   sintomasStressOutros?: string;
+
+  // 7. Antropometria
+  peso?: number; // kg
+  altura?: number; // cm
+  imc?: number; // calculado automaticamente
+  perimetroCintura?: number; // cm
+  perimetroAnca?: number; // cm
+  percentagemGordura?: number; // %
+  massaMuscular?: number; // kg
+  massaGorda?: number; // kg
+  perimetroBraco?: number; // cm
+  perimetroCoxa?: number; // cm
 }
 
 export interface PatientHealthData {
