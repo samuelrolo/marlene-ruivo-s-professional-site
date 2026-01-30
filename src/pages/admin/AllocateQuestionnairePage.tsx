@@ -84,6 +84,37 @@ const AllocateQuestionnairePage = () => {
 
       if (error) throw error;
 
+      // Obter dados do paciente e questionário para o email
+      const patient = patients.find(p => p.id === selectedPatient);
+      const questionnaire = questionnaires.find(q => q.id === selectedQuestionnaire);
+
+      // Obter email do paciente
+      const { data: profileData } = await supabase
+        .from('user_profiles')
+        .select('email')
+        .eq('id', selectedPatient)
+        .single();
+
+      // Enviar notificação por email
+      if (patient && questionnaire && profileData?.email) {
+        try {
+          await fetch('/api/send-questionnaire-notification', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              patientName: patient.full_name,
+              patientEmail: profileData.email,
+              questionnaireName: questionnaire.name,
+              deadline: dueDate || null,
+              notes: notes || null
+            })
+          });
+        } catch (emailError) {
+          console.error('Erro ao enviar email:', emailError);
+          // Não bloquear o processo se o email falhar
+        }
+      }
+
       // Mostrar sucesso
       setSuccess(true);
       
@@ -271,7 +302,7 @@ const AllocateQuestionnairePage = () => {
         <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
           <h3 className="font-medium text-blue-900 mb-2">ℹ️ Informação</h3>
           <ul className="text-sm text-blue-800 space-y-1">
-            <li>• O paciente receberá o questionário na sua área pessoal</li>
+            <li>• O paciente receberá uma notificação por email e o questionário na sua área pessoal</li>
             <li>• O questionário ficará com status "Pendente" até o paciente começar a responder</li>
             <li>• Pode alocar o mesmo questionário várias vezes ao mesmo paciente</li>
             <li>• Os resultados ficam disponíveis automaticamente após conclusão</li>
