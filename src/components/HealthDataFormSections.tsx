@@ -282,7 +282,6 @@ export const Section3: React.FC<SectionProps> = ({ formData, updateFormData, upd
       value={formData.diagnosticoDoenca}
       onChange={(value) => updateFormData('diagnosticoDoenca', value)}
       error={errors.diagnosticoDoenca}
-      required
       placeholder="Descreva se tem algum diagnóstico médico (ex: diabetes, hipertensão, etc.)"
       rows={3}
     />
@@ -292,7 +291,6 @@ export const Section3: React.FC<SectionProps> = ({ formData, updateFormData, upd
       value={formData.operacoes}
       onChange={(value) => updateFormData('operacoes', value)}
       error={errors.operacoes}
-      required
       placeholder="Descreva cirurgias ou procedimentos médicos realizados"
       rows={3}
     />
@@ -302,14 +300,13 @@ export const Section3: React.FC<SectionProps> = ({ formData, updateFormData, upd
       value={formData.medicacao}
       onChange={(value) => updateFormData('medicacao', value)}
       error={errors.medicacao}
-      required
       placeholder="Liste a medicação que toma diariamente (nome e dosagem)"
       rows={3}
     />
 
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-2">
-        Suplementação <span className="text-red-500">*</span>
+        Suplementação
       </label>
       <div className="space-y-2 grid grid-cols-2 gap-2">
         <FormCheckbox

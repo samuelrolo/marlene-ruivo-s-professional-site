@@ -64,13 +64,13 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
   });
 
   const sections = [
-    { id: 1, title: 'Dados Pessoais', icon: '👤' },
-    { id: 2, title: 'Objetivos da Consulta', icon: '🎯' },
-    { id: 3, title: 'Dados Clínicos', icon: '🏥' },
-    { id: 4, title: 'Hábitos Alimentares', icon: '🍽️' },
-    { id: 5, title: 'Estilo de Vida', icon: '🏃' },
-    { id: 6, title: 'Sono e Stress', icon: '😴' },
-    { id: 7, title: 'Análises Clínicas', icon: '📄' }
+    { id: 1, title: 'Dados Pessoais' },
+    { id: 2, title: 'Objetivos da Consulta' },
+    { id: 3, title: 'Dados Clínicos' },
+    { id: 4, title: 'Hábitos Alimentares' },
+    { id: 5, title: 'Estilo de Vida' },
+    { id: 6, title: 'Sono e Stress' },
+    { id: 7, title: 'Análises Clínicas' }
   ];
 
   // Calcular idade automaticamente
@@ -185,15 +185,7 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
         break;
 
       case 3: // Dados Clínicos
-        if (!formData.diagnosticoDoenca) {
-          newErrors.diagnosticoDoenca = 'Campo obrigatório';
-        }
-        if (!formData.operacoes) {
-          newErrors.operacoes = 'Campo obrigatório';
-        }
-        if (!formData.medicacao) {
-          newErrors.medicacao = 'Campo obrigatório';
-        }
+        // Campos opcionais - sem validação
         break;
 
       case 4: // Hábitos Alimentares
@@ -429,7 +421,6 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
                 : 'bg-gray-100 text-gray-600'
             }`}
           >
-            <span>{section.icon}</span>
             <span className="text-sm font-medium">{section.title}</span>
           </button>
         ))}
