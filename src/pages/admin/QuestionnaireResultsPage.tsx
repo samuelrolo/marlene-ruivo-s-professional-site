@@ -23,6 +23,18 @@ interface PatientQuestionnaire {
     answer_value: any;
     question_order: number;
   }>;
+  responseData?: {
+    responses: Array<{
+      questionId: string;
+      answer: any;
+    }>;
+    totalScore?: number;
+    classification?: {
+      label?: string;
+      title?: string;
+      description?: string;
+    };
+  };
 }
 
 const QuestionnaireResultsPage = () => {
