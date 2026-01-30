@@ -22,7 +22,7 @@ const AdminLayout = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
-      if (!user || !ADMIN_EMAILS.includes(user.email)) {
+      if (!user || !user.email || !ADMIN_EMAILS.includes(user.email)) {
         alert("Acesso negado. Esta área é exclusiva para administradores.");
         navigate("/");
         return;
