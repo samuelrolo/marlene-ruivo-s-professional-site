@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
-import { FileText, Apple, FolderOpen, Menu, X, BarChart3 } from "lucide-react";
+import { FileText, Apple, FolderOpen, Menu, X, BarChart3, Heart } from "lucide-react";
 
 const ADMIN_EMAILS = [
   "marleneruivonutricao@gmail.com",
@@ -59,6 +59,12 @@ const AdminLayout = () => {
       icon: Apple,
       label: "Alocar Checklist FODMAP",
       description: "Atribuir checklist FODMAP"
+    },
+    {
+      path: "/admin/dados-saude",
+      icon: Heart,
+      label: "Dados de Saúde",
+      description: "Ver hábitos alimentares dos pacientes"
     }
   ];
 

@@ -22,12 +22,14 @@ import AdminDocumentsPage from "./pages/admin/AdminDocumentsPage";
 import AllocateQuestionnairePage from "./pages/admin/AllocateQuestionnairePage";
 import AllocateFODMAPPage from "./pages/admin/AllocateFODMAPPage";
 import QuestionnaireResultsPage from "./pages/admin/QuestionnaireResultsPage";
+import { PatientHealthDataPage } from "./pages/admin/PatientHealthDataPage";
 
 // Patient Pages
 import QuestionnairesList from "./pages/patient/QuestionnairesList";
 import QuestionnaireFormPage from "./pages/patient/QuestionnaireFormPage";
 import QuestionnaireResultPage from "./pages/patient/QuestionnaireResultPage";
 import FODMAPChecklistPage from "./pages/patient/FODMAPChecklistPage";
+import HealthDataFormPage from "./pages/patient/HealthDataFormPage";
 
 const App = () => (
   <BrowserRouter>
@@ -59,6 +61,9 @@ const App = () => (
         
         {/* Rota de Checklist FODMAP do Paciente */}
         <Route path="/dashboard/fodmap" element={<FODMAPChecklistPage />} />
+        
+        {/* Rota de Hábitos Alimentares do Paciente */}
+        <Route path="/dashboard/habitos-alimentares" element={<HealthDataFormPage />} />
 
         {/* Painel Administrativo com Sub-rotas */}
         <Route path="/admin" element={<AdminLayout />}>
@@ -67,6 +72,7 @@ const App = () => (
           <Route path="questionarios/alocar" element={<AllocateQuestionnairePage />} />
           <Route path="questionarios/resultados" element={<QuestionnaireResultsPage />} />
           <Route path="fodmap/alocar" element={<AllocateFODMAPPage />} />
+          <Route path="dados-saude" element={<PatientHealthDataPage />} />
         </Route>
 
         {/* 404 */}

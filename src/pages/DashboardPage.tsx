@@ -349,6 +349,22 @@ const DashboardPage = () => {
           </Link>
         </div>
 
+        {/* Formulário de Hábitos Alimentares */}
+        <div className="bg-white rounded-2xl p-6 border border-gray-50 shadow-sm mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-serif text-[#2C4A3E] uppercase tracking-wider">Hábitos Alimentares e Dados Clínicos</h2>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">
+            Preencha o formulário de hábitos alimentares para ajudar a nutricionista a preparar a sua consulta de forma mais personalizada.
+          </p>
+          <Link
+            to="/dashboard/habitos-alimentares"
+            className="inline-block px-6 py-3 bg-[#6FA89E] text-white rounded-xl text-sm font-medium hover:bg-[#5d8d84] transition-all"
+          >
+            📋 Preencher Formulário
+          </Link>
+        </div>
+
         {/* Os Meus Questionários */}
         {questionnaires.length > 0 && (
           <div className="bg-white rounded-2xl p-6 border border-gray-50 shadow-sm mb-6">
