@@ -384,7 +384,7 @@ const PatientDetailsModal: React.FC<{
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
           <div>
@@ -402,7 +402,7 @@ const PatientDetailsModal: React.FC<{
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="p-8 space-y-8">
           {/* Secção 1: Dados Pessoais */}
           <Section title="Dados Pessoais">
             <DataRow label="Nome" value={data.nome} />
@@ -531,13 +531,13 @@ const PatientDetailsModal: React.FC<{
             onClick={() => {
               window.print();
             }}
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
           >
-            🖨️ Exportar PDF
+            Exportar PDF
           </button>
           <button
             onClick={onClose}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
           >
             Fechar
           </button>
@@ -549,17 +549,17 @@ const PatientDetailsModal: React.FC<{
 
 // Componentes auxiliares
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="border rounded-lg p-4">
-    <h3 className="text-lg font-bold text-gray-900 mb-4">{title}</h3>
-    <div className="space-y-3">{children}</div>
+  <div className="border-b border-gray-200 pb-6 last:border-0">
+    <h3 className="text-xl font-semibold text-gray-900 mb-6">{title}</h3>
+    <div className="space-y-4">{children}</div>
   </div>
 );
 
 const DataRow: React.FC<{ label: string; value?: string; multiline?: boolean }> = ({ label, value, multiline }) => (
-  <div className={multiline ? '' : 'flex justify-between'}>
-    <span className="font-medium text-gray-700">{label}:</span>
-    <span className={`text-gray-900 ${multiline ? 'mt-1 whitespace-pre-wrap' : ''}`}>
-      {value || '-'}
+  <div className={multiline ? 'space-y-1' : 'flex justify-between items-start'}>
+    <span className="text-sm font-medium text-gray-600">{label}:</span>
+    <span className={`text-gray-900 ${multiline ? 'mt-1 whitespace-pre-wrap text-sm' : 'text-right text-sm'}`}>
+      {value || 'N/a'}
     </span>
   </div>
 );
