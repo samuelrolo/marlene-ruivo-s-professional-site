@@ -93,18 +93,35 @@ const QuestionnaireResultsPage = () => {
 
   const loadResponses = async (patientQuestionnaireId: string) => {
     try {
-      const { data: responses, error } = await supabase
+      const { data: responseData, error } = await supabase
         .from('questionnaire_responses')
-        .select('question_text, answer_value, question_order')
+        .select('responses, total_score, classification_label, classification_title, classification_description')
         .eq('patient_questionnaire_id', patientQuestionnaireId)
-        .order('question_order');
+        .single();
 
       if (error) throw error;
+
+      // Converter JSONB responses para array
+      const responsesArray = responseData?.responses ? Object.entries(responseData.responses).map(([questionId, answer]) => ({
+        questionId,
+        answer
+      })) : [];
 
       // Atualizar o item com as respostas
       setData(prev => prev.map(item => 
         item.id === patientQuestionnaireId 
-          ? { ...item, responses } 
+          ? { 
+              ...item, 
+              responseData: {
+                responses: responsesArray,
+                totalScore: responseData?.total_score,
+                classification: {
+                  label: responseData?.classification_label,
+                  title: responseData?.classification_title,
+                  description: responseData?.classification_description
+                }
+              }
+            } 
           : item
       ));
 
@@ -314,26 +331,45 @@ const QuestionnaireResultsPage = () => {
                     {item.status === 'completed' && (
                       <div>
                         <h3 className="font-bold text-gray-900 mb-4">Respostas do Paciente:</h3>
-                        {!item.responses ? (
+                        {!item.responseData ? (
                           <div className="flex items-center justify-center py-8">
                             <Loader2 className="w-6 h-6 animate-spin text-[#6FA89E]" />
                           </div>
-                        ) : item.responses.length === 0 ? (
-                          <p className="text-gray-500 text-center py-4">Nenhuma resposta registada</p>
                         ) : (
-                          <div className="space-y-3">
-                            {item.responses.map((response, idx) => (
-                              <div key={idx} className="bg-white p-4 rounded-lg border border-gray-200">
-                                <p className="text-sm font-medium text-gray-900 mb-2">
-                                  {response.question_order}. {response.question_text}
-                                </p>
-                                <p className="text-sm text-gray-700 pl-4">
-                                  {typeof response.answer_value === 'object' 
-                                    ? JSON.stringify(response.answer_value) 
-                                    : response.answer_value}
-                                </p>
+                          <div>
+                            {/* Classificação */}
+                            {item.responseData.classification?.title && (
+                              <div className="mb-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                                <p className="text-sm font-medium text-yellow-900 mb-1">Classificação</p>
+                                <p className="text-lg font-bold text-yellow-900">{item.responseData.classification.title}</p>
+                                {item.responseData.classification.description && (
+                                  <p className="text-sm text-yellow-800 mt-2">{item.responseData.classification.description}</p>
+                                )}
+                                {item.responseData.totalScore !== undefined && (
+                                  <p className="text-sm text-yellow-800 mt-2">Pontuação: {item.responseData.totalScore}</p>
+                                )}
                               </div>
-                            ))}
+                            )}
+
+                            {/* Respostas */}
+                            {item.responseData.responses && item.responseData.responses.length > 0 ? (
+                              <div className="space-y-3">
+                                {item.responseData.responses.map((response, idx) => (
+                                  <div key={idx} className="bg-white p-4 rounded-lg border border-gray-200">
+                                    <p className="text-sm font-medium text-gray-900 mb-2">
+                                      Questão {idx + 1}
+                                    </p>
+                                    <p className="text-sm text-gray-700 pl-4">
+                                      {typeof response.answer === 'object' 
+                                        ? JSON.stringify(response.answer) 
+                                        : response.answer}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <p className="text-gray-500 text-center py-4">Nenhuma resposta registada</p>
+                            )}
                           </div>
                         )}
                       </div>
