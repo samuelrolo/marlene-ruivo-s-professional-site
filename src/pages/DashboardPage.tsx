@@ -40,7 +40,11 @@ interface PatientQuestionnaire {
     id: string;
     name: string;
     description: string | null;
-  };
+  } | {
+    id: string;
+    name: string;
+    description: string | null;
+  }[];
 }
 
 const DashboardPage = () => {
@@ -354,9 +358,9 @@ const DashboardPage = () => {
                 <div key={q.id} className="border border-gray-100 rounded-lg p-4 hover:border-[#6FA89E] transition-all">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className="font-medium text-[#2C4A3E] mb-1">{q.questionnaires.name}</h3>
-                      {q.questionnaires.description && (
-                        <p className="text-sm text-gray-600 mb-2">{q.questionnaires.description}</p>
+                      <h3 className="font-medium text-[#2C4A3E] mb-1">{Array.isArray(q.questionnaires) ? q.questionnaires[0]?.name : q.questionnaires.name}</h3>
+                      {(Array.isArray(q.questionnaires) ? q.questionnaires[0]?.description : q.questionnaires.description) && (
+                        <p className="text-sm text-gray-600 mb-2">{Array.isArray(q.questionnaires) ? q.questionnaires[0]?.description : q.questionnaires.description}</p>
                       )}
                       <div className="flex items-center gap-4 text-xs text-gray-500">
                         <span>Atribuído: {new Date(q.assigned_at).toLocaleDateString('pt-PT')}</span>
