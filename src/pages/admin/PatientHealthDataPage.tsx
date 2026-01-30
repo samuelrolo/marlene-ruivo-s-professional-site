@@ -40,15 +40,28 @@ export const PatientHealthDataPage: React.FC = () => {
 
       if (healthError) throw healthError;
 
+      console.log('Health data from Supabase:', healthData);
+
       // Combinar dados
       const combined: PatientWithHealthData[] = (patientsData || []).map((patient: any) => {
         const health = healthData?.find((h: any) => h.patient_id === patient.id);
+        
+        // Parse responses se vier como string
+        if (health && typeof health.responses === 'string') {
+          try {
+            health.responses = JSON.parse(health.responses);
+          } catch (e) {
+            console.error('Erro ao fazer parse de responses:', e);
+          }
+        }
+        
         return {
           ...patient,
           health_data: health
         };
       });
 
+      console.log('Combined data:', combined);
       setPatients(combined);
     } catch (error) {
       console.error('Erro ao carregar pacientes:', error);
@@ -294,7 +307,24 @@ const PatientDetailsModal: React.FC<{
   patient: PatientWithHealthData;
   onClose: () => void;
 }> = ({ patient, onClose }) => {
-  const data = patient.health_data!.responses;
+  if (!patient.health_data?.responses) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+          <h2 className="text-xl font-bold text-red-600 mb-4">Erro</h2>
+          <p className="text-gray-700 mb-4">Não foi possível carregar os dados de saúde deste paciente.</p>
+          <button
+            onClick={onClose}
+            className="w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+          >
+            Fechar
+          </button>
+        </div>
+      </div>
+    );
+  }
+  
+  const data = patient.health_data.responses;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">

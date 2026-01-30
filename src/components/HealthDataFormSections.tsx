@@ -641,7 +641,7 @@ export const Section7: React.FC<SectionProps> = ({ clinicalFile, handleFileChang
   <div>
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-2">
-        Análises Clínicas Recentes <span className="text-red-500">*</span>
+        Análises Clínicas Recentes (opcional)
       </label>
       <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-green-500 transition-colors">
         <div className="space-y-1 text-center">
