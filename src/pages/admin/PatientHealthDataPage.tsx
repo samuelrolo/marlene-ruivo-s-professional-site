@@ -32,8 +32,7 @@ export const PatientHealthDataPage: React.FC = () => {
           user_profiles!patient_id (
             id,
             full_name,
-            email,
-            role
+            email
           )
         `);
 
