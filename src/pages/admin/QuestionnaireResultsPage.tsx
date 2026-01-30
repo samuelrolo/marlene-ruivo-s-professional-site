@@ -363,21 +363,38 @@ const QuestionnaireResultsPage = () => {
                               </div>
                             )}
 
-                            {/* Respostas */}
+                            {/* Respostas em Tabela */}
                             {item.responseData.responses && item.responseData.responses.length > 0 ? (
-                              <div className="space-y-3">
-                                {item.responseData.responses.map((response, idx) => (
-                                  <div key={idx} className="bg-white p-4 rounded-lg border border-gray-200">
-                                    <p className="text-sm font-medium text-gray-900 mb-2">
-                                      Questão {idx + 1}
-                                    </p>
-                                    <p className="text-sm text-gray-700 pl-4">
-                                      {typeof response.answer === 'object' 
-                                        ? JSON.stringify(response.answer) 
-                                        : response.answer}
-                                    </p>
-                                  </div>
-                                ))}
+                              <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg">
+                                  <thead className="bg-gray-100">
+                                    <tr>
+                                      <th className="px-4 py-2 text-left text-xs font-semibold text-gray-700 uppercase">#</th>
+                                      <th className="px-4 py-2 text-left text-xs font-semibold text-gray-700 uppercase">Resposta</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody className="bg-white divide-y divide-gray-200">
+                                    {item.responseData.responses.map((response: any, idx: number) => {
+                                      // Formatar resposta
+                                      let formattedAnswer = '';
+                                      if (typeof response.answer === 'object' && response.answer !== null) {
+                                        if (response.answer.value === 'yes') formattedAnswer = 'Sim';
+                                        else if (response.answer.value === 'no') formattedAnswer = 'Não';
+                                        else if (response.answer.value) formattedAnswer = response.answer.value;
+                                        else formattedAnswer = JSON.stringify(response.answer);
+                                      } else {
+                                        formattedAnswer = String(response.answer || '-');
+                                      }
+                                      
+                                      return (
+                                        <tr key={idx} className="hover:bg-gray-50">
+                                          <td className="px-4 py-2 text-sm text-gray-600 font-medium">{idx + 1}</td>
+                                          <td className="px-4 py-2 text-sm text-gray-800">{formattedAnswer}</td>
+                                        </tr>
+                                      );
+                                    })}
+                                  </tbody>
+                                </table>
                               </div>
                             ) : (
                               <p className="text-gray-500 text-center py-4">Nenhuma resposta registada</p>
