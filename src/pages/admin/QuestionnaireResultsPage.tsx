@@ -48,11 +48,11 @@ const QuestionnaireResultsPage = () => {
           completed_date,
           due_date,
           admin_notes,
-          patient:user_profiles!patient_id (
+          user_profiles!patient_id (
             id,
             full_name
           ),
-          questionnaire:questionnaires!questionnaire_id (
+          questionnaires!questionnaire_id (
             id,
             name,
             category
@@ -65,8 +65,8 @@ const QuestionnaireResultsPage = () => {
       // Normalizar dados (Supabase retorna arrays para relações)
       const normalized = (results || []).map((item: any) => ({
         ...item,
-        patient: Array.isArray(item.patient) ? item.patient[0] : item.patient,
-        questionnaire: Array.isArray(item.questionnaire) ? item.questionnaire[0] : item.questionnaire
+        patient: Array.isArray(item.user_profiles) ? item.user_profiles[0] : item.user_profiles,
+        questionnaire: Array.isArray(item.questionnaires) ? item.questionnaires[0] : item.questionnaires
       }));
       
       setData(normalized);
