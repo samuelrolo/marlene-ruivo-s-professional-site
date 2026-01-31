@@ -44,7 +44,7 @@ const formatMessageWithLinks = (text: string) => {
       let linkText = "Clique aqui";
       if (cleanUrl.includes("calendar.app.google") || cleanUrl.includes("calendar.google")) {
         linkText = "📅 Agendar Online";
-      } else if (cleanUrl.includes("sheerme.com") || cleanUrl.includes("hygeia")) {
+      } else if (cleanUrl.includes("hygeia.pt")) {
         linkText = "📍 Agendar em Mafra";
       } else if (cleanUrl.includes("institutobettencourt")) {
         linkText = "📍 Agendar em Lisboa";
