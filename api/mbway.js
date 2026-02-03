@@ -24,10 +24,13 @@ export default async function handler(req, res) {
     params.append('canal', '03');
     params.append('referencia', orderId);
     params.append('valor', amount);
-    params.append('nrtlm', phoneNumber);
+    // Garantir que o número tem o prefixo 351 para a IFThenPay
+    const formattedPhone = phoneNumber.startsWith('351') ? phoneNumber : `351${phoneNumber}`;
+    params.append('nrtlm', formattedPhone);
     params.append('email', email || '');
     params.append('descricao', 'Consulta Nutricao');
 
+    console.log('Enviando para IFThenPay com MbWayKey:', mbWayKey.substring(0, 3) + '...');
     const ifthenResponse = await fetch(ifthenUrl, {
       method: 'POST',
       headers: {
@@ -36,8 +39,18 @@ export default async function handler(req, res) {
       body: params.toString()
     });
 
-    const data = await ifthenResponse.json();
-    console.log('Resposta IFThenPay:', data);
+    const responseText = await ifthenResponse.text();
+    console.log('Resposta bruta IFThenPay:', responseText);
+    
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      console.error('Erro ao parsear JSON da IFThenPay:', e);
+      return res.status(500).json({ error: 'Resposta inválida do servidor de pagamentos.', raw: responseText });
+    }
+    
+    console.log('Resposta IFThenPay (JSON):', data);
 
     if ((data.Estado === '000' || data.Estado === '0') && email && BREVO_API_KEY) {
       try {
