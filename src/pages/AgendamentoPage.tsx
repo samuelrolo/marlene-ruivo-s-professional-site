@@ -183,10 +183,17 @@ const AgendamentoPage = () => {
                 title="Google Calendar"
               ></iframe>
             </div>
-            <div className="flex items-center gap-3 p-4 bg-[#6FA89E]/5 rounded-2xl border border-[#6FA89E]/10">
-              <div className="w-8 h-8 rounded-full bg-[#6FA89E] flex items-center justify-center text-white text-xs font-bold">1</div>
-              <p className="text-xs text-[#2C4A3E]">Selecione primeiro o dia e hora no calendário acima.</p>
-            </div>
+              <div className="flex flex-col gap-4 p-6 bg-[#6FA89E]/5 rounded-2xl border border-[#6FA89E]/20">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#6FA89E] flex items-center justify-center text-white text-xs font-bold">1</div>
+                  <p className="text-sm font-medium text-[#2C4A3E]">Escolha o seu horário no calendário acima.</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#6FA89E] flex items-center justify-center text-white text-xs font-bold">2</div>
+                  <p className="text-sm font-medium text-[#2C4A3E]">Preencha os seus dados e clique em "Confirmar e Pagar" à direita.</p>
+                </div>
+                <p className="text-[10px] text-[#6FA89E] uppercase tracking-widest font-bold mt-2">⚠️ Atenção: A vaga só fica garantida após a confirmação do pagamento MB WAY.</p>
+              </div>
           </div>
 
           {/* Coluna 3: Pagamento */}
@@ -194,7 +201,7 @@ const AgendamentoPage = () => {
             <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-8 h-8 rounded-full bg-[#6FA89E] flex items-center justify-center text-white text-xs font-bold">2</div>
-                <h2 className="text-lg font-serif text-[#2C4A3E]">Pagamento MB WAY</h2>
+                <h2 className="text-lg font-serif text-[#2C4A3E]">Finalizar e Pagar</h2>
               </div>
 
               <div className="space-y-4 mb-8">
