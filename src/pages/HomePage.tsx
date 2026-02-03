@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 
 const HomePage = () => {
@@ -18,9 +19,12 @@ const HomePage = () => {
               Apoio clínico baseado em ciência para reduzir sintomas e recuperar o bem-estar digestivo. A Marlene estreia-se como nutricionista freelance em dezembro de 2025, mantendo o acompanhamento próximo e humano que marca a sua carreira.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-4 border border-gray-200 text-gray-600 rounded-xl hover:border-[#6FA89E] hover:text-[#6FA89E] transition-all font-medium">
+              <Link 
+                to="/sobre" 
+                className="px-8 py-4 border border-gray-200 text-gray-600 rounded-xl hover:border-[#6FA89E] hover:text-[#6FA89E] transition-all font-medium"
+              >
                 Saber mais
-              </button>
+              </Link>
             </div>
           </div>
           <div className="relative">
@@ -47,11 +51,15 @@ const HomePage = () => {
             { title: 'Dieta FODMAP', desc: 'Sabe como a dieta FODMAP te pode ajudar', btn: 'Saber mais →', link: '/fodmap' },
             { title: 'Testemunhos', desc: 'Vê o que os pacientes dizem', btn: 'Ver testemunhos →', link: '/testemunhos' }
           ].map((item, i) => (
-            <div key={i} className="bg-white p-10 rounded-3xl border border-gray-100 hover:border-[#6FA89E]/30 transition-all group">
+            <Link 
+              key={i} 
+              to={item.link}
+              className="bg-white p-10 rounded-3xl border border-gray-100 hover:border-[#6FA89E]/30 transition-all group block"
+            >
               <h3 className="text-2xl font-serif text-[#2C4A3E] mb-4">{item.title}</h3>
               <p className="text-gray-500 mb-8">{item.desc}</p>
-              <button className="text-[#6FA89E] font-medium group-hover:translate-x-2 transition-transform">{item.btn}</button>
-            </div>
+              <span className="text-[#6FA89E] font-medium group-hover:translate-x-2 transition-transform inline-block">{item.btn}</span>
+            </Link>
           ))}
         </section>
       </main>
