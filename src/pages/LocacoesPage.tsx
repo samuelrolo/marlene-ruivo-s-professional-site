@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 const LocacoesPage = () => {
   return (
     <div className="min-h-screen bg-[#FDFCFB]">
-      <main className="pb-20 px-4 max-w-6xl mx-auto">
+      <main className="pt-32 lg:pt-40 pb-20 px-4 max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <span className="text-[#6FA89E] font-medium tracking-[0.2em] uppercase text-[10px]">Locais de Consulta</span>
           <h1 className="text-4xl md:text-5xl font-serif text-[#2C4A3E] mt-4 mb-6">Onde Atendo</h1>

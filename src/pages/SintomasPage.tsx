@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Wind, Activity, ArrowDownUp, CloudRain, Ban, BatteryLow } from 'lucide-react';
@@ -72,12 +73,12 @@ const SintomasPage = () => {
           <p className="text-gray-500 mb-8 max-w-xl mx-auto">
             Se identificas algum destes sintomas, uma consulta de nutrição pode ajudar-te a encontrar alívio e melhorar a tua qualidade de vida.
           </p>
-          <a
-            href="/contactos"
+          <Link
+            to="/agendamento"
             className="inline-block px-8 py-4 bg-[#6FA89E] text-white rounded-xl hover:bg-[#5d8d84] transition-all font-medium shadow-lg shadow-[#6FA89E]/20"
           >
             Agendar Consulta →
-          </a>
+          </Link>
         </div>
       </main>
       <Footer />
