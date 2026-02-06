@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import GoogleAdsense from '../components/GoogleAdsense';
 
 const HomePage = () => {
   return (
@@ -43,6 +44,11 @@ const HomePage = () => {
               <p className="text-sm font-medium text-[#2C4A3E]">Plano FODMAP personalizado</p>
             </div>
           </div>
+        </section>
+
+        {/* Google AdSense */}
+        <section className="px-4 max-w-7xl mx-auto">
+          <GoogleAdsense />
         </section>
 
         {/* Quick Actions */}
