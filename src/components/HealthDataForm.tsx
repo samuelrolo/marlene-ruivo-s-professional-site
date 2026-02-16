@@ -338,11 +338,15 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
 
     setIsSubmitting(true);
     try {
-      // Upload do ficheiro de análises clínicas
-      const fileData = await uploadClinicalFile();
-      if (!fileData) {
-        setIsSubmitting(false);
-        return;
+      // Upload do ficheiro de análises clínicas (opcional)
+      let fileData: { url: string; name: string; size: number } | null = null;
+      if (clinicalFile) {
+        fileData = await uploadClinicalFile();
+        if (!fileData) {
+          // Upload falhou - mostrar erro mas não bloquear
+          setIsSubmitting(false);
+          return;
+        }
       }
 
       // Verificar se já existe um registo
@@ -352,14 +356,18 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
         .eq('patient_id', patientId)
         .single();
 
-      const dataToSave = {
+      const dataToSave: any = {
         patient_id: patientId,
         responses: formData,
-        clinical_file_url: fileData.url,
-        clinical_file_name: fileData.name,
-        clinical_file_size: fileData.size,
         completed_at: new Date().toISOString()
       };
+
+      // Só incluir dados do ficheiro se existir
+      if (fileData) {
+        dataToSave.clinical_file_url = fileData.url;
+        dataToSave.clinical_file_name = fileData.name;
+        dataToSave.clinical_file_size = fileData.size;
+      }
 
       let error;
       if (existingData) {
