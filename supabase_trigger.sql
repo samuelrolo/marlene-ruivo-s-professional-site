@@ -2,11 +2,12 @@
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
-  INSERT INTO public.user_profiles (id, full_name, phone, gdpr_consent, gdpr_consent_date)
+  INSERT INTO public.user_profiles (id, full_name, phone, nif, gdpr_consent, gdpr_consent_date)
   VALUES (
     new.id, 
     new.raw_user_meta_data->>'full_name', 
     new.raw_user_meta_data->>'phone',
+    new.raw_user_meta_data->>'nif',
     true,
     now()
   );

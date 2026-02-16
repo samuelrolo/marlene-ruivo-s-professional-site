@@ -55,6 +55,7 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
 
     // 5. Estilo de Vida
     praticaExercicio: false,
+    ondePraticaExercicio: [],
 
     // 6. Sono e Stress
     horasSono: 7,
@@ -140,7 +141,7 @@ export const HealthDataForm: React.FC<HealthDataFormProps> = ({ patientId, onSub
 
   const toggleCheckbox = (field: keyof HealthDataFormData, value: string) => {
     setFormData(prev => {
-      const currentValues = prev[field] as string[];
+      const currentValues = (prev[field] as string[]) || [];
       const newValues = currentValues.includes(value)
         ? currentValues.filter(v => v !== value)
         : [...currentValues, value];

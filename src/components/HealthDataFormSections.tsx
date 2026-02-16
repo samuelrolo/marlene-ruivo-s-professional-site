@@ -117,12 +117,13 @@ const FormSelect: React.FC<{
 // Componente de Radio com Label
 const FormRadio: React.FC<{
   label: string;
+  name?: string;
   value: boolean | string;
   onChange: (value: any) => void;
   options: { label: string; value: any }[];
   error?: string;
   required?: boolean;
-}> = ({ label, value, onChange, options, error, required }) => (
+}> = ({ label, name, value, onChange, options, error, required }) => (
   <div className="mb-4">
     <label className="block text-sm font-medium text-gray-700 mb-2">
       {label} {required && <span className="text-red-500">*</span>}
@@ -132,6 +133,7 @@ const FormRadio: React.FC<{
         <label key={String(option.value)} className="flex items-center">
           <input
             type="radio"
+            name={name || label}
             checked={value === option.value}
             onChange={() => onChange(option.value)}
             className="mr-2 text-green-600 focus:ring-green-500"
@@ -394,6 +396,7 @@ export const Section4: React.FC<SectionProps> = ({ formData, updateFormData, err
 
     <FormRadio
       label="Come fora com frequência?"
+      name="comeFora"
       value={formData.comeFora}
       onChange={(value) => updateFormData('comeFora', value)}
       options={[
@@ -469,6 +472,7 @@ export const Section5: React.FC<SectionProps> = ({ formData, updateFormData, tog
   <div>
     <FormRadio
       label="Pratica Exercício Físico?"
+      name="praticaExercicio"
       value={formData.praticaExercicio}
       onChange={(value) => updateFormData('praticaExercicio', value)}
       options={[
@@ -510,6 +514,7 @@ export const Section5: React.FC<SectionProps> = ({ formData, updateFormData, tog
 
         <FormRadio
           label="Frequência de exercício"
+          name="frequenciaExercicio"
           value={formData.frequenciaExercicio || ''}
           onChange={(value) => updateFormData('frequenciaExercicio', value)}
           options={FREQUENCIA_EXERCICIO_OPTIONS.map(opt => ({ label: opt, value: opt }))}
@@ -578,6 +583,7 @@ export const Section6: React.FC<SectionProps> = ({ formData, updateFormData, tog
 
     <FormRadio
       label="Costuma ter uma hora fixa de deitar toda a semana?"
+      name="horaFixaDeitar"
       value={formData.horaFixaDeitar}
       onChange={(value) => updateFormData('horaFixaDeitar', value)}
       options={[
