@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Download, BookOpen, X, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { Download, BookOpen, X, CheckCircle, AlertCircle, Loader2, ShoppingCart, ExternalLink } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 
 interface Ebook {
@@ -8,7 +8,9 @@ interface Ebook {
   subtitle: string;
   description: string;
   coverImage: string;
-  pdfPath: string;
+  pdfPath?: string;
+  purchaseUrl?: string;
+  isPaid: boolean;
   tags: string[];
 }
 
@@ -21,6 +23,7 @@ const ebooks: Ebook[] = [
       'Liderar em ambientes de elevada exigência requer mais do que competências técnicas. Este guia prático foi concebido para líderes que procuram optimizar a sua performance de forma integral, com base em quatro dimensões de energia: física, mental, emocional e espiritual. Ao longo destas páginas, partilhamos estratégias e conhecimentos fundamentados para gerir o stress, aumentar a vitalidade e liderar com maior impacto e propósito.',
     coverImage: '/assets/ebook-energia-liderar-capa.jpg',
     pdfPath: '/assets/Energia_para_Liderar_Premium.pdf',
+    isPaid: false,
     tags: ['Nutrição', 'Performance', 'Liderança', 'Bem-estar'],
   },
   {
@@ -30,7 +33,8 @@ const ebooks: Ebook[] = [
     description:
       'Um guia prático com receitas de sopas especialmente concebidas para a fase de eliminação da dieta Low FODMAP. Cada receita foi cuidadosamente elaborada pela Drª Marlene Ruivo, nutricionista especialista em Dieta FODMAP, para garantir que são seguras, nutritivas e saborosas para quem sofre de síndrome do intestino irritável ou outras perturbações digestivas funcionais.',
     coverImage: '/assets/ebook-sopas-low-fodmap-capa.jpg',
-    pdfPath: '/assets/EBOOKSOPASLowFodmap.pdf',
+    purchaseUrl: 'https://go.hotmart.com/L104352596A?dp=1',
+    isPaid: true,
     tags: ['FODMAP', 'Receitas', 'Nutrição', 'Digestão'],
   },
 ];
@@ -78,7 +82,7 @@ const DownloadModal = ({ ebook, onClose }: DownloadModalProps) => {
       // Iniciar download automático após registo
       setTimeout(() => {
         const link = document.createElement('a');
-        link.href = ebook.pdfPath;
+        link.href = ebook.pdfPath!;
         link.download = `${ebook.title.replace(/\s+/g, '_')}.pdf`;
         document.body.appendChild(link);
         link.click();
@@ -238,14 +242,14 @@ const EbooksPage = () => {
         <div className="container mx-auto px-4 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#6FA89E]/10 rounded-full mb-6">
             <BookOpen className="w-4 h-4 text-[#6FA89E]" />
-            <span className="text-sm font-medium text-[#6FA89E]">Recursos Gratuitos</span>
+            <span className="text-sm font-medium text-[#6FA89E]">Recursos</span>
           </div>
           <h1 className="text-4xl lg:text-5xl font-serif text-[#2C4A3E] mb-6 leading-tight">
             E-books
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Conteúdo especializado em nutrição, bem-estar e performance, disponível gratuitamente
-            para si. Descarregue, aprenda e transforme a sua saúde.
+            Conteúdo especializado em nutrição, bem-estar e performance. Explore os recursos
+            disponíveis e transforme a sua saúde.
           </p>
         </div>
       </section>
@@ -266,6 +270,18 @@ const EbooksPage = () => {
                     alt={`Capa do e-book: ${ebook.title}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
+                  {/* Badge Pago / Gratuito */}
+                  <div className="absolute top-3 right-3">
+                    {ebook.isPaid ? (
+                      <span className="px-2.5 py-1 bg-[#2C4A3E] text-white text-xs font-semibold rounded-full shadow">
+                        Pago
+                      </span>
+                    ) : (
+                      <span className="px-2.5 py-1 bg-[#6FA89E] text-white text-xs font-semibold rounded-full shadow">
+                        Gratuito
+                      </span>
+                    )}
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
 
@@ -293,15 +309,33 @@ const EbooksPage = () => {
                     {ebook.description}
                   </p>
 
-                  {/* Botão de download */}
-                  <button
-                    onClick={() => setSelectedEbook(ebook)}
-                    className="w-full py-3 bg-[#2C4A3E] text-white font-medium rounded-xl hover:bg-[#3d6357] transition-all flex items-center justify-center gap-2 group/btn"
-                  >
-                    <Download className="w-4 h-4 group-hover/btn:translate-y-0.5 transition-transform" />
-                    Fazer Download
-                  </button>
-                  <p className="text-center text-xs text-gray-400 mt-2">Gratuito · PDF</p>
+                  {/* Botão de ação */}
+                  {ebook.isPaid ? (
+                    <>
+                      <a
+                        href={ebook.purchaseUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-3 bg-[#2C4A3E] text-white font-medium rounded-xl hover:bg-[#3d6357] transition-all flex items-center justify-center gap-2 group/btn"
+                      >
+                        <ShoppingCart className="w-4 h-4" />
+                        Comprar e-book
+                        <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                      </a>
+                      <p className="text-center text-xs text-gray-400 mt-2">Disponível na Hotmart · PDF</p>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => setSelectedEbook(ebook)}
+                        className="w-full py-3 bg-[#2C4A3E] text-white font-medium rounded-xl hover:bg-[#3d6357] transition-all flex items-center justify-center gap-2 group/btn"
+                      >
+                        <Download className="w-4 h-4 group-hover/btn:translate-y-0.5 transition-transform" />
+                        Fazer Download
+                      </button>
+                      <p className="text-center text-xs text-gray-400 mt-2">Gratuito · PDF</p>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
@@ -320,8 +354,8 @@ const EbooksPage = () => {
         </div>
       </section>
 
-      {/* Modal de Download */}
-      {selectedEbook && (
+      {/* Modal de Download (apenas para e-books gratuitos) */}
+      {selectedEbook && !selectedEbook.isPaid && (
         <DownloadModal ebook={selectedEbook} onClose={() => setSelectedEbook(null)} />
       )}
     </div>
