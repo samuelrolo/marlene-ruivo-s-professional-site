@@ -23,6 +23,16 @@ const ebooks: Ebook[] = [
     pdfPath: '/assets/Energia_para_Liderar_Premium.pdf',
     tags: ['Nutrição', 'Performance', 'Liderança', 'Bem-estar'],
   },
+  {
+    id: 'sopas-low-fodmap',
+    title: 'Sopas Low FODMAP',
+    subtitle: 'Receitas Seguras para a Fase de Eliminação',
+    description:
+      'Um guia prático com receitas de sopas especialmente concebidas para a fase de eliminação da dieta Low FODMAP. Cada receita foi cuidadosamente elaborada pela Drª Marlene Ruivo, nutricionista especialista em Dieta FODMAP, para garantir que são seguras, nutritivas e saborosas para quem sofre de síndrome do intestino irritável ou outras perturbações digestivas funcionais.',
+    coverImage: '/assets/ebook-sopas-low-fodmap-capa.jpg',
+    pdfPath: '/assets/EBOOKSOPASLowFodmap.pdf',
+    tags: ['FODMAP', 'Receitas', 'Nutrição', 'Digestão'],
+  },
 ];
 
 interface DownloadModalProps {
