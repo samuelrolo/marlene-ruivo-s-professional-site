@@ -14,6 +14,7 @@ import AgendamentoPage from "./pages/AgendamentoPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
+import EbooksPage from "./pages/EbooksPage";
 import NotFound from "./pages/NotFound";
 
 // Admin Pages
@@ -23,6 +24,7 @@ import AllocateQuestionnairePage from "./pages/admin/AllocateQuestionnairePage";
 import AllocateFODMAPPage from "./pages/admin/AllocateFODMAPPage";
 import QuestionnaireResultsPage from "./pages/admin/QuestionnaireResultsPage";
 import { PatientHealthDataPage } from "./pages/admin/PatientHealthDataPage";
+import AdminEbookDownloadsPage from "./pages/admin/AdminEbookDownloadsPage";
 
 // Patient Pages
 import QuestionnairesList from "./pages/patient/QuestionnairesList";
@@ -44,6 +46,7 @@ const App = () => (
         <Route path="/fodmap" element={<FodmapPage />} />
         <Route path="/sintomas" element={<SintomasPage />} />
         <Route path="/localizacoes" element={<LocacoesPage />} />
+        <Route path="/ebooks" element={<EbooksPage />} />
         <Route path="/testemunhos" element={<TestemunhosPage />} />
         <Route path="/contactos" element={<ContactosPage />} />
         <Route path="/pagamento" element={<PagamentoPage />} />
@@ -73,6 +76,7 @@ const App = () => (
           <Route path="questionarios/resultados" element={<QuestionnaireResultsPage />} />
           <Route path="fodmap/alocar" element={<AllocateFODMAPPage />} />
           <Route path="dados-saude" element={<PatientHealthDataPage />} />
+          <Route path="ebooks" element={<AdminEbookDownloadsPage />} />
         </Route>
 
         {/* 404 */}
