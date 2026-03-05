@@ -22,8 +22,8 @@ const ebooks: Ebook[] = [
     description:
       'Liderar em ambientes de elevada exigência requer mais do que competências técnicas. Este guia prático foi concebido para líderes que procuram optimizar a sua performance de forma integral, com base em quatro dimensões de energia: física, mental, emocional e espiritual. Ao longo destas páginas, partilhamos estratégias e conhecimentos fundamentados para gerir o stress, aumentar a vitalidade e liderar com maior impacto e propósito.',
     coverImage: '/assets/ebook-energia-liderar-capa.jpg',
-    pdfPath: '/assets/Energia_para_Liderar_Premium.pdf',
-    isPaid: false,
+    purchaseUrl: 'https://go.hotmart.com/Q104764153P?dp=1',
+    isPaid: true,
     tags: ['Nutrição', 'Performance', 'Liderança', 'Bem-estar'],
   },
   {
