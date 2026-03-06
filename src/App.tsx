@@ -15,7 +15,6 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import EbooksPage from "./pages/EbooksPage";
-import LojaPage from "./pages/LojaPage";
 import NotFound from "./pages/NotFound";
 
 // Admin Pages
@@ -48,7 +47,6 @@ const App = () => (
         <Route path="/sintomas" element={<SintomasPage />} />
         <Route path="/localizacoes" element={<LocacoesPage />} />
         <Route path="/ebooks" element={<EbooksPage />} />
-        <Route path="/loja" element={<LojaPage />} />
         <Route path="/testemunhos" element={<TestemunhosPage />} />
         <Route path="/contactos" element={<ContactosPage />} />
         <Route path="/pagamento" element={<PagamentoPage />} />

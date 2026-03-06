@@ -10,7 +10,6 @@ const navItems = [
   { label: 'Sintomas', href: '/sintomas' },
   { label: 'Onde Estou', href: '/localizacoes' },
   { label: 'E-books', href: '/ebooks' },
-  { label: 'Loja', href: '/loja' },
   { label: 'Testemunhos', href: '/testemunhos' },
   { label: 'Contactos', href: '/contactos' },
   { label: 'Marcar Consulta', href: '/agendamento' },
