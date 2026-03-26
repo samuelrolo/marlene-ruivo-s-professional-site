@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from "../lib/supabaseClient";
 import Footer from '../components/Footer';
-import { User, LogIn, Info, MessageCircle, Clock, Calendar, Shield } from 'lucide-react';
+import { User, LogIn, Info, MessageCircle, Clock, Calendar } from 'lucide-react';
 
 type PricingOption = {
   id: string;
