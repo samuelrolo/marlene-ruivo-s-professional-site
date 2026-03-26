@@ -60,10 +60,7 @@ const AgendamentoPage = () => {
   };
 
   const openWhatsApp = () => {
-    const consultaName = selectedPricing?.name || 'Consulta';
-    const consultaDesc = selectedPricing?.description || '';
-    const consultaPrice = selectedPricing?.price || 0;
-    const message = `Olá Dr.ª Marlene! 👋\n\nGostaria de marcar uma consulta de nutrição.\n\n📋 *Tipo:* ${consultaName} (${consultaDesc})\n💰 *Valor:* ${consultaPrice}€\n\nPodemos combinar um horário?`;
+    const message = `Olá Dr.ª Marlene!\nGostaria de marcar uma consulta de nutrição.\nPodemos combinar um horário?`;
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`, '_blank');
   };
